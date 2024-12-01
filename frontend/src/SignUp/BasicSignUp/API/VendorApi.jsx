@@ -1,5 +1,5 @@
 function VendorBasicSignUp(businessname, password, taxnumber) {
-    fetch('http://localhost:8080/SignUp/VendorBasicSignUp', {
+    return fetch('http://localhost:8080/SignUp/VendorBasicSignUp', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -13,6 +13,7 @@ function VendorBasicSignUp(businessname, password, taxnumber) {
         .then(response => response.text())
         .then(data => {
             console.log("Response from the backend:", data);
+            return data;
         })
 }
 
