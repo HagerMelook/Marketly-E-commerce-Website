@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import backgroundImg from '../../../assets/background.png';
 import ClientBasicSignUp from '../API/ClientApi.jsx';
-import backgroundImg from '../assets/background.png';
 import './ClientReg.css';
 
 function ClientReg() {
