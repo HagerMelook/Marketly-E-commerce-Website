@@ -14,6 +14,10 @@ function ClientBasicSignUp(username, password) {
             console.log("Response from the backend:", data);
             return data;
         })
+        .catch((error)=>{
+            console.error(error);
+            throw error;
+        })
 }
 
 export default ClientBasicSignUp;

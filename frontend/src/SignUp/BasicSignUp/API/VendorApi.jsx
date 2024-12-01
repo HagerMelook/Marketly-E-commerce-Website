@@ -15,6 +15,10 @@ function VendorBasicSignUp(businessname, password, taxnumber) {
             console.log("Response from the backend:", data);
             return data;
         })
+        .catch((error)=>{
+            console.error(error);
+            throw error;
+        })
 }
 
 export default VendorBasicSignUp;
