@@ -26,17 +26,17 @@ public class VendorController {
                 + vendor.getTaxnumber());
         String resultMsg;
         if (vendor.getBusinessname() == null)
-            resultMsg = "The business name can't be empty";
+            return "The business name can't be empty";
         if (vendor.getBusinessname().length() > 80)
-            resultMsg = "The business name can't be more than 80 character";
+            return "The business name can't be more than 80 character";
         if (vendor.getPassword() == null)
-            resultMsg = "The password can't be empty";
+            return "The password can't be empty";
         if (vendor.getPassword().length() > 80)
-            resultMsg = "The password can't be more than 80 character";
+            return "The password can't be more than 80 character";
         if (String.valueOf(vendor.getTaxnumber()).length() == 0)
-            resultMsg = "The tax number can't be empty";
+            return "The tax number can't be empty";
         if (String.valueOf(vendor.getTaxnumber()).length() != 9)
-            resultMsg = "The tax number must be of 9 numbers only";
+            return "The tax number must be of 9 numbers only";
         resultMsg = vendorService.insertBasicVendor(vendor);
         System.out.println(resultMsg);
         return resultMsg;

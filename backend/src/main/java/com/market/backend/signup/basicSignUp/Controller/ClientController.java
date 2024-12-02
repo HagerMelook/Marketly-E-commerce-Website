@@ -24,13 +24,13 @@ public class ClientController {
         String resultMsg;
         System.out.println("Received User: " + client.getUsername() + ", " + client.getPassword());
         if (client.getUsername() == null)
-            resultMsg = "The username can't be empty";
+            return "The username can't be empty";
         if (client.getUsername().length() > 80)
-            resultMsg = "The username can't be more than 80 character";
+            return "The username can't be more than 80 character";
         if (client.getPassword() == null)
-            resultMsg = "The password can't be empty";
+            return "The password can't be empty";
         if (client.getPassword().length() > 80)
-            resultMsg = "The password can't be more than 80 character";
+            return "The password can't be more than 80 character";
         resultMsg = clientService.insertBasicClient(client);
         System.out.println(resultMsg);
         return resultMsg;
