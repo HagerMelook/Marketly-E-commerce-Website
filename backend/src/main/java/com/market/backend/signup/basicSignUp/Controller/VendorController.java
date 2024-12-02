@@ -33,10 +33,12 @@ public class VendorController {
             return "The password can't be empty";
         if (vendor.getPassword().length() > 80)
             return "The password can't be more than 80 character";
-        if (String.valueOf(vendor.getTaxnumber()).length() == 0)
+        if (vendor.getTaxnumber() == -1)
             return "The tax number can't be empty";
-        if (String.valueOf(vendor.getTaxnumber()).length() != 9)
-            return "The tax number must be of 9 numbers only";
+        if (String.valueOf(vendor.getTaxnumber()).length() != 9){
+            System.out.println(String.valueOf(vendor.getTaxnumber()).length());
+            return"The tax number must be of 9 numbers only";
+        }
         resultMsg = vendorService.insertBasicVendor(vendor);
         System.out.println(resultMsg);
         return resultMsg;
