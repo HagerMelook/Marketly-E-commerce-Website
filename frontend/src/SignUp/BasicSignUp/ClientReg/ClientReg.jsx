@@ -33,6 +33,10 @@ function ClientReg() {
             messageContainer_1.textContent = "The username can't be more than 80 character";
             setIsVisible_1(true);
         }
+        else if (val.length == 0) {
+            messageContainer_1.textContent = "The username can't be empty";
+            setIsVisible_1(true);
+        }
         else {
             messageContainer_1.textContent = "";
             setIsVisible_1(false);
@@ -45,6 +49,10 @@ function ClientReg() {
         const messageContainer_2 = document.getElementById("messageContainer-2");
         if (val.length > 80) {
             messageContainer_2.textContent = "The password can't be more than 80 character";
+            setIsVisible_2(true);
+        }
+        if (val.length == 0) {
+            messageContainer_2.textContent = "The password can't be empty";
             setIsVisible_2(true);
         }
         else {
