@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ClientReg from './ClientReg/ClientReg';
-import RadialChoice from './RadialChoice/RadialChoice';
-import VendorReg from './VendorReg/VendorReg';
+import ClientReg from '../pages/ClientReg/ClientReg';
+import RadialChoice from '../pages/RadialChoice/RadialChoice';
+import VendorReg from '../pages/VendorReg/VendorReg';
 
 function App() {
     return (
