@@ -31,7 +31,7 @@ public class VendorControllerIntegTest {
     }
 
     @Test
-    void testVendorBasicSignUpValidAndExist() {
+    void testVendorBasicSignUpValidAndExistBusName() {
         String url = "http://localhost:" + port + "/SignUp/VendorBasicSignUp";
         BasicVendor vendor = new BasicVendor();
         vendor.setBusinessname("marketly");
@@ -41,6 +41,19 @@ public class VendorControllerIntegTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("The business name is already exist", response.getBody());
     }
+
+    @Test
+    void testVendorBasicSignUpValidAndExistTaxNum() {
+        String url = "http://localhost:" + port + "/SignUp/VendorBasicSignUp";
+        BasicVendor vendor = new BasicVendor();
+        vendor.setBusinessname("market");
+        vendor.setPassword("123");
+        vendor.setTaxnumber(888888888);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, vendor, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("The tax number is already exist", response.getBody());
+    }
+
 
     @Test
     void testVendorBasicSignUpValidAndNotExist() {
