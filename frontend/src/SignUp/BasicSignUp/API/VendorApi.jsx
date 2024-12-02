@@ -1,4 +1,5 @@
 function VendorBasicSignUp(businessname, password, taxnumber) {
+    if (taxnumber==null) taxnumber = -1;
     return fetch('http://localhost:8080/SignUp/VendorBasicSignUp', {
         method: 'POST',
         headers: {
