@@ -91,6 +91,8 @@ public class VendorControllerTest {
                         "taxnumber": "999999999"
                     }
                 """;
+        Mockito.when(vendorService.insertBasicVendor(Mockito.any()))
+                .thenReturn("The business name can't be empty");
 
         mockMvc.perform(post("/SignUp/VendorBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,6 +110,8 @@ public class VendorControllerTest {
                         "taxnumber": "999999999"
                     }
                 """;
+        Mockito.when(vendorService.insertBasicVendor(Mockito.any()))
+                .thenReturn("The password can't be empty");
 
         mockMvc.perform(post("/SignUp/VendorBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -125,6 +129,8 @@ public class VendorControllerTest {
                         "taxnumber": -1
                     }
                 """;
+        Mockito.when(vendorService.insertBasicVendor(Mockito.any()))
+                .thenReturn("The tax number can't be empty");
 
         mockMvc.perform(post("/SignUp/VendorBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -142,7 +148,9 @@ public class VendorControllerTest {
                         "taxnumber": 99999999
                     }
                 """;
-
+        Mockito.when(vendorService.insertBasicVendor(Mockito.any()))
+                .thenReturn("The tax number must be of 9 numbers only");
+                
         mockMvc.perform(post("/SignUp/VendorBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(vendor))
@@ -159,6 +167,8 @@ public class VendorControllerTest {
                         "taxnumber": 999999999
                     }
                 """;
+        Mockito.when(vendorService.insertBasicVendor(Mockito.any()))
+                .thenReturn("The business name can't be more than 80 character");
 
         mockMvc.perform(post("/SignUp/VendorBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -176,6 +186,8 @@ public class VendorControllerTest {
                         "taxnumber": 999999999
                     }
                 """;
+        Mockito.when(vendorService.insertBasicVendor(Mockito.any()))
+                .thenReturn("The password can't be more than 80 character");
 
         mockMvc.perform(post("/SignUp/VendorBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)

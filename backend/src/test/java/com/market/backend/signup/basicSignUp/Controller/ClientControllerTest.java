@@ -68,6 +68,9 @@ public class ClientControllerTest {
                         "password": "123"
                     }
                 """;
+        Mockito.when(clientService.insertBasicClient(Mockito.any()))
+                .thenReturn("The username can't be empty");
+
         mockMvc.perform(post("/SignUp/ClientBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(client))
@@ -84,6 +87,9 @@ public class ClientControllerTest {
                     }
                 """;
 
+        Mockito.when(clientService.insertBasicClient(Mockito.any()))
+                .thenReturn("The password can't be empty");
+
         mockMvc.perform(post("/SignUp/ClientBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(client))
@@ -99,6 +105,8 @@ public class ClientControllerTest {
                         "password": "123"
                     }
                 """;
+        Mockito.when(clientService.insertBasicClient(Mockito.any()))
+                .thenReturn("The username can't be more than 80 character");
 
         mockMvc.perform(post("/SignUp/ClientBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +123,9 @@ public class ClientControllerTest {
                         "password": "1233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
                     }
                 """;
-
+        Mockito.when(clientService.insertBasicClient(Mockito.any()))
+                .thenReturn("The password can't be more than 80 character");
+                
         mockMvc.perform(post("/SignUp/ClientBasicSignUp")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(client))
