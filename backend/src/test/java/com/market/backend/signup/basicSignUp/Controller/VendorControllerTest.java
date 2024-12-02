@@ -23,7 +23,7 @@ public class VendorControllerTest {
     private VendorService vendorService;
 
     @Test
-    void testVendorBasicSignUpValidAndExist() throws Exception {
+    void testVendorBasicSignUpValidAndExistBusName() throws Exception {
         String vendor = """
                     {
                         "businessname": "marketly",
@@ -40,6 +40,26 @@ public class VendorControllerTest {
                 .content(vendor))
                 .andExpect(status().isOk())
                 .andExpect(content().string("The business name is already exist"));
+    }
+
+    @Test
+    void testVendorBasicSignUpValidAndExistTaxNum() throws Exception {
+        String vendor = """
+                    {
+                        "businessname": "market",
+                        "password": "123",
+                        "taxnumber": "888888888"
+                    }
+                """;
+
+        Mockito.when(vendorService.insertBasicVendor(Mockito.any()))
+                .thenReturn("The tax number is already exist");
+
+        mockMvc.perform(post("/SignUp/VendorBasicSignUp")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(vendor))
+                .andExpect(status().isOk())
+                .andExpect(content().string("The tax number is already exist"));
     }
 
     @Test
