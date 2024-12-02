@@ -51,7 +51,7 @@ public class VendorServiceTest {
         basicVendor.setBusinessname("sala");
         basicVendor.setPassword("123");
         basicVendor.setTaxnumber(654781007);
-        when(basicVendorRepo.existsByBusinessname("sala")).thenReturn(true);
+        when(basicVendorRepo.existsByBusinessname("sala")).thenReturn(false);
         when(basicVendorRepo.existsByTaxnumber(654781007)).thenReturn(false);
         String result = vendorService.insertBasicVendor(basicVendor);
         assertEquals("Successfully registered", result);
