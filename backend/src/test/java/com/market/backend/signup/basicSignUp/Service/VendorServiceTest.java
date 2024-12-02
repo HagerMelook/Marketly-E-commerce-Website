@@ -56,4 +56,64 @@ public class VendorServiceTest {
         String result = vendorService.insertBasicVendor(basicVendor);
         assertEquals("Successfully registered", result);
     }
+
+    @Test
+    void testInsertBasicVendorCaseNullBusName() {
+        BasicVendor basicVendor = new BasicVendor();
+        basicVendor.setBusinessname(null);
+        basicVendor.setPassword("123");
+        basicVendor.setTaxnumber(654781007);
+        String result = vendorService.insertBasicVendor(basicVendor);
+        assertEquals("The business name can't be empty", result);
+    }
+
+    @Test
+    void testInsertBasicVendorCaseNullPassword() {
+        BasicVendor basicVendor = new BasicVendor();
+        basicVendor.setBusinessname("sala");
+        basicVendor.setPassword(null);
+        basicVendor.setTaxnumber(654781007);
+        String result = vendorService.insertBasicVendor(basicVendor);
+        assertEquals("The password can't be empty", result);
+    }
+
+    @Test
+    void testInsertBasicVendorCaseNullTaxNum() {
+        BasicVendor basicVendor = new BasicVendor();
+        basicVendor.setBusinessname("sala");
+        basicVendor.setPassword("123");
+        basicVendor.setTaxnumber(-1);
+        String result = vendorService.insertBasicVendor(basicVendor);
+        assertEquals("The tax number can't be empty", result);
+    }
+
+    @Test
+    void testInsertBasicVendorCaseLongBusName() {
+        BasicVendor basicVendor = new BasicVendor();
+        basicVendor.setBusinessname("salaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        basicVendor.setPassword("123");
+        basicVendor.setTaxnumber(654781007);
+        String result = vendorService.insertBasicVendor(basicVendor);
+        assertEquals("The business name can't be more than 80 character", result);
+    }
+
+    @Test
+    void testInsertBasicVendorCaseLongPassword() {
+        BasicVendor basicVendor = new BasicVendor();
+        basicVendor.setBusinessname("sala");
+        basicVendor.setPassword("1233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333");
+        basicVendor.setTaxnumber(654781007);
+        String result = vendorService.insertBasicVendor(basicVendor);
+        assertEquals("The password can't be more than 80 character", result);
+    }
+
+    @Test
+    void testInsertBasicVendorCaseTaxNumNot9() {
+        BasicVendor basicVendor = new BasicVendor();
+        basicVendor.setBusinessname("sala");
+        basicVendor.setPassword("123");
+        basicVendor.setTaxnumber(65478107);
+        String result = vendorService.insertBasicVendor(basicVendor);
+        assertEquals("The tax number must be of 9 numbers only", result);
+    }
 }
