@@ -37,6 +37,10 @@ function VendorReg() {
             messageContainer_1.textContent = "The business name can't be more than 80 character";
             setIsVisible_1(true);
         }
+        else if(val.length == 0){
+            messageContainer_1.textContent = "The business name can't be empty";
+            setIsVisible_1(true);
+        }
         else {
             messageContainer_1.textContent = "";
             setIsVisible_1(false);
@@ -47,7 +51,11 @@ function VendorReg() {
         const val = event.target.value;
         setTaxnumber(val);
         const messageContainer_2 = document.getElementById("messageContainer-2");
-        if (val.length != 9) {
+        if (val.length == 0) {
+            messageContainer_2.textContent = "The tax number can't be empty";
+            setIsVisible_2(true);
+        }
+        else if (val.length != 9) {
             messageContainer_2.textContent = "The tax number must be of 9 numbers only";
             setIsVisible_2(true);
         }
@@ -63,6 +71,10 @@ function VendorReg() {
         const messageContainer_3 = document.getElementById("messageContainer-3");
         if (val.length > 80) {
             messageContainer_3.textContent = "The password can't be more than 80 character";
+            setIsVisible_3(true);
+        }
+        else if (val.length == 0) {
+            messageContainer_3.textContent = "The password can't be empty";
             setIsVisible_3(true);
         }
         else {
