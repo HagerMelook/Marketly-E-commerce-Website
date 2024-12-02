@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import backgroundImg from '../../../assets/background.png';
-import VendorBasicSignUp from '../component/API/VendorApi.jsx';
+import backgroundImg from '../../../../assets/background.png';
+import VendorBasicSignUp from '../../components/API/VendorApi.jsx';
 import './VendorReg.css';
 
 function VendorReg() {
