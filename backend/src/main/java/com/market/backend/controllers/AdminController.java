@@ -4,9 +4,6 @@ import com.market.backend.models.Account;
 import com.market.backend.services.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
@@ -98,7 +95,6 @@ public class AdminController {
             adminService.demoteAccount(id);
             return ResponseEntity.ok("Account demoted successfully");
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
