@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +65,94 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+
+.feedback-page, .vendor-request-page {
+  background-color: #ffffff;  
+  border: 1px solid #ddd;    
+  border-radius: 8px;       
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+  padding: 16px;            
+  margin: 8px 0; 
+  font-size: 25px;                     
+  font-family: Arial, sans-serif;
+  display: flex;  
+  flex-direction: column;
 }
+
+.feedback-card {
+  background-color: #ffffff;  
+  border: 1px solid #ddd;    
+  border-radius: 8px;       
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+  padding: 16px;            
+  margin: 8px 0;                        
+  font-family: Arial, sans-serif;
+}
+
+.feedback-card span {
+  display: block;
+  font-size: 21px;
+  color: #333;               
+  margin-bottom: 12px;     
+}
+
+.feedback-card button {
+  background-color: #007bff; 
+  color: white;              
+  border: none;              
+  border-radius: 4px;        
+  padding: 8px 16px;         
+  cursor: pointer;           
+  font-size: 16px;          
+}
+
+.feedback-card button:hover {
+  background-color: #0056b3; 
+}
+
+.vendor-request-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin: 8px 0;
+  display: flex;         
+  justify-content: space-between; 
+  align-items: center;   
+  font-family: Arial, sans-serif;
+}
+
+
+.vendor-info {
+  flex: 1; 
+}
+
+.vendor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+
+.accept-btn,
+.reject-btn {
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.reject-btn {
+  background-color: #dc3545; 
+}
+
+.accept-btn:hover,
+.reject-btn:hover {
+  opacity: 0.9;
+}
+
+
