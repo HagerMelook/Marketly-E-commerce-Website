@@ -1,0 +1,40 @@
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthService {
+
+    private final AdminRepository adminRepository;
+    private final BasicClientRepository basicClientRepository;
+    private final BasicVendorRepository basicVendorRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthService(AdminRepository adminRepository,
+                       BasicClientRepository basicClientRepository,
+                       BasicVendorRepository basicVendorRepository,
+                       PasswordEncoder passwordEncoder) {
+        this.adminRepository = adminRepository;
+        this.basicClientRepository = basicClientRepository;
+        this.basicVendorRepository = basicVendorRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public String authenticate(String username, String password) {
+        Admin admin = adminRepository.findByUsername(username);
+        if (admin != null && passwordEncoder.matches(password, admin.getPassword())) {
+            return "Admin";
+        }
+
+        BasicClient client = basicClientRepository.findByUsername(username);
+        if (client != null && passwordEncoder.matches(password, client.getPassword())) {
+            return "Client";
+        }
+
+        BasicVendor vendor = basicVendorRepository.findByUsername(username);
+        if (vendor != null && passwordEncoder.matches(password, vendor.getPassword())) {
+            return "Vendor";
+        }
+
+        return null; // Authentication failed
+    }
+}
