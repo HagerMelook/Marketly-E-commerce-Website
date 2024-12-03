@@ -1,7 +1,8 @@
 package com.market.backend.signup.basicSignUp.Controller;
 
-import com.market.backend.signup.basicSignUp.Model.BasicClient;
-import com.market.backend.signup.basicSignUp.Model.BasicVendor;
+//import com.market.backend.signup.basicSignUp.Model.BasicClient;
+//import com.market.backend.signup.basicSignUp.Model.BasicVendor;
+import com.market.backend.signup.basicSignUp.Model.Account;
 import com.market.backend.signup.basicSignUp.Model.Client;
 import com.market.backend.signup.basicSignUp.Model.VendorRequests;
 import com.market.backend.signup.basicSignUp.Service.SignUpService;
@@ -26,7 +27,7 @@ public class SginUpController {
     public String googleOauthCleint(@AuthenticationPrincipal OAuth2User principal){
         System.out.println("Trying to register a client");
 //        System.out.println(principal.toString());
-        return service.registerClient(principal.getAttributes());
+        return service.insertClientByGoogleAccount(principal.getAttributes());
     }
 
     @GetMapping("/Google/Vendor/{org}/{tax}")
@@ -47,7 +48,7 @@ public class SginUpController {
     }
 
     @PostMapping("/ClientBasicSignUp")
-    public String clientBasicSignUp(@RequestBody BasicClient client) {
+    public String clientBasicSignUp(@RequestBody Account client) {
         String resultMsg;
         System.out.println("Received User: " + client.getUsername() + ", " + client.getPassword());
         resultMsg = service.insertBasicClient(client);
@@ -56,9 +57,9 @@ public class SginUpController {
     }
 
     @PostMapping("/VendorBasicSignUp")
-    public String vendorBasicSignUp(@RequestBody BasicVendor vendor) {
-        System.out.println("Received User: " + vendor.getBusinessname() + ", " + vendor.getPassword() + ", "
-                + vendor.getTaxnumber());
+    public String vendorBasicSignUp(@RequestBody VendorRequests vendor) {
+        System.out.println("Received User: " + vendor.getOrganizationName() + ", " + vendor.getPassword() + ", "
+                + vendor.getTaxNumber());
         String resultMsg;
         resultMsg = service.insertBasicVendor(vendor);
         System.out.println(resultMsg);

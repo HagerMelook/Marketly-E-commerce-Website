@@ -1,35 +1,37 @@
 package com.market.backend.signup.basicSignUp.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Component
 public class Client {
 
     @Id
-    private int aid;
-    private String fname;
-    private String lname;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
+    private Long id;
 
-    public Client() {}
+    @Column(name = "first_name")
+    private String firstName;
 
-    public Client(int aid, String fname, String lname) {
-        this.aid = aid;
-        this.fname = fname;
-        this.lname = lname;
+    @Column(name = "last_name")
+    private String lastName;
+
+    @OneToOne(cascade = CascadeType.ALL) // Defines the relationship
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id") // Specifies the foreign key column
+    private Account account;
+
+    public Client(String firstName, String lastName, Account account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.account = account;
     }
 
-    public int getAid() {
-        return aid;
-    }
-
-    public String getFname() {
-        return fname;
-    }
-
-    public String getLname() {
-        return lname;
-    }
 }

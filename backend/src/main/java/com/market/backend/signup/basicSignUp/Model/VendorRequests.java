@@ -27,21 +27,12 @@ public class VendorRequests {
     }
 
 //    For Google Auth
-    public VendorRequests(String email, String username, String organizationNumber, long taxNumber) {
+    public VendorRequests(String email, String username, String organizationName, long taxNumber) {
         this(email, username);
-        this.organizationName = organizationNumber;
+        this.organizationName = organizationName;
         this.taxNumber = taxNumber;
     }
-
-//    For Basic Auth
-    public VendorRequests(String email, String password, String username, String organizationNumber, long taxNumber) {
-        this.email = email;
-        this.password = password;
-        this.username = username;
-        this.organizationName = organizationNumber;
-        this.taxNumber = taxNumber;
-    }
-
+    
     public void setTaxNumber(long taxNumber) {
         this.taxNumber = taxNumber;
     }
@@ -72,16 +63,6 @@ public class VendorRequests {
 
     public long getTaxNumber() {
         return taxNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "VendorRequests{" +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-//                ", organizationName=" + organizationName +
-//                ", taxNumber=" + taxNumber +
-                '}';
     }
 
 }

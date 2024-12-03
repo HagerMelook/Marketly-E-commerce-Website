@@ -1,62 +1,42 @@
 package com.market.backend.signup.basicSignUp.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Component
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int aid;
+    @Column(name = "account_id")
+    private Long id;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
-    private String username;
+
+    @Column(name = "status")
+    private boolean isActive;
+
+    @Column(name = "type")
     private String type;
-    private String status;
 
-    public Account() {}
+    @Column(name = "username")
+    private String username;
 
-    public Account(String status, String type, String username, String password, String email) {
-        this.status = status;
+    public Account(String email, String username, String type, boolean isActive) {
+        this.email = email;
+        this.isActive = isActive;
         this.type = type;
         this.username = username;
-        this.password = password;
-        this.email = email;
     }
 
-    public Account(String email, String username, String type, String status) {
-        this.email = email;
-        this.username = username;
-        this.type = type;
-        this.status = status;
-    }
-
-    public int getAid() {
-        return aid;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getStatus() {
-        return status;
-    }
 }
