@@ -45,19 +45,18 @@ public class AdminService {
 
     @Transactional
     public void deleteAccount(Long id) {
-        // TODO: handle deleting admins
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         switch (account.getType()) {
             case "admin":
-                adminRepository.deleteById(account.getId());
+                adminRepository.deleteByAccount_Id(account.getId());
                 break;
             case "client":
-                clientRepository.deleteById(account.getId());
+                clientRepository.deleteByAccount_Id(account.getId());
                 break;
             case "vendor":
-                vendorRepository.deleteById(account.getId());
+                vendorRepository.deleteByAccount_Id(account.getId());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid action");
