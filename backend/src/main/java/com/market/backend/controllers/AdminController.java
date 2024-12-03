@@ -33,7 +33,7 @@ public class AdminController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<Account> getUserInfoByEmail(@RequestBody String email) {
+    public ResponseEntity<Account> getUserInfoByEmail(@RequestParam String email) {
         try {
             Account account = adminService.getAccountInfoByEmail(email);
             // Directly return the IUser object as the response body
@@ -98,6 +98,7 @@ public class AdminController {
             adminService.demoteAccount(id);
             return ResponseEntity.ok("Account demoted successfully");
         } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
