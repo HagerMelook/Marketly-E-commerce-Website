@@ -30,4 +30,12 @@ public class Account {
 
     @Column(name = "username")
     private String username;
+
+    public Account(String email, String password, boolean isActive, String type, String username) {
+        this.email = email;
+        this.password = password;
+        this.isActive = isActive;
+        this.type = type;
+        this.username = username;
+    }
 }
