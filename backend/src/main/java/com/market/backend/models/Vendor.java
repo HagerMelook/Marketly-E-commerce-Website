@@ -19,7 +19,7 @@ public class Vendor implements IUser {
     private String organisationName;
 
     @Column(name = "tax_number")
-    private String taxNumber;
+    private Long taxNumber;
 
     @OneToOne(cascade = CascadeType.ALL) // Defines the relationship
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
