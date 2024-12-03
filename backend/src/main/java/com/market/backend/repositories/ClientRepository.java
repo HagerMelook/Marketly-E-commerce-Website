@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Optional<Client> findByAccount_Username(String userName);
     Optional<Client> findByAccount_Id(Long accountId);
+    void deleteByAccount_Id(Long accountId);
 }
