@@ -82,6 +82,8 @@ public class SignUpService {
     }
 
     public String insertBasicVendor(VendorRequests vendor) {
+        System.out.println("Inserting Basic Vendor Request");
+        System.out.println(vendor.getOrganizationName());
         if (vendor.getOrganizationName() == null)
             return "The business name can't be empty";
         if (vendor.getOrganizationName().length() > 80)
