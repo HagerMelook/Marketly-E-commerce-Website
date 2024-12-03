@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class BasicClient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private long id;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -22,11 +22,11 @@ public class BasicClient {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public BigInteger getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(long id) {
         this.id = id;
     }
 

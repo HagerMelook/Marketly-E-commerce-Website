@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 public class BasicVendor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private long id;
 
     @Column(name = "businessname", nullable = false, unique = true)
     private String businessname;
@@ -25,11 +25,11 @@ public class BasicVendor {
     @Column(name = "taxnumber", nullable = false, unique = true)
     private int taxnumber;
 
-    public BigInteger getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(long id) {
         this.id = id;
     }
 
