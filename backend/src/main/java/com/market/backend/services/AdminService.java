@@ -3,14 +3,21 @@ package com.market.backend.services;
 import com.market.backend.models.Account;
 import com.market.backend.models.Admin;
 import com.market.backend.models.Client;
+import com.market.backend.models.Feedback;
+import com.market.backend.models.Vendor;
+import com.market.backend.models.VendorRequest;
+import com.market.backend.repositories.FeedbackRepository;
 import com.market.backend.repositories.AccountRepository;
 import com.market.backend.repositories.AdminRepository;
 import com.market.backend.repositories.ClientRepository;
 import com.market.backend.repositories.VendorRepository;
+import com.market.backend.repositories.VendorRequestRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -18,12 +25,16 @@ public class AdminService {
     private final ClientRepository clientRepository;
     private final VendorRepository vendorRepository;
     private final AccountRepository accountRepository;
+    private final FeedbackRepository feedbackRepo;
+    private final VendorRequestRepository requestRepo;
 
-    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository) {
+    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, FeedbackRepository feedbackRepo, VendorRequestRepository requestRepo) {
         this.adminRepository = adminRepository;
         this.clientRepository = clientRepository;
         this.vendorRepository = vendorRepository;
         this.accountRepository = accountRepository;
+        this.feedbackRepo = feedbackRepo;
+        this.requestRepo = requestRepo;
     }
 
     @Transactional
@@ -125,5 +136,49 @@ public class AdminService {
         Client client = new Client(admin.getFirstName(), admin.getLastName(), account);
         accountRepository.delete(account);
         clientRepository.save(client);
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return feedbackRepo.findAll();
+    }
+
+    public void deleteFeedback(long feedbackId) {
+        feedbackRepo.deleteById(feedbackId);
+    }
+
+    public List<VendorRequest> getVendorRequests() {
+        return requestRepo.findAll();
+    }
+
+    public void addVendor(long requestId) {
+        Optional<VendorRequest> optionalPendingVendor = requestRepo.findById(requestId);
+
+        if (optionalPendingVendor.isPresent()) {
+            VendorRequest pendingVendor = optionalPendingVendor.get();
+
+            Account account = new Account();
+            Vendor vendor = new Vendor();
+
+            account.setUsername(pendingVendor.getUsername());
+            account.setPassword(pendingVendor.getPassword());
+            account.setEmail(pendingVendor.getEmail());
+            account.setActive(true);
+            account.setType("vendor");
+            vendor.setAccount(account);
+            vendor.setOrganisationName(pendingVendor.getOrganisationName());
+            vendor.setTaxNumber(pendingVendor.getTaxNumber());
+            account.setVendor(vendor);
+
+            vendorRepo.save(vendor);
+            accountRepo.save(account);
+            requestRepo.delete(pendingVendor);
+
+        } else {
+            throw new RuntimeException("VendorRequest not found with ID: " + requestId);
+        }
+    }
+
+    public void declineVendorRequest(long requestId) {
+        requestRepo.deleteById(requestId);
     }
 }
