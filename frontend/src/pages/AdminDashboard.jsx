@@ -2,6 +2,8 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import AccountManagement from "../components/AccountManagement";
+import FeedbackPage from "../components/FeedbackPage";
+import VendorRequestsPage from "../components/VendorRequestsPage";
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
@@ -12,9 +14,9 @@ function AdminDashboard() {
       case 1:
         return <AccountManagement />;
       case 2:
-        return <h1>Preview Users Feedback</h1>;
+        return <FeedbackPage />;
       case 3:
-        return <h1>Vendor Requests</h1>;
+        return <VendorRequestsPage />;
       default:
         return <h1>Welcome to the Admin Dashboard</h1>;
     }
