@@ -167,10 +167,10 @@ public class AdminService {
             vendor.setAccount(account);
             vendor.setOrganisationName(pendingVendor.getOrganisationName());
             vendor.setTaxNumber(pendingVendor.getTaxNumber());
-            account.setVendor(vendor);
+            vendor.setAccount(account);
 
-            vendorRepo.save(vendor);
-            accountRepo.save(account);
+            vendorRepository.save(vendor);
+            accountRepository.save(account);
             requestRepo.delete(pendingVendor);
 
         } else {

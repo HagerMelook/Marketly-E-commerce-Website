@@ -26,6 +26,6 @@ public class VendorRequest {
     private String organisationName;
 
     @Column(name = "tax_number")
-    private String taxNumber;
+    private Long taxNumber;
 
 }
