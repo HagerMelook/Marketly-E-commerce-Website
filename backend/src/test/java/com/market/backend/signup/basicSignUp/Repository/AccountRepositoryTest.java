@@ -17,9 +17,9 @@ public class AccountRepositoryTest {
     
     @Test
     void testExistsByEmailExist() {
-        Account account =  new Account("hagermelook321@gmail.com","hager ashraf","client",true);
+        Account account =  new Account("hagermelook@gmail.com","hager ashraf","client",true);
         accountRepo.save(account);
-        boolean result = accountRepo.existsByEmail("hagermelook321@gmail.com");
+        boolean result = accountRepo.existsByEmail("hagermelook@gmail.com");
         assertTrue(result,"The Account should exist");
     }
 
