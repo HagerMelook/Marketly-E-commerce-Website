@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import FeedbackCard from "./FeedbackCard";
-
+import './Feedback.css'
 const FeedbackPage = () => {
     const [feedbacks, setFeedbacks] = useState(null);
 
