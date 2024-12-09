@@ -32,31 +32,31 @@ public class EditProfileService {
     public AdminInfoDTO getAdminInfo(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-        Optional<Admin> adminOptional = adminRepository.findByAccount_Id(id);
-        if (!adminOptional.isPresent()) throw new NoSuchElementException("User not found");
-        return new AdminInfoDTO(account, adminOptional.get());
+        Admin adminOptional = adminRepository.findByAccount_Id(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        return new AdminInfoDTO(account, adminOptional);
     }
 
     @Transactional
     public ClientInfoDTO getClientInfo(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-        Optional<Client> clientOptional = clientRepository.findByAccount_Id(id);
-        if (!clientOptional.isPresent()) throw new NoSuchElementException("User not found");
-        Optional<ShippingInfo> shippingInfoOptional = shippingInfoRepository.findByAccount_Id(id);
-        if (!shippingInfoOptional.isPresent()) throw new NoSuchElementException("User not found");
-        return new ClientInfoDTO(account, clientOptional.get(), shippingInfoOptional.get());
+        Client client = clientRepository.findByAccount_Id(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        return new ClientInfoDTO(account, client, shippingInfo);
     }
 
     @Transactional
     public VendorInfoDTO getVendorInfo(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-        Optional<Vendor> vendorOptional = vendorRepository.findByAccount_Id(id);
-        if (!vendorOptional.isPresent()) throw new NoSuchElementException("User not found");
-        Optional<ShippingInfo> shippingInfoOptional = shippingInfoRepository.findByAccount_Id(id);
-        if (!shippingInfoOptional.isPresent()) throw new NoSuchElementException("User not found");
-        return new VendorInfoDTO(account, vendorOptional.get(), shippingInfoOptional.get());
+        Vendor vendor = vendorRepository.findByAccount_Id(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        return new VendorInfoDTO(account, vendor, shippingInfo);
     }
 
     @Transactional

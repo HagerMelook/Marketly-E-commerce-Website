@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class EditProfileControllerTests {
+class EditProfileControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
