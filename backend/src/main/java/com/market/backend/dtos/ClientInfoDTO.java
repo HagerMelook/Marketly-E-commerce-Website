@@ -10,28 +10,39 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ClientInfoDTO {
+    // Fields from Account
     private Long accountId;
     private String email;
     private String password;
     private boolean isActive;
     private String type;
     private String username;
+
+    // Fields from Client
     private String firstName;
     private String lastName;
+
+    //fields from ShippingInfo
     private String address;
     private String phone;
 
     public ClientInfoDTO(Account account, Client client, ShippingInfo shippingInfo) {
-        this.accountId = account.getId();
-        this.email = account.getEmail();
-        this.password = account.getPassword();
-        this.isActive = account.isActive();
-        this.type = account.getType();
-        this.username = account.getUsername();
-        this.firstName = client.getFirstName();
-        this.lastName = client.getLastName();
-        this.address = shippingInfo.getAddress();
-        this.phone = shippingInfo.getPhone();
+        if (account!=null) {
+            this.accountId = account.getId();
+            this.email = account.getEmail();
+            this.password = account.getPassword();
+            this.isActive = account.isActive();
+            this.type = account.getType();
+            this.username = account.getUsername();
+        }
+        if (client!=null) {
+            this.firstName = client.getFirstName();
+            this.lastName = client.getLastName();
+        }
+        if (shippingInfo!=null) {
+            this.address = shippingInfo.getAddress();
+            this.phone = shippingInfo.getPhone();
+        }
     }
 }
 

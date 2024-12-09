@@ -32,9 +32,11 @@ public class EditProfileService {
     public AdminInfoDTO getAdminInfo(Long id) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-        Admin adminOptional = adminRepository.findByAccount_Id(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
-        return new AdminInfoDTO(account, adminOptional);
+        Admin admin = adminRepository.findByAccount_Id(id)
+                .orElse(new Admin());
+        ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
+                .orElse(new ShippingInfo());
+        return new AdminInfoDTO(account, admin, shippingInfo);
     }
 
     @Transactional
@@ -42,9 +44,9 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
         Client client = clientRepository.findByAccount_Id(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElse(new Client());
         ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElse(new ShippingInfo());
         return new ClientInfoDTO(account, client, shippingInfo);
     }
 
@@ -53,9 +55,9 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
         Vendor vendor = vendorRepository.findByAccount_Id(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElse(new Vendor());
         ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElse(new ShippingInfo());
         return new VendorInfoDTO(account, vendor, shippingInfo);
     }
 

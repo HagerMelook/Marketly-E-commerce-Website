@@ -10,16 +10,19 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class VendorInfoDTO {
+    // Fields from Account
     private Long accountId;
     private String email;
     private String password;
     private boolean isActive;
     private String type;
     private String username;
-    private Long vendorId;
+
+    // Fields from vendor
     private String organisationName;
     private String taxNumber;
-    private Long shippingId;
+
+    //fields from ShippingInfo
     private String address;
     private String phone;
 

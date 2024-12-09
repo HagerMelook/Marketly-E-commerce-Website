@@ -3,6 +3,8 @@ package com.market.backend.dtos;
 import com.market.backend.models.Account;
 import com.market.backend.models.Admin;
 
+import com.market.backend.models.Client;
+import com.market.backend.models.ShippingInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,14 +19,16 @@ public class AdminInfoDTO {
     private String type;
     private String username;
 
-    // Fields from Admin
+    // Fields from admin
     private String firstName;
     private String lastName;
 
-    // Constructor to map fields from both Account and Admin
-    public AdminInfoDTO(Account account, Admin admin) {
-        // Map fields from Account
-        if (account != null) {
+    //fields from ShippingInfo
+    private String address;
+    private String phone;
+
+    public AdminInfoDTO(Account account, Admin admin, ShippingInfo shippingInfo) {
+        if (account!=null) {
             this.accountId = account.getId();
             this.email = account.getEmail();
             this.password = account.getPassword();
@@ -32,11 +36,13 @@ public class AdminInfoDTO {
             this.type = account.getType();
             this.username = account.getUsername();
         }
-
-        // Map fields from Admin
-        if (admin != null) {
+        if (admin!=null) {
             this.firstName = admin.getFirstName();
             this.lastName = admin.getLastName();
+        }
+        if (shippingInfo!=null) {
+            this.address = shippingInfo.getAddress();
+            this.phone = shippingInfo.getPhone();
         }
     }
 }
