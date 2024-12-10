@@ -6,9 +6,11 @@ import com.market.backend.models.Vendor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class VendorInfoDTO {
     // Fields from Account
     private Long accountId;

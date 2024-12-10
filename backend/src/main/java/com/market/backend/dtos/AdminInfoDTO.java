@@ -3,13 +3,14 @@ package com.market.backend.dtos;
 import com.market.backend.models.Account;
 import com.market.backend.models.Admin;
 
-import com.market.backend.models.Client;
 import com.market.backend.models.ShippingInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class AdminInfoDTO {
     // Fields from Account
     private Long accountId;

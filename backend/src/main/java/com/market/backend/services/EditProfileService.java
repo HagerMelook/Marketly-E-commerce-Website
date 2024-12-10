@@ -1,5 +1,10 @@
 package com.market.backend.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.market.backend.dtos.AdminInfoDTO;
 import com.market.backend.dtos.ClientInfoDTO;
 import com.market.backend.dtos.VendorInfoDTO;
@@ -9,7 +14,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class EditProfileService {
@@ -17,15 +21,17 @@ public class EditProfileService {
     private final ClientRepository clientRepository;
     private final VendorRepository vendorRepository;
     private final AccountRepository accountRepository;
-
     private final ShippingInfoRepository shippingInfoRepository;
 
-    public EditProfileService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, ShippingInfoRepository shippingInfoRepository) {
+    private final ObjectMapper objectMapper;
+
+    public EditProfileService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, ShippingInfoRepository shippingInfoRepository, ObjectMapper objectMapper) {
         this.adminRepository = adminRepository;
         this.clientRepository = clientRepository;
         this.vendorRepository = vendorRepository;
         this.accountRepository = accountRepository;
         this.shippingInfoRepository = shippingInfoRepository;
+        this.objectMapper = objectMapper;
     }
 
     @Transactional
@@ -62,92 +68,83 @@ public class EditProfileService {
     }
 
     @Transactional
-    public boolean updateAccount(Long id, Account newAccount) {
+    public void updateAdminInfo(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
+        Admin admin = adminRepository.findByAccount_Id(id)
+                .orElse(new Admin());
+        ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
+                .orElse(new ShippingInfo());
 
-        if (account!=null && !account.getType().equals("admin")) {
-            accountRepository.save(newAccount);
-            return true;
-        }
-        return false;
+        AdminInfoDTO adminInfoDTO = new AdminInfoDTO(account, admin, shippingInfo);
+        JsonNode patched = patch.apply(objectMapper.convertValue(adminInfoDTO, JsonNode.class));
+        adminInfoDTO = objectMapper.treeToValue(patched, AdminInfoDTO.class);
+
+        account.setId(adminInfoDTO.getAccountId());
+        account.setEmail(adminInfoDTO.getEmail());
+        account.setPassword(adminInfoDTO.getPassword());
+        account.setActive(adminInfoDTO.isActive());
+        account.setType(adminInfoDTO.getType());
+        account.setUsername(adminInfoDTO.getUsername());
+
+        admin.setLastName(adminInfoDTO.getLastName());
+        admin.setFirstName(adminInfoDTO.getFirstName());
+
+        shippingInfo.setAddress(adminInfoDTO.getAddress());
+        shippingInfo.setPhone(adminInfoDTO.getPhone());
     }
 
     @Transactional
-    public boolean updateAdminFirstName(Long id, String newFirstName) {
-        Admin admin = adminRepository.findById(id)
+    public void updateVendorInfo(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
+        Vendor vendor = vendorRepository.findByAccount_Id(id)
+                .orElse(new Vendor());
+        ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
+                .orElse(new ShippingInfo());
 
-        if (admin!=null) {
-            admin.setFirstName(newFirstName);
-            adminRepository.save(admin);
-            return true;
-        }
-        return false;
+        VendorInfoDTO vendorInfoDTO = new VendorInfoDTO(account, vendor, shippingInfo);
+        JsonNode patched = patch.apply(objectMapper.convertValue(vendorInfoDTO, JsonNode.class));
+        vendorInfoDTO = objectMapper.treeToValue(patched, VendorInfoDTO.class);
+
+        account.setId(vendorInfoDTO.getAccountId());
+        account.setEmail(vendorInfoDTO.getEmail());
+        account.setPassword(vendorInfoDTO.getPassword());
+        account.setActive(vendorInfoDTO.isActive());
+        account.setType(vendorInfoDTO.getType());
+        account.setUsername(vendorInfoDTO.getUsername());
+
+        vendor.setOrganisationName(vendorInfoDTO.getOrganisationName());
+        vendor.setTaxNumber(vendorInfoDTO.getTaxNumber());
+
+        shippingInfo.setAddress(vendorInfoDTO.getAddress());
+        shippingInfo.setPhone(vendorInfoDTO.getPhone());
     }
 
     @Transactional
-    public boolean updateAdminLastName(Long id, String newLastName) {
-        Admin admin = adminRepository.findById(id)
+    public void updateClientInfo(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
+        Client client = clientRepository.findByAccount_Id(id)
+                .orElse(new Client());
+        ShippingInfo shippingInfo = shippingInfoRepository.findByAccount_Id(id)
+                .orElse(new ShippingInfo());
 
-        if (admin!=null) {
-            admin.setLastName(newLastName);
-            adminRepository.save(admin);
-            return true;
-        }
-        return false;
-    }
+        ClientInfoDTO clientInfoDTO = new ClientInfoDTO(account, client, shippingInfo);
+        JsonNode patched = patch.apply(objectMapper.convertValue(clientInfoDTO, JsonNode.class));
+        clientInfoDTO = objectMapper.treeToValue(patched, ClientInfoDTO.class);
 
-    @Transactional
-    public boolean updateClientFirstName(Long id, String newFirstName) {
-        Optional<Client> clientOptional = clientRepository.findByAccount_Id(id);
+        account.setId(clientInfoDTO.getAccountId());
+        account.setEmail(clientInfoDTO.getEmail());
+        account.setPassword(clientInfoDTO.getPassword());
+        account.setActive(clientInfoDTO.isActive());
+        account.setType(clientInfoDTO.getType());
+        account.setUsername(clientInfoDTO.getUsername());
 
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            client.setFirstName(newFirstName);
-            clientRepository.save(client);
-            return true;
-        }
-        return false;
-    }
+        client.setLastName(clientInfoDTO.getLastName());
+        client.setFirstName(clientInfoDTO.getFirstName());
 
-    @Transactional
-    public boolean updateClientLastName(Long id, String newLastName) {
-        Optional<Client> clientOptional = clientRepository.findByAccount_Id(id);
-
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            client.setLastName(newLastName);
-            clientRepository.save(client);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    public boolean updateVendorOrgName(Long id, String newOrgName) {
-        Optional<Vendor> vendorOptional = vendorRepository.findByAccount_Id(id);
-
-        if (vendorOptional.isPresent()) {
-            Vendor vendor = vendorOptional.get();
-            vendor.setOrganisationName(newOrgName);
-            vendorRepository.save(vendor);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    public boolean updateVendorTaxNumber(Long id, String newTaxNumber) {
-        Optional<Vendor> vendorOptional = vendorRepository.findByAccount_Id(id);
-
-        if (vendorOptional.isPresent()) {
-            Vendor vendor = vendorOptional.get();
-            vendor.setTaxNumber(newTaxNumber);
-            vendorRepository.save(vendor);
-            return true;
-        }
-        return false;
+        shippingInfo.setAddress(clientInfoDTO.getAddress());
+        shippingInfo.setPhone(clientInfoDTO.getPhone());
     }
 }
