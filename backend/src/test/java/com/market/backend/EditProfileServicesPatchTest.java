@@ -1,6 +1,5 @@
 package com.market.backend;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
@@ -98,6 +97,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateAdminInfo(id, patch));
+        assertEquals("newemail@example.com", accounts[0].getEmail());
     }
 
     @Test
@@ -117,6 +117,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateAdminInfo(id, patch));
+        assertEquals("newname", admins[0].getFirstName());
     }
 
     @Test
@@ -136,6 +137,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateAdminInfo(id, patch));
+        assertEquals("newaddress", shippingInfos[0].getAddress());
     }
 
     @Test
@@ -191,6 +193,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateClientInfo(id, patch));
+        assertEquals("newemail@example.com", accounts[1].getEmail());
     }
 
     @Test
@@ -210,6 +213,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateClientInfo(id, patch));
+        assertEquals("newname", clients[0].getFirstName());
     }
 
     @Test
@@ -229,6 +233,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateClientInfo(id, patch));
+        assertEquals("newaddress", shippingInfos[1].getAddress());
     }
 
     @Test
@@ -284,6 +289,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateVendorInfo(id, patch));
+        assertEquals("newemail@example.com", accounts[2].getEmail());
     }
 
     @Test
@@ -304,6 +310,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateVendorInfo(id, patch));
+        assertEquals("newname", vendors[0].getOrganisationName());
     }
 
     @Test
@@ -323,6 +330,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateVendorInfo(id, patch));
+        assertEquals("newaddress", shippingInfos[2].getAddress());
     }
 
     @Test
