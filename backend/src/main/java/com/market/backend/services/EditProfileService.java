@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class EditProfileService {
@@ -80,12 +81,16 @@ public class EditProfileService {
         JsonNode patched = patch.apply(objectMapper.convertValue(adminInfoDTO, JsonNode.class));
         adminInfoDTO = objectMapper.treeToValue(patched, AdminInfoDTO.class);
 
+        if(!adminInfoDTO.getEmail().equals(account.getEmail())
+                || !adminInfoDTO.getType().equals(account.getType())
+                || !adminInfoDTO.getUsername().equals(account.getUsername())
+                || adminInfoDTO.isActive()!=(account.isActive())) {
+
+            throw new JsonPatchException("Restricted attribute");
+        }
+
         account.setId(adminInfoDTO.getAccountId());
-        account.setEmail(adminInfoDTO.getEmail());
         account.setPassword(adminInfoDTO.getPassword());
-        account.setActive(adminInfoDTO.isActive());
-        account.setType(adminInfoDTO.getType());
-        account.setUsername(adminInfoDTO.getUsername());
 
         admin.setLastName(adminInfoDTO.getLastName());
         admin.setFirstName(adminInfoDTO.getFirstName());
@@ -107,12 +112,16 @@ public class EditProfileService {
         JsonNode patched = patch.apply(objectMapper.convertValue(vendorInfoDTO, JsonNode.class));
         vendorInfoDTO = objectMapper.treeToValue(patched, VendorInfoDTO.class);
 
+        if(!vendorInfoDTO.getEmail().equals(account.getEmail())
+                || !vendorInfoDTO.getType().equals(account.getType())
+                || !vendorInfoDTO.getUsername().equals(account.getUsername())
+                || vendorInfoDTO.isActive()!=(account.isActive())) {
+
+            throw new JsonPatchException("Restricted attribute");
+        }
+
         account.setId(vendorInfoDTO.getAccountId());
-        account.setEmail(vendorInfoDTO.getEmail());
         account.setPassword(vendorInfoDTO.getPassword());
-        account.setActive(vendorInfoDTO.isActive());
-        account.setType(vendorInfoDTO.getType());
-        account.setUsername(vendorInfoDTO.getUsername());
 
         vendor.setOrganisationName(vendorInfoDTO.getOrganisationName());
         vendor.setTaxNumber(vendorInfoDTO.getTaxNumber());
@@ -134,12 +143,16 @@ public class EditProfileService {
         JsonNode patched = patch.apply(objectMapper.convertValue(clientInfoDTO, JsonNode.class));
         clientInfoDTO = objectMapper.treeToValue(patched, ClientInfoDTO.class);
 
+        if(!clientInfoDTO.getEmail().equals(account.getEmail())
+                || !clientInfoDTO.getType().equals(account.getType())
+                || !clientInfoDTO.getUsername().equals(account.getUsername())
+                || clientInfoDTO.isActive()!=(account.isActive())) {
+
+            throw new JsonPatchException("Restricted attribute");
+        }
+
         account.setId(clientInfoDTO.getAccountId());
-        account.setEmail(clientInfoDTO.getEmail());
         account.setPassword(clientInfoDTO.getPassword());
-        account.setActive(clientInfoDTO.isActive());
-        account.setType(clientInfoDTO.getType());
-        account.setUsername(clientInfoDTO.getUsername());
 
         client.setLastName(clientInfoDTO.getLastName());
         client.setFirstName(clientInfoDTO.getFirstName());

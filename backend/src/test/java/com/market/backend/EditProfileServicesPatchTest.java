@@ -86,7 +86,7 @@ public class EditProfileServicesPatchTest {
         Long id = 1L;
         String patchContent = """
                 [
-                    {"op":"replace","path":"/email","value":"newemail@example.com"}
+                    {"op":"replace","path":"/password","value":"newpassword"}
                 ]
                 """;
         JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
@@ -97,7 +97,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateAdminInfo(id, patch));
-        assertEquals("newemail@example.com", accounts[0].getEmail());
+        assertEquals("newpassword", accounts[0].getPassword());
     }
 
     @Test
@@ -160,6 +160,25 @@ public class EditProfileServicesPatchTest {
     }
 
     @Test
+    void updateAdminInfoRestrictedAttr() throws IOException {
+        //arrange
+        Long id = 1L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/email","value":"new"}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[0]));
+        Mockito.when(adminRepository.findByAccount_Id(id)).thenReturn(Optional.of(admins[0]));
+        Mockito.when(shippingInfoRepository.findByAccount_Id(id)).thenReturn(Optional.of(shippingInfos[0]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateAdminInfo(id, patch));
+    }
+
+    @Test
     void updateAdminInfoInvalidId() throws IOException {
         //arrange
         Long id = 1000L;
@@ -182,7 +201,7 @@ public class EditProfileServicesPatchTest {
         Long id = 2L;
         String patchContent = """
                 [
-                    {"op":"replace","path":"/email","value":"newemail@example.com"}
+                    {"op":"replace","path":"/password","value":"newpassword"}
                 ]
                 """;
         JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
@@ -193,7 +212,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateClientInfo(id, patch));
-        assertEquals("newemail@example.com", accounts[1].getEmail());
+        assertEquals("newpassword", accounts[1].getPassword());
     }
 
     @Test
@@ -256,6 +275,25 @@ public class EditProfileServicesPatchTest {
     }
 
     @Test
+    void updateClientInfoRestrictedAttr() throws IOException {
+        //arrange
+        Long id = 2L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/email","value":"new"}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[1]));
+        Mockito.when(clientRepository.findByAccount_Id(id)).thenReturn(Optional.of(clients[0]));
+        Mockito.when(shippingInfoRepository.findByAccount_Id(id)).thenReturn(Optional.of(shippingInfos[1]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateClientInfo(id, patch));
+    }
+
+    @Test
     void updateClientInfoInvalidId() throws IOException {
         //arrange
         Long id = 1000L;
@@ -278,7 +316,7 @@ public class EditProfileServicesPatchTest {
         Long id = 3L;
         String patchContent = """
                 [
-                    {"op":"replace","path":"/email","value":"newemail@example.com"}
+                    {"op":"replace","path":"/password","value":"newpassword"}
                 ]
                 """;
         JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
@@ -289,7 +327,7 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateVendorInfo(id, patch));
-        assertEquals("newemail@example.com", accounts[2].getEmail());
+        assertEquals("newpassword", accounts[2].getPassword());
     }
 
     @Test
@@ -340,6 +378,25 @@ public class EditProfileServicesPatchTest {
         String patchContent = """
                 [
                     {"op":"replace","path":"/wrong","value":"newval"}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[2]));
+        Mockito.when(vendorRepository.findByAccount_Id(id)).thenReturn(Optional.of(vendors[0]));
+        Mockito.when(shippingInfoRepository.findByAccount_Id(id)).thenReturn(Optional.of(shippingInfos[2]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateVendorInfo(id, patch));
+    }
+
+    @Test
+    void updateVendorInfoRestrictedAttr() throws IOException {
+        //arrange
+        Long id = 3L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/email","value":"newval"}
                 ]
                 """;
         JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
