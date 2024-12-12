@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Vendor implements IUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "vendor_id")
     private Long id;
 
     @Column(name = "organisation_name")
@@ -21,7 +19,8 @@ public class Vendor implements IUser {
     @Column(name = "tax_number")
     private Long taxNumber;
 
-    @OneToOne(cascade = CascadeType.ALL) // Defines the relationship
+    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 }

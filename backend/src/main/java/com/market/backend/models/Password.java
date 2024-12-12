@@ -6,21 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Admin implements IUser {
+public class Password {
     @Id
-    private Long id;
+    private Long accountId;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "account_password", nullable = false)
+    private String accountPassword;
 
     @MapsId
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
     private Account account;
 }

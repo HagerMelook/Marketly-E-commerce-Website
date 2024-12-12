@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Client implements IUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
     private Long id;
 
     @Column(name = "first_name")
@@ -23,13 +21,8 @@ public class Client implements IUser {
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL) // Defines the relationship
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id") // Specifies the foreign key column
+    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
-
-    public Client(String firstName, String lastName, Account account) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.account = account;
-    }
 }

@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feedback_id")
+    @Column(name = "feedback_id", nullable = false, unique = true)
     private Long id;
-    @Column(name = "feedback_body")
+
+    @Column(name = "feedback_body", nullable = false)
     private String body;
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -16,26 +15,15 @@ public class Account {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private boolean isActive;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-
-    public Account(String email, String password, boolean isActive, String type, String username) {
-        this.email = email;
-        this.password = password;
-        this.isActive = isActive;
-        this.type = type;
-        this.username = username;
-    }
 }

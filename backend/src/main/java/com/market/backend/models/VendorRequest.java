@@ -13,9 +13,6 @@ public class VendorRequest {
     @Column(name = "request_id")
     private Long id;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "password")
     private String password;
 
@@ -27,5 +24,4 @@ public class VendorRequest {
 
     @Column(name = "tax_number")
     private Long taxNumber;
-
 }
