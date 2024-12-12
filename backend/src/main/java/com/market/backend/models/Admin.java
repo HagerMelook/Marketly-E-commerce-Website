@@ -23,4 +23,10 @@ public class Admin implements IUser {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
+
+    public Admin(String firstName, String lastName, Account account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.account = account;
+    }
 }

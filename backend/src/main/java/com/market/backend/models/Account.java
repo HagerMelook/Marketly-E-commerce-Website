@@ -15,9 +15,6 @@ public class Account {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(name = "email", unique = true, nullable = false)
-    private String email;
-
     @Column(name = "status", nullable = false)
     private boolean isActive;
 
@@ -26,4 +23,7 @@ public class Account {
 
     @Column(name = "username", unique = true, nullable = false)
     private String username;
+
+    @Column(name = "ayth_type", unique = true, nullable = false)
+    private String authType;
 }

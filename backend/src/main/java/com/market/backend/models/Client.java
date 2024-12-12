@@ -25,4 +25,10 @@ public class Client implements IUser {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
+
+    public Client(String firstName, String lastName, Account account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.account = account;
+    }
 }
