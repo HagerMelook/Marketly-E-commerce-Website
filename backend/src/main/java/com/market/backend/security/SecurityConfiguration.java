@@ -15,11 +15,16 @@ public class SecurityConfiguration {
 
         // define query to retrieve a user by username
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "select account_id, status, type, username, auth_type  from account where username=?");
+                "SELECT a.username, p.password, a.status AS enabled " +
+                        "FROM account a " +
+                        "JOIN password_table p ON a.account_id = p.account_id " +
+                        "WHERE a.username = ?");
 
         // define query to retrieve the authorities/roles by username
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "select  type, username  from account where username=?");
+                "SELECT a.username, a.type AS role " +
+                        "FROM account a " +
+                        "WHERE a.username = ?");
 
         return jdbcUserDetailsManager;
     }
