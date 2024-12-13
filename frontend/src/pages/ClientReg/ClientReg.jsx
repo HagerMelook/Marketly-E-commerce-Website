@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../../assets/background.png";
@@ -59,15 +59,14 @@ function ClientReg() {
       setIsVisible_2(false);
     }
   }
-
   const Register = async (event) => {
     event.preventDefault(); // Prevent the default form submission
     if (!isVisible_1 && !isVisible_2) {
       const response = await ClientBasicSignUp(username, password);
       console.log(response);
-
       if (response === "Successfully registered") {
-        navigate("/home"); // Trigger navigation after successful registration
+        console.log(response);
+        navigate("/home");// Trigger navigation after successful registration
       } else if (response.includes("username")) {
         const messageContainer_1 =
           document.getElementById("messageContainer-1");
