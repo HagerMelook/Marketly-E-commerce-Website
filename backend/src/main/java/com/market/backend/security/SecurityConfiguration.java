@@ -1,11 +1,14 @@
 package com.market.backend.security;
 
 import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfiguration {
@@ -29,4 +32,14 @@ public class SecurityConfiguration {
         return jdbcUserDetailsManager;
     }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(request -> request
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .build();
+    }
 }
