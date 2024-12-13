@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.market.backend.DTOs.AuthRequest;
 import com.market.backend.DTOs.AuthResponse;
-import com.market.backend.services.AuthService;
+import  com.market.backend.Services.AuthService;
 
 @RestController
 @RequestMapping("/auth")

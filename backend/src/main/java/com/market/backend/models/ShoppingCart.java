@@ -9,21 +9,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShippingInfo {
+public class ShoppingCart {
     @Id
     @Column(name = "account_id", nullable = false, unique = true)
     private Long id;
 
+    @MapsId
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
     private Account account;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
-
-    @Column(name = "postal_code")
-    private String postalCode;
+    @Column(name = "total_cost", nullable = false)
+    private double totalCost;
 }
