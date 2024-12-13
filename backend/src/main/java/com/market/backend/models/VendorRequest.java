@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
+
 public class VendorRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +27,6 @@ public class VendorRequest {
     @Column(name = "tax_number")
     private Long taxNumber;
 
-    public VendorRequest(String username, String organizationName, Long taxNumber) {
-        this.username = username;
-        this.organizationName = organizationName;
-        this.taxNumber = taxNumber;
-    }
+    @Column(name = "auth_type", unique = true, nullable = false)
+    private String authType;
 }

@@ -10,3 +10,4 @@ public interface VendorRequestRepository extends JpaRepository<VendorRequest, Lo
     boolean existsBytaxNumber(Long taxNumber);
     boolean existsByUsername(String username);
 }
+

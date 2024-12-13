@@ -1,0 +1,51 @@
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-body {
+  display: flex;
+  flex-grow: 1;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #343a40;
+  padding: 20px;
+  color: white;
+}
+
+.sidebar button {
+  display: block;
+  background: none;
+  color: white;
+  border: none;
+  text-align: left;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.sidebar button.active {
+  background-color: #007bff;
+}
+
+.sidebar button:hover {
+  background-color: #495057;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  overflow: auto;
+}
+
+.content h1 {
+  color: #333;
+}

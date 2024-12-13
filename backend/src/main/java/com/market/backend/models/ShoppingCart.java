@@ -9,15 +9,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Password {
+public class ShoppingCart {
     @Id
-    private Long accountId;
-
-    @Column(name = "account_password", nullable = false)
-    private String accountPassword;
+    @Column(name = "account_id", nullable = false, unique = true)
+    private Long id;
 
     @MapsId
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
     private Account account;
+
+    @Column(name = "total_cost", nullable = false)
+    private double totalCost;
 }
