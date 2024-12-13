@@ -7,6 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
+
 public class VendorRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,7 @@ public class VendorRequest {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "organisation_name")
+    @Column(name = "organization_name")
     private String organizationName;
 
     @Column(name = "tax_number")
