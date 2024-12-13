@@ -2,6 +2,7 @@ package com.market.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Admin implements IUser {
+@Builder
+public class Admin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "admin_id")
     private Long id;
 
     @Column(name = "first_name")
@@ -21,8 +21,9 @@ public class Admin implements IUser {
     @Column(name = "last_name")
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL) // Defines the relationship
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id") // Specifies the foreign key column
+    @MapsId
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 
     public Admin(String firstName, String lastName, Account account) {

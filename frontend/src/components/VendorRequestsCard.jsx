@@ -48,7 +48,7 @@ const VendorRequestsCard = (props) => {
         <div className="vendor-request-card">
             <div className="vendor-info">
                     <p><strong>Name:</strong> {request.username}</p>
-                    <p><strong>Organisation Name:</strong> {request.organisationName}</p>
+                    <p><strong>Organisation Name:</strong> {request.organizationName}</p>
                     <p><strong>Tax Number:</strong> {request.taxNumber}</p>
             </div>
             <div className="vendor-actions">
@@ -65,7 +65,7 @@ VendorRequestsCard.propTypes = {
         id: PropTypes.number.isRequired,
         email: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
-        organisationName: PropTypes.string.isRequired,
+        organizationName: PropTypes.string.isRequired,
         taxNumber:PropTypes.string.isRequired,
     }).isRequired,
     onRemove: PropTypes.func.isRequired,

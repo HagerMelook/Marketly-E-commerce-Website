@@ -25,18 +25,6 @@ public class AdminController {
     public ResponseEntity<Account> getUserInfoByUserName(@PathVariable String username) {
         try {
             Account account = adminService.getAccountInfoByUserName(username);
-            // Directly return the IUser object as the response body
-            return new ResponseEntity<>(account, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/info")
-    public ResponseEntity<Account> getUserInfoByEmail(@RequestParam String email) {
-        try {
-            Account account = adminService.getAccountInfoByEmail(email);
-            // Directly return the IUser object as the response body
             return new ResponseEntity<>(account, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -44,10 +32,9 @@ public class AdminController {
     }
 
     @PutMapping("/activate/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> activateUserAccount(@PathVariable Long id) {
         try {
-            adminService.changeAccountStatus("activate", id);
+            adminService.changeAccountStatus(true, id);
             return ResponseEntity.ok("Account status changed successfully");
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -57,10 +44,9 @@ public class AdminController {
     }
 
     @PutMapping("/deactivate/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deactivateUserAccount(@PathVariable Long id) {
         try {
-            adminService.changeAccountStatus("deactivate", id);
+            adminService.changeAccountStatus(false, id);
             return ResponseEntity.ok("Account status changed successfully");
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -70,7 +56,6 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
         try {
             adminService.deleteAccount(id);

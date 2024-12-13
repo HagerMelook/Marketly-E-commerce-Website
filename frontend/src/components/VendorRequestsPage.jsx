@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import VendorRequestsCard from './VendorRequestsCard';
-
+import './VendorRequest.css'
+ 
 const VendorRequestsPage = () => {
     const [requests, setRequests] = useState(null);
 

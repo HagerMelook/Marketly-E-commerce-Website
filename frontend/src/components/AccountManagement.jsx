@@ -3,33 +3,29 @@ import AccountCard from "./AccountCard";
 import "./AccountManagement.css";
 
 function AccountManagement() {
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [account, setAccount] = useState(null);
   const [msg, setMsg] = useState("");
+  const [resetCardMsg, setResetCardMsg] = useState(false);
+
+  const resetMsg = () => setMsg("");
 
   const handleSearch = async () => {
-    setMsg("");
-    if (!email && !username) {
-      setMsg("Please enter email or username to search.");
+    resetMsg();
+    setResetCardMsg(true); // Trigger AccountCard to reset msg
+    if (!username.trim()) {
+      setMsg("Please enter a username to search.");
       setAccount(null);
       return;
     }
 
     try {
-      let result;
-      if (email) {
-        result = await fetch(
-          `http://localhost:8080/admin/info?email=${email}`,
-          {
-            method: "GET",
-          }
-        );
-      } else {
-        result = await fetch(`http://localhost:8080/admin/info/${username}`, {
+      const result = await fetch(
+        `http://localhost:8080/admin/info/${username}`,
+        {
           method: "GET",
-        });
-      }
+        }
+      );
 
       if (!result.ok) {
         setMsg("Account not found.");
@@ -38,9 +34,7 @@ function AccountManagement() {
       }
 
       const data = await result.json();
-      console.log(data);
       setAccount({
-        email: data.email,
         username: data.username,
         status: data.active ? "active" : "inactive",
         role: data.type,
@@ -49,6 +43,8 @@ function AccountManagement() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setMsg("Failed to fetch data. Please try again later.");
+    } finally {
+      setResetCardMsg(false); // Reset back after action
     }
   };
 
@@ -59,23 +55,16 @@ function AccountManagement() {
         <div>
           <input
             type="text"
-            placeholder="Search by Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            type="text"
             placeholder="Search by Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            onFocus={resetMsg}
           />
         </div>
         {msg && <span className="message">{msg}</span>}
         <button onClick={handleSearch}>Search</button>
       </div>
-      {account && <AccountCard account={account} />}
+      {account && <AccountCard account={account} resetMsg={resetCardMsg} />}
     </div>
   );
 }

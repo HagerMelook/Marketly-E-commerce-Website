@@ -31,7 +31,6 @@ class AdminControllerTest {
         testAccount = new Account();
         testAccount.setId(1L);
         testAccount.setUsername("testuser");
-        testAccount.setEmail("test@example.com");
         testAccount.setActive(true);
         testAccount.setType("client");
     }
@@ -60,48 +59,24 @@ class AdminControllerTest {
     }
 
     @Test
-    void testGetUserInfoByEmail_Success() throws Exception {
-        when(adminService.getAccountInfoByEmail("test@example.com")).thenReturn(testAccount);
-
-        mockMvc.perform(get("/admin/info")
-                        .param("email", "test@example.com"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("test@example.com"))
-                .andExpect(jsonPath("$.username").value("testuser"));
-
-        verify(adminService, times(1)).getAccountInfoByEmail("test@example.com");
-    }
-
-    @Test
-    void testGetUserInfoByEmail_NotFound() throws Exception {
-        when(adminService.getAccountInfoByEmail("nonexistent@example.com")).thenThrow(new NoSuchElementException());
-
-        mockMvc.perform(get("/admin/info")
-                        .param("email", "nonexistent@example.com"))
-                .andExpect(status().isNotFound());
-
-        verify(adminService, times(1)).getAccountInfoByEmail("nonexistent@example.com");
-    }
-
-    @Test
     void testActivateUserAccount_Success() throws Exception {
-        doNothing().when(adminService).changeAccountStatus("activate", 1L);
+        doNothing().when(adminService).changeAccountStatus(true, 1L);
 
         mockMvc.perform(put("/admin/activate/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Account status changed successfully"));
 
-        verify(adminService, times(1)).changeAccountStatus("activate", 1L);
+        verify(adminService, times(1)).changeAccountStatus(true, 1L);
     }
 
     @Test
     void testActivateUserAccount_NotFound() throws Exception {
-        doThrow(new NoSuchElementException()).when(adminService).changeAccountStatus("activate", 999L);
+        doThrow(new NoSuchElementException()).when(adminService).changeAccountStatus(true, 999L);
 
         mockMvc.perform(put("/admin/activate/999"))
                 .andExpect(status().isNotFound());
 
-        verify(adminService, times(1)).changeAccountStatus("activate", 999L);
+        verify(adminService, times(1)).changeAccountStatus(true, 999L);
     }
 
 
@@ -191,6 +166,4 @@ class AdminControllerTest {
 
         verify(adminService, times(1)).deleteAccount(999L);
     }
-
-
 }

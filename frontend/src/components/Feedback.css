@@ -1,0 +1,43 @@
+.feedback-page{
+    background-color: #ffffff;  
+    border: 1px solid #ddd;    
+    border-radius: 8px;       
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+    padding: 16px;            
+    margin: 8px 0; 
+    font-size: 25px;                     
+    font-family: Arial, sans-serif;
+    display: flex;  
+    flex-direction: column;
+  }
+  
+  .feedback-card {
+    background-color: #ffffff;  
+    border: 1px solid #ddd;    
+    border-radius: 8px;       
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+    padding: 16px;            
+    margin: 8px 0;                        
+    font-family: Arial, sans-serif;
+  }
+  
+  .feedback-card span {
+    display: block;
+    font-size: 21px;
+    color: #333;               
+    margin-bottom: 12px;     
+  }
+  
+  .feedback-card button {
+    background-color: #007bff; 
+    color: white;              
+    border: none;              
+    border-radius: 4px;        
+    padding: 8px 16px;         
+    cursor: pointer;           
+    font-size: 16px;          
+  }
+  
+  .feedback-card button:hover {
+    background-color: #0056b3; 
+  }
