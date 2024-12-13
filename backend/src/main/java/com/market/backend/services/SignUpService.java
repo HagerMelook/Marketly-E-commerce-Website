@@ -1,13 +1,15 @@
 package com.market.backend.services;
 
-import com.market.backend.models.VendorRequest;
-import com.market.backend.repositories.PasswordRepository;
-import com.market.backend.repositories.VendorRequestRepository;
-import com.market.backend.models.Account;
-import com.market.backend.repositories.AccountRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.market.backend.models.Account;
+import com.market.backend.models.VendorRequest;
+import com.market.backend.repositories.AccountRepository;
+import com.market.backend.repositories.PasswordRepository;
+import com.market.backend.repositories.VendorRequestRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class SignUpService {
@@ -91,6 +93,10 @@ public class SignUpService {
             return "The business name can't be empty";
         if (vendor.getOrganizationName().length() > 80)
             return "The business name can't be more than 80 character";
+        if (vendor.getUsername() == null)
+            return "The username can't be empty";
+        if (vendor.getUsername().length() > 80)
+            return "The username can't be more than 80 character";
         if (vendor.getPassword() == null)
             return "The password can't be empty";
         if (vendor.getPassword().length() > 80)
@@ -104,13 +110,13 @@ public class SignUpService {
         if (vendorRequestRepository.existsByOrganizationName(vendor.getOrganizationName())) {
             return "The business name is already exist";
         }
+        if (vendorRequestRepository.existsByUsername(vendor.getUsername())) {
+            return "The username is already exist";
+        }
         if (vendorRequestRepository.existsBytaxNumber(vendor.getTaxNumber()))
             return "The tax number is already exist";
-
+        
         vendorRequestRepository.save(vendor);
         return "Successfully registered";
     }
-
-
-
 }
