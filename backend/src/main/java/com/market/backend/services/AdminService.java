@@ -1,11 +1,6 @@
 package com.market.backend.services;
 
-import com.market.backend.models.Account;
-import com.market.backend.models.Admin;
-import com.market.backend.models.Client;
-import com.market.backend.models.Feedback;
-import com.market.backend.models.Vendor;
-import com.market.backend.models.VendorRequest;
+import com.market.backend.models.*;
 import com.market.backend.repositories.FeedbackRepository;
 import com.market.backend.repositories.AccountRepository;
 import com.market.backend.repositories.AdminRepository;
@@ -17,139 +12,115 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AdminService {
-//    private final AdminRepository adminRepository;
-//    private final ClientRepository clientRepository;
-//    private final VendorRepository vendorRepository;
-//    private final AccountRepository accountRepository;
-//    private final FeedbackRepository feedbackRepo;
-//    private final VendorRequestRepository requestRepo;
-//
-//    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, FeedbackRepository feedbackRepo, VendorRequestRepository requestRepo) {
-//        this.adminRepository = adminRepository;
-//        this.clientRepository = clientRepository;
-//        this.vendorRepository = vendorRepository;
-//        this.accountRepository = accountRepository;
-//        this.feedbackRepo = feedbackRepo;
-//        this.requestRepo = requestRepo;
-//    }
-//
-//    @Transactional
-//    public void changeAccountStatus(String action, Long id) {
-//        Account account = accountRepository.findById(id)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//        switch (action) {
-//            case "activate":
-//                account.setActive(true);
-//                break;
-//            case "deactivate":
-//                account.setActive(false);
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Invalid action");
-//        }
-//    }
-//
-//    @Transactional
-//    public void deleteAccount(Long id) {
-//        Account account = accountRepository.findById(id)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//        switch (account.getType()) {
-//            case "admin":
-//                adminRepository.deleteByAccount_Id(account.getId());
-//                break;
-//            case "client":
-//                clientRepository.deleteByAccount_Id(account.getId());
-//                break;
-//            case "vendor":
-//                vendorRepository.deleteByAccount_Id(account.getId());
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Invalid action");
-//        }
-//
-//        accountRepository.delete(account);
-//    }
-//
-//    @Transactional
-//    public Account getAccountInfoByUserName(String username) {
-//        return accountRepository.findByUsername(username)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//    }
-//
-//    @Transactional
-//    public Account getAccountInfoByEmail(String email) {
-//        return accountRepository.findByEmail(email)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//    }
-//
-//    @Transactional
-//    public void promoteAccount(Long id) {
-//        Account account = accountRepository.findById(id)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//        if (account.getType().equals("vendor")) {
-//            throw new IllegalArgumentException("Cannot promote a vendor");
-//        }
-//
-//        if (account.getType().equals("client")) {
-//            account.setType("admin");
-//        } else {
-//            return;
-//        }
-//
-//        Client client = clientRepository.findByAccount_Id(id)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//        clientRepository.delete(client);
-//
-//        Admin admin = new Admin(client.getFirstName(), client.getLastName(), account);
-//        accountRepository.delete(account);
-//        adminRepository.save(admin);
-//    }
-//
-//    @Transactional
-//    public void demoteAccount(Long id) {
-//        Account account = accountRepository.findById(id)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//        if (account.getType().equals("hardcoded admin")) {
-//            throw new IllegalArgumentException("Cannot demote the hardcoded admin");
-//        }
-//
-//        if (account.getType().equals("admin")) {
-//            account.setType("client");
-//        } else {
-//            return;
-//        }
-//
-//        Admin admin = adminRepository.findByAccount_Id(id)
-//                .orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//        adminRepository.delete(admin);
-//
-//        Client client = new Client(admin.getFirstName(), admin.getLastName(), account);
-//        accountRepository.delete(account);
-//        clientRepository.save(client);
-//    }
-//
-//    public List<Feedback> getFeedbacks() {
-//        return feedbackRepo.findAll();
-//    }
-//
-//    public void deleteFeedback(long feedbackId) {
-//        feedbackRepo.deleteById(feedbackId);
-//    }
-//
-//    public List<VendorRequest> getVendorRequests() {
-//        return requestRepo.findAll();
-//    }
-//
+    private final AdminRepository adminRepository;
+    private final ClientRepository clientRepository;
+    private final VendorRepository vendorRepository;
+    private final AccountRepository accountRepository;
+    private final FeedbackRepository feedbackRepository;
+    private final VendorRequestRepository requestRepository;
+
+    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, FeedbackRepository feedbackRepository, VendorRequestRepository requestRepository) {
+        this.adminRepository = adminRepository;
+        this.clientRepository = clientRepository;
+        this.vendorRepository = vendorRepository;
+        this.accountRepository = accountRepository;
+        this.feedbackRepository = feedbackRepository;
+        this.requestRepository = requestRepository;
+    }
+
+    @Transactional
+    public void changeAccountStatus(boolean isActive, Long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        account.setActive(isActive);
+    }
+
+    @Transactional
+    public void deleteAccount(Long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        switch (account.getType().toLowerCase()) {
+            case "admin":
+                adminRepository.deleteById(account.getId());
+                break;
+            case "client":
+                clientRepository.deleteById(account.getId());
+                break;
+            case "vendor":
+                vendorRepository.deleteById(account.getId());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid action");
+        }
+
+        accountRepository.delete(account);
+    }
+
+    @Transactional
+    public Account getAccountInfoByUserName(String username) {
+        return accountRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+    }
+
+    @Transactional
+    public void promoteAccount(Long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        if (account.getType().equalsIgnoreCase("vendor")) {
+            throw new IllegalArgumentException("Cannot promote a vendor");
+        }
+
+        if (account.getType().equalsIgnoreCase("client")) {
+            account.setType("admin");
+
+            Client client = clientRepository.findByAccount_Id(id)
+                    .orElseThrow(() -> new NoSuchElementException("Client not found"));
+
+            Admin admin = new Admin(client.getFirstName(), client.getLastName(), account);
+            clientRepository.delete(client);
+            adminRepository.save(admin);
+        }
+    }
+
+    @Transactional
+    public void demoteAccount(Long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        if (account.getType().equalsIgnoreCase("hardcoded admin")) {
+            throw new IllegalArgumentException("Cannot demote the hardcoded admin");
+        }
+
+        if (account.getType().equalsIgnoreCase("admin")) {
+            account.setType("client");
+
+            Admin admin = adminRepository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Admin not found"));
+
+            Client client = new Client(admin.getFirstName(), admin.getLastName(), account);
+            adminRepository.deleteById(account.getId());
+            clientRepository.save(client);
+        }
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return feedbackRepository.findAll();
+    }
+
+    public void deleteFeedback(long feedbackId) {
+        feedbackRepository.deleteById(feedbackId);
+    }
+
+    public List<VendorRequest> getVendorRequests() {
+        return requestRepository.findAll();
+    }
+
 //    public void addVendor(long requestId) {
 //        Optional<VendorRequest> optionalPendingVendor = requestRepo.findById(requestId);
 //

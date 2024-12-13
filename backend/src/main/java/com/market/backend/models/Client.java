@@ -22,7 +22,7 @@ public class Client {
     private String lastName;
 
     @MapsId
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 

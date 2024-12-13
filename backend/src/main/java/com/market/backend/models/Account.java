@@ -16,7 +16,7 @@ public class Account {
     private Long id;
 
     @Column(name = "status", nullable = false)
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Column(name = "type", nullable = false)
     private String type;
