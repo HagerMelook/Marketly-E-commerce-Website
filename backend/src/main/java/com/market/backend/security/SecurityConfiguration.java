@@ -15,9 +15,9 @@ public class SecurityConfiguration {
 
         // define query to retrieve a user by username
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT a.username, p.password, a.status AS enabled " +
+                "SELECT a.username, p.account_password, a.status AS enabled " +
                         "FROM account a " +
-                        "JOIN password_table p ON a.account_id = p.account_id " +
+                        "JOIN password p ON a.account_id = p.account_id " +
                         "WHERE a.username = ?");
 
         // define query to retrieve the authorities/roles by username
