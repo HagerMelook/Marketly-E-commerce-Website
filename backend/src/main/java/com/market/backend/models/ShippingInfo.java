@@ -4,27 +4,26 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Entity
 @Data
-@NoArgsConstructor
+@Entity
 @AllArgsConstructor
-@Component
+@NoArgsConstructor
 public class ShippingInfo {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
+    @Column(name = "account_id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "address")
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
+    private Account account;
+
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "phone")
-    private String phone;
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL) // Defines the relationship
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
-    private Account account;
+    @Column(name = "postal_code")
+    private String postalCode;
 }
