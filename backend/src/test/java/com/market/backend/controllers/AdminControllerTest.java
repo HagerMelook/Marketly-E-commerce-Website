@@ -1,24 +1,22 @@
 package com.market.backend.controllers;
 
-import com.market.backend.models.Feedback;
-import com.market.backend.models.VendorRequest;
+import com.market.backend.models.Account;
 import com.market.backend.services.AdminService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AdminController.class)
-public class AdminControllerTest {
+class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -26,84 +24,146 @@ public class AdminControllerTest {
     @MockitoBean
     private AdminService adminService;
 
-    @Test
-    void getFeedback_ShouldReturnFeedbackList() throws Exception {
-        List<Feedback> feedbacks = Arrays.asList(new Feedback(1L, "Great!"), new Feedback(2L, "Needs improvement"));
-        when(adminService.getFeedbacks()).thenReturn(feedbacks);
-        mockMvc.perform(get("/feedback"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].comment").value("Great!"));
+    private Account testAccount;
 
-        verify(adminService, times(1)).getFeedbacks();
+    @BeforeEach
+    void setUp() {
+        testAccount = new Account();
+        testAccount.setId(1L);
+        testAccount.setUsername("testuser");
+        testAccount.setActive(true);
+        testAccount.setType("client");
     }
 
     @Test
-    void deleteFeedback_ShouldReturnSuccessMessage() throws Exception {
-        long feedbackId = 1L;
-        doNothing().when(adminService).deleteFeedback(feedbackId);
+    void testGetUserInfoByUserName_Success() throws Exception {
+        when(adminService.getAccountInfoByUserName("testuser")).thenReturn(testAccount);
 
-        mockMvc.perform(delete("/feedback/{feedbackId}", feedbackId))
+        mockMvc.perform(get("/admin/info/testuser"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Feedback deleted successfully"));
+                .andExpect(jsonPath("$.username").value("testuser"))
+                .andExpect(jsonPath("$.email").value("test@example.com"));
 
-        verify(adminService, times(1)).deleteFeedback(feedbackId);
+        verify(adminService, times(1)).getAccountInfoByUserName("testuser");
     }
 
     @Test
-    void getVendorRequests_ShouldReturnVendorRequestList() throws Exception {
-        List<VendorRequest> requests = Arrays.asList(new VendorRequest(1L, "Request 1"), new VendorRequest(2L, "Request 2"));
-        when(adminService.getVendorRequests()).thenReturn(requests);
+    void testGetUserInfoByUserName_NotFound() throws Exception {
+        when(adminService.getAccountInfoByUserName("nonexistent")).thenThrow(new NoSuchElementException());
 
-        mockMvc.perform(get("/request"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].name").value("Request 1"));
+        mockMvc.perform(get("/admin/info/nonexistent"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").doesNotExist());
 
-        verify(adminService, times(1)).getVendorRequests();
+        verify(adminService, times(1)).getAccountInfoByUserName("nonexistent");
     }
 
     @Test
-    void acceptVendorRequest_ShouldReturnSuccessMessage() throws Exception {
-        long requestId = 1L;
-        doNothing().when(adminService).addVendor(requestId);
+    void testActivateUserAccount_Success() throws Exception {
+        doNothing().when(adminService).changeAccountStatus(true, 1L);
 
-        mockMvc.perform(post("/request/accept/{requestId}", requestId))
+        mockMvc.perform(put("/admin/activate/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Vendor has been added successfully"));
+                .andExpect(content().string("Account status changed successfully"));
 
-        verify(adminService, times(1)).addVendor(requestId);
+        verify(adminService, times(1)).changeAccountStatus(true, 1L);
     }
 
     @Test
-    void deleteVendorRequest_ShouldReturnSuccessMessage() throws Exception {
-        long requestId = 1L;
-        doNothing().when(adminService).declineVendorRequest(requestId);
+    void testActivateUserAccount_NotFound() throws Exception {
+        doThrow(new NoSuchElementException()).when(adminService).changeAccountStatus(true, 999L);
 
-        mockMvc.perform(delete("/request/delete/{requestId}", requestId))
+        mockMvc.perform(put("/admin/activate/999"))
+                .andExpect(status().isNotFound());
+
+        verify(adminService, times(1)).changeAccountStatus(true, 999L);
+    }
+
+
+    @Test
+    void testPromoteAccount_Success() throws Exception {
+        doNothing().when(adminService).promoteAccount(1L);
+
+        mockMvc.perform(put("/admin/promote/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Vendor deleted successfully"));
+                .andExpect(content().string("Account promoted successfully"));
 
-        verify(adminService, times(1)).declineVendorRequest(requestId);
+        verify(adminService, times(1)).promoteAccount(1L);
     }
 
     @Test
-    void deleteFeedback_ShouldReturnBadRequestOnException() throws Exception {
-        long feedbackId = 1L;
-        doThrow(new IllegalArgumentException("Invalid feedback ID")).when(adminService).deleteFeedback(feedbackId);
-        mockMvc.perform(delete("/feedback/{feedbackId}", feedbackId))
+    void testPromoteAccount_NotFound() throws Exception {
+        doThrow(new NoSuchElementException()).when(adminService).promoteAccount(999L);
+
+        mockMvc.perform(put("/admin/promote/999"))
+                .andExpect(status().isNotFound());
+
+        verify(adminService, times(1)).promoteAccount(999L);
+    }
+
+    @Test
+    void testPromoteAccount_Unauthorized() throws Exception {
+        doThrow(new IllegalArgumentException("Unauthorized")).when(adminService).promoteAccount(1L);
+
+        mockMvc.perform(put("/admin/promote/1"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Unauthorized"));
+
+        verify(adminService, times(1)).promoteAccount(1L);
+    }
+
+    @Test
+    void testDemoteAccount_Success() throws Exception {
+        doNothing().when(adminService).demoteAccount(1L);
+
+        mockMvc.perform(put("/admin/demote/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Account demoted successfully"));
+
+        verify(adminService, times(1)).demoteAccount(1L);
+    }
+
+    @Test
+    void testDemoteAccount_NotFound() throws Exception {
+        doThrow(new NoSuchElementException()).when(adminService).demoteAccount(999L);
+
+        mockMvc.perform(put("/admin/demote/999"))
+                .andExpect(status().isNotFound());
+
+        verify(adminService, times(1)).demoteAccount(999L);
+    }
+
+    @Test
+    void testDemoteAccount_Unauthorized() throws Exception {
+        doThrow(new IllegalArgumentException("Unauthorized")).when(adminService).demoteAccount(1L);
+
+        mockMvc.perform(put("/admin/demote/1"))
+                .andExpect(status().isUnauthorized())  // Expecting 401 Unauthorized response
+                .andExpect(content().string("Unauthorized"));  // Expecting unauthorized message
+
+        verify(adminService, times(1)).demoteAccount(1L);
+    }
+
+
+    @Test
+    void testDeleteAccount_Success() throws Exception {
+        doNothing().when(adminService).deleteAccount(1L);
+
+        mockMvc.perform(delete("/admin/delete/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Account deleted successfully"));
+
+        verify(adminService, times(1)).deleteAccount(1L);
+    }
+
+    @Test
+    void testDeleteAccount_BadRequest() throws Exception {
+        doThrow(new IllegalArgumentException("Invalid ID")).when(adminService).deleteAccount(999L);
+
+        mockMvc.perform(delete("/admin/delete/999"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Invalid feedback ID"));
+                .andExpect(content().string("Invalid ID"));
 
-        verify(adminService, times(1)).deleteFeedback(feedbackId);
+        verify(adminService, times(1)).deleteAccount(999L);
     }
-
-
-
-
-
 }

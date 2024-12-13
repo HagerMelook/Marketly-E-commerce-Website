@@ -109,23 +109,23 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getVendorRequests());
     }
 
-//    @PostMapping("/request/accept/{requestId}")
-//    public ResponseEntity<String> acceptVendorRequest(@PathVariable long requestId) {
-//        try{
-//            adminService.addVendor(requestId);
-//            return ResponseEntity.ok("{\"message\": \"Vendor has been added successfully\"}");
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
-//
-//    @DeleteMapping("/request/delete/{requestId}")
-//    public ResponseEntity<String> deleteVendorRequest(@PathVariable long requestId) {
-//        try{
-//            adminService.declineVendorRequest(requestId);
-//            return ResponseEntity.ok("{\"message\": \"Vendor deleted successfully\"}");
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
+    @PostMapping("/request/accept/{requestId}")
+    public ResponseEntity<String> acceptVendorRequest(@PathVariable long requestId) {
+        try{
+            adminService.addVendor(requestId);
+            return ResponseEntity.ok("{\"message\": \"Vendor has been added successfully\"}");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/request/delete/{requestId}")
+    public ResponseEntity<String> deleteVendorRequest(@PathVariable long requestId) {
+        try{
+            adminService.declineVendorRequest(requestId);
+            return ResponseEntity.ok("{\"message\": \"Vendor deleted successfully\"}");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

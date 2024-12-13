@@ -34,8 +34,19 @@ class AdminServiceTest {
 
     @Test
     void getAccountInfoByUserName() {
-        Account account = new Account("client2@x.com", "password", true, "client", "client2");
-        Client client = new Client("john", "dann", account);
+        Account account = Account.builder()
+                .isActive(true)
+                .username("client2")
+                .type("client")
+                .authType("OAuth")
+                .build();
+
+        Client client = Client.builder()
+                .firstName("john")
+                .lastName("dann")
+                .account(account)
+                .build();
+
         clientRepository.save(client);
 
         assertEquals(adminService.getAccountInfoByUserName("client2"), account);
@@ -49,24 +60,13 @@ class AdminServiceTest {
     }
 
     @Test
-    void getAccountInfoByEmail() {
-        Account account = new Account("client3@x.com", "password", true, "client", "client3");
-        Client client = new Client("john", "dann", account);
-        clientRepository.save(client);
-
-        assertEquals(adminService.getAccountInfoByEmail("client3@x.com"), account);
-    }
-
-    @Test
-    void testGetAccountInfoByInvalidEmail() {
-        assertThrows(NoSuchElementException.class, () -> {
-            adminService.getAccountInfoByEmail("dslfsdo@a.com");
-        });
-    }
-
-    @Test
     void testDeleteAccount() {
-        Account account = new Account("client3@x.com", "password", true, "client", "client3");
+        Account account = Account.builder()
+                .isActive(true)
+                .type("client")
+                .authType("OAuth")
+                .username("client3")
+                .build();
 
         Account savedAccount = accountRepository.save(account);
         adminService.deleteAccount(savedAccount.getId());
@@ -81,40 +81,64 @@ class AdminServiceTest {
         });
     }
 
-
-
     @Test
     void testActivateUser() {
-        Account account = new Account("client4@x.com", "password", false, "client", "client4");
+        Account account = Account.builder()
+                .isActive(false)
+                .type("client")
+                .username("client4")
+                .authType("OAuth")
+                .build();
+
         Account savedAccount = accountRepository.save(account);
-        adminService.changeAccountStatus("activate", savedAccount.getId());
+        adminService.changeAccountStatus(true, savedAccount.getId());
         assertTrue(accountRepository.findById(savedAccount.getId()).get().isActive());
     }
 
     @Test
     void testDeactivateUser() {
-        Account account = new Account("client5@x.com", "password", true, "client", "client5");
+        Account account = Account.builder()
+                .isActive(true)
+                .type("client")
+                .authType("OAuth")
+                .username("client5")
+                .build();
         Account savedAccount = accountRepository.save(account);
-        adminService.changeAccountStatus("deactivate", savedAccount.getId());
+        adminService.changeAccountStatus(false, savedAccount.getId());
         assertFalse(accountRepository.findById(savedAccount.getId()).get().isActive());
     }
 
     @Test
     void testPromoteUser() {
-        Account account = new Account("client6@x.com", "password", true, "client", "client6");
+        Account account = Account.builder()
+                .isActive(true)
+                .type("client")
+                .authType("OAuth")
+                .username("client6")
+                .build();
         Client client = new Client("john", "dann", account);
         Client savedClient = clientRepository.save(client);
         adminService.promoteAccount(savedClient.getAccount().getId());
-        assertTrue(adminRepository.findByAccount_Id(savedClient.getAccount().getId()).isPresent());
+        assertTrue(adminRepository.findById(savedClient.getAccount().getId()).isPresent());
     }
 
     @Test
     void testDemoteUser() {
-        Account account = new Account("admin8@x.com", "password", true, "admin", "admin8");
-        Admin admin = new Admin("ahmed", "a", account);
+        Account account = Account.builder()
+                .isActive(true)
+                .type("admin")
+                .authType("Basic")
+                .username("admin8")
+                .build();
+
+        Admin admin = Admin.builder()
+                .account(account)
+                .firstName("ahmed")
+                .lastName("a")
+                .build();
+
         Admin savedAdmin = adminRepository.save(admin);
         adminService.demoteAccount(savedAdmin.getAccount().getId());
         assertTrue(clientRepository.findByAccount_Id(savedAdmin.getAccount().getId()).isPresent());
-
     }
 }
