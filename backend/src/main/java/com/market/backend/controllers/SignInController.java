@@ -1,31 +1,39 @@
 package com.market.backend.controllers;
 
-import org.springframework.web.bind.annotation.*;
-
-import com.market.backend.DTOs.AuthRequest;
-import com.market.backend.DTOs.AuthResponse;
-import  com.market.backend.Services.AuthService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
 public class SignInController {
 
-    private final AuthService authService;
-
-    public SignInController(AuthService authService) {
-        this.authService = authService;
+    @PostMapping("/signin")
+    public String signIn() {
+        // You would typically authenticate the user here, for now we are just testing
+        return "ok";
     }
 
-    @PostMapping("/signin")
-    public AuthResponse signIn(@RequestBody AuthRequest authRequest) {
-        boolean role =authService.authenticate(authRequest.getUsername(), authRequest.getPassword()) ;
-        if (role) {
-            return new AuthResponse("Authentication Successful", "valid");
-        } else {
-            return new AuthResponse("Authentication Failed", null);
+    // Simple DTO for sign-in request
+    public static class SignInRequest {
+        private String username;
+        private String password;
+
+        // Getters and setters
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
     }
-
-    
-    
 }
