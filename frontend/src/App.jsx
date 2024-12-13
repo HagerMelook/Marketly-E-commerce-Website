@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 // import VendorRequestsPage from './components/VendorRequestsPage'
 
 function App() {
-
   return (
     <Router>
       <Routes>

@@ -44,9 +44,6 @@ function AccountCard({ account }) {
     <div className="account-card">
       <h3>Account Info</h3>
       <p>
-        <strong>Email:</strong> {account.email}
-      </p>
-      <p>
         <strong>Username:</strong> {account.username}
       </p>
       <p>
@@ -83,7 +80,6 @@ function AccountCard({ account }) {
 
 AccountCard.propTypes = {
   account: PropTypes.shape({
-    email: PropTypes.string,
     username: PropTypes.string,
     status: PropTypes.string,
     role: PropTypes.string,
