@@ -1,4 +1,4 @@
-package com.market.backend.signup.basicSignUp.Configuration;
+package com.market.backend.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,9 @@ public class GoogleOAuthConfig {
     @Bean
     public SecurityFilterChain customizeSecurityFilterChain(HttpSecurity http) throws Exception {
 //        Customizing the filter chain to handle different types of auths and apply web security
+
+
+        http.headers().frameOptions().disable();
 
         http
             .authorizeHttpRequests(authRequest -> authRequest

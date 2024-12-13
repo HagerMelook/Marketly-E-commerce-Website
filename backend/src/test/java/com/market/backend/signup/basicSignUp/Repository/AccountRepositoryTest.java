@@ -4,11 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
+import com.market.backend.repositories.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.market.backend.signup.basicSignUp.Model.Account;
+import com.market.backend.models.Account;
 
 @SpringBootTest
 public class AccountRepositoryTest {

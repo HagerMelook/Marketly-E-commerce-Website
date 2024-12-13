@@ -82,17 +82,6 @@ function VendorReg() {
     }
   }
 
-  // function RegisterVendorRequest() {
-  //   console.log("google");
-  //   var businessname = document.getElementById("businessname").value;
-  //   var taxnumber = document.getElementById("taxnumber").value;
-  //   window.location.href =
-  //     "http://localhost:8080/SignUp/Google/Vendor" +
-  //     businessname +
-  //     "/" +
-  //     taxnumber;
-  // }
-
   const Register = async (event) => {
     event.preventDefault();
     var businessname = document.getElementById("businessname").value;

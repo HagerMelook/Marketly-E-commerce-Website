@@ -2,16 +2,17 @@ package com.market.backend.signup.basicSignUp.Repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.market.backend.repositories.VendorRequestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.market.backend.signup.basicSignUp.Model.VendorRequests;
+import com.market.backend.models.VendorRequests;
 
 @SpringBootTest
 public class VendorRequestsRepositoryTest {
     @Autowired
-    private VendorRequestsRepository venReqRepo;
+    private VendorRequestRepository venReqRepo;
 
     @Test
     void testExistsByEmailExist() {

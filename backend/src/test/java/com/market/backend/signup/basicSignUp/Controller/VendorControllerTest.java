@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.market.backend.signup.basicSignUp.Service.VendorService;
+import com.market.backend.services.VendorService;
 
 @WebMvcTest(VendorController.class)
 public class VendorControllerTest {

@@ -6,15 +6,16 @@ import static org.mockito.Mockito.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.market.backend.services.SignUpService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.market.backend.signup.basicSignUp.Model.Account;
-import com.market.backend.signup.basicSignUp.Model.VendorRequests;
-import com.market.backend.signup.basicSignUp.Repository.AccountRepository;
-import com.market.backend.signup.basicSignUp.Repository.VendorRequestsRepository;
+import com.market.backend.models.Account;
+import com.market.backend.models.VendorRequests;
+import com.market.backend.repositories.AccountRepository;
+import com.market.backend.repositories.VendorRequestRepository;
 
 @SpringBootTest
 public class SignUpServiceTest {
@@ -26,30 +27,30 @@ public class SignUpServiceTest {
     private AccountRepository accountRepo;
 
     @Mock
-    private VendorRequestsRepository venReqRepo;
+    private VendorRequestRepository venReqRepo;
 
     @Test
-    void testCheckGoogleAccountExistanceInAccount() {
+    void testCheckUsername() {
         Map<String,Object> attributes = new HashMap<>();
         attributes.put("email", "hagermelook123@gmail.com");
         attributes.put("name", "Hager Melook");
 
         when(accountRepo.existsByEmail(("hagermelook123@gmail.com").toString())).thenReturn(true);
 
-        boolean result = signUpService.checkGoogleAccountExistance(attributes, false);
+        boolean result = signUpService.checkUsernameAvailability(attributes, false);
         assertFalse(result);
 
     }
 
     @Test
-    void testCheckGoogleAccountExistanceInVendorReq() {
+    void testCheckUsernameAvailabilityInVendorReq() {
         Map<String,Object> attributes = new HashMap<>();
         attributes.put("email", "hagermelook123@gmail.com");
         attributes.put("name", "Hager Melook");
 
         when(accountRepo.existsByEmail(("hagermelook123@gmail.com").toString())).thenReturn(false);
         when(venReqRepo.existsByEmail(("hagermelook123@gmail.com").toString())).thenReturn(true);
-        boolean result = signUpService.checkGoogleAccountExistance(attributes, true);
+        boolean result = signUpService.checkUsernameAvailability(attributes, true);
         assertFalse(result);
     }
 
@@ -61,7 +62,7 @@ public class SignUpServiceTest {
 
         when(accountRepo.existsByEmail(("hagermelook123@gmail.com").toString())).thenReturn(false);
         when(venReqRepo.existsByEmail(("hagermelook123@gmail.com").toString())).thenReturn(false);
-        boolean result = signUpService.checkGoogleAccountExistance(attributes,false);
+        boolean result = signUpService.checkUsernameAvailability(attributes,false);
         assertTrue(result);
     }
 

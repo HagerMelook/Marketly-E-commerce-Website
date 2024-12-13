@@ -1,4 +1,4 @@
-package com.market.backend.signup.basicSignUp.Configuration;
+package com.market.backend.configurations;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

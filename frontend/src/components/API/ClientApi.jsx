@@ -1,12 +1,11 @@
 function ClientBasicSignUp(username, password) {
-  return fetch("http://localhost:8080/SignUp/ClientBasicSignUp", {
+  return fetch("http://localhost:8080/SignUp/ClientBasicSignUp/"+password, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      username: username,
-      password: password,
+      username: username
     }),
   })
     .then((response) => response.text())

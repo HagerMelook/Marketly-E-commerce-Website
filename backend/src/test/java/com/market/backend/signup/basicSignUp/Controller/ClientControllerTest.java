@@ -3,7 +3,7 @@ package com.market.backend.signup.basicSignUp.Controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.market.backend.signup.basicSignUp.Service.SignUpService;
+import com.market.backend.services.SignUpService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
