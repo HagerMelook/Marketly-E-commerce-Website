@@ -1,4 +1,4 @@
-function VendorBasicSignUp(businessname, password, taxnumber) {
+function VendorBasicSignUp(businessname, username, password, taxnumber) {
   if (taxnumber == null) taxnumber = -1;
   return fetch("http://localhost:8080/SignUp/VendorBasicSignUp", {
     method: "POST",
@@ -7,8 +7,9 @@ function VendorBasicSignUp(businessname, password, taxnumber) {
     },
     body: JSON.stringify({
       organizationName: businessname,
+      username: username,
       password: password,
-      taxNumber: taxnumber,
+      taxNumber: taxnumber
     }),
   })
     .then((response) => response.text())
