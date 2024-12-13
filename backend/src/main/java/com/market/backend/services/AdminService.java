@@ -1,17 +1,13 @@
 package com.market.backend.services;
 
 import com.market.backend.models.*;
-import com.market.backend.repositories.FeedbackRepository;
-import com.market.backend.repositories.AccountRepository;
-import com.market.backend.repositories.AdminRepository;
-import com.market.backend.repositories.ClientRepository;
-import com.market.backend.repositories.VendorRepository;
-import com.market.backend.repositories.VendorRequestRepository;
+import com.market.backend.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -21,14 +17,17 @@ public class AdminService {
     private final AccountRepository accountRepository;
     private final FeedbackRepository feedbackRepository;
     private final VendorRequestRepository requestRepository;
+    private final PasswordRepository passwordRepository;
 
-    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, FeedbackRepository feedbackRepository, VendorRequestRepository requestRepository) {
+    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, FeedbackRepository feedbackRepository, VendorRequestRepository requestRepository, PasswordRepository passwordRepository) {
         this.adminRepository = adminRepository;
         this.clientRepository = clientRepository;
         this.vendorRepository = vendorRepository;
         this.accountRepository = accountRepository;
         this.feedbackRepository = feedbackRepository;
         this.requestRepository = requestRepository;
+        this.passwordRepository = passwordRepository;
+
     }
 
     @Transactional
@@ -109,46 +108,57 @@ public class AdminService {
         }
     }
 
+    @Transactional
     public List<Feedback> getFeedbacks() {
         return feedbackRepository.findAll();
     }
 
+    @Transactional
     public void deleteFeedback(long feedbackId) {
         feedbackRepository.deleteById(feedbackId);
     }
 
+    @Transactional
     public List<VendorRequest> getVendorRequests() {
         return requestRepository.findAll();
     }
 
-//    public void addVendor(long requestId) {
-//        Optional<VendorRequest> optionalPendingVendor = requestRepo.findById(requestId);
-//
-//        if (optionalPendingVendor.isPresent()) {
-//            VendorRequest pendingVendor = optionalPendingVendor.get();
-//
-//            Account account = new Account();
-//            Vendor vendor = new Vendor();
-//
-//            account.setUsername(pendingVendor.getUsername());
-//            account.setPassword(pendingVendor.getPassword());
-//            account.setEmail(pendingVendor.getEmail());
-//            account.setActive(true);
-//            account.setType("vendor");
-//            vendor.setAccount(account);
-//            vendor.setOrganisationName(pendingVendor.getOrganisationName());
-//            vendor.setTaxNumber(pendingVendor.getTaxNumber());
-//
-//            vendorRepository.save(vendor);
-//            accountRepository.save(account);
-//            requestRepo.delete(pendingVendor);
-//
-//        } else {
-//            throw new RuntimeException("VendorRequest not found with ID: " + requestId);
-//        }
-//    }
-//
-//    public void declineVendorRequest(long requestId) {
-//        requestRepo.deleteById(requestId);
-//    }
+    @Transactional
+    public void declineVendorRequest(long requestId) {
+        requestRepository.deleteById(requestId);
+    }
+
+    @Transactional
+    public void addVendor(long requestId) {
+        Optional<VendorRequest> optionalPendingVendor = requestRepository.findById(requestId);
+
+        if (optionalPendingVendor.isPresent()) {
+            VendorRequest pendingVendor = optionalPendingVendor.get();
+
+            Account account = new Account();
+            Vendor vendor = new Vendor();
+            account.setUsername(pendingVendor.getUsername());
+            account.setActive(true);
+            account.setType("vendor");
+            account.setAuthType(pendingVendor.getAuthType());
+            accountRepository.save(account);
+
+            vendor.setOrganizationName(pendingVendor.getOrganizationName());
+            vendor.setTaxNumber(pendingVendor.getTaxNumber());
+            vendor.setAccount(account);
+            vendorRepository.save(vendor);
+
+            if(pendingVendor.getAuthType().equals("oauth")){
+                Password password = new Password();
+                password.setAccountPassword((pendingVendor.getPassword()));
+                password.setAccount(account);
+                passwordRepository.save(password);
+            }
+
+            requestRepository.delete(pendingVendor);
+
+        } else {
+            throw new RuntimeException("VendorRequest not found with ID: " + requestId);
+        }
+    }
 }
