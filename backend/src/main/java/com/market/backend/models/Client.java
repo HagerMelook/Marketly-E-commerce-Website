@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Client implements IUser {
+public class Client {
     @Id
     private Long id;
 

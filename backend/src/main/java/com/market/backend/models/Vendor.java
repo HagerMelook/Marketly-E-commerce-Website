@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Vendor implements IUser {
+public class Vendor {
     @Id
     private Long id;
 
-    @Column(name = "organisation_name")
-    private String organisationName;
+    @Column(name = "organization_name")
+    private String organizationName;
 
     @Column(name = "tax_number")
     private Long taxNumber;

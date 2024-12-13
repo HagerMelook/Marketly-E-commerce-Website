@@ -24,6 +24,6 @@ public class Account {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "ayth_type", unique = true, nullable = false)
+    @Column(name = "auth_type", nullable = false)
     private String authType;
 }

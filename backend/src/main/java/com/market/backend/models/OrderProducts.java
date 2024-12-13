@@ -14,12 +14,12 @@ public class OrderProducts {
     private OrderProductsId orderProductsId;
 
     @MapsId("orderId")
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "order_id", nullable = false)
     private Order order;
 
     @MapsId("productId")
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false)
     private Product product;
 }

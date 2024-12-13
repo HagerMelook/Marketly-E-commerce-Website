@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Admin implements IUser {
+public class Admin {
     @Id
     private Long id;
 

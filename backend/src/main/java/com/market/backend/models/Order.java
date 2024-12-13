@@ -18,7 +18,7 @@ public class Order {
     @Column(name = "order_id", nullable = false, unique = true)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
     private Account account;
 

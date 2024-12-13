@@ -19,7 +19,7 @@ public class CartProducts {
     private Account account;
 
     @MapsId("productId")
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id", nullable = false)
     private Product product;
 
