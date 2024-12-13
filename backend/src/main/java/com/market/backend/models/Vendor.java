@@ -17,7 +17,7 @@ public class Vendor {
     private String organizationName;
 
     @Column(name = "tax_number")
-    private Long taxNumber;
+    private String taxNumber;
 
     @MapsId
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

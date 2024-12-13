@@ -6,5 +6,5 @@ import com.market.backend.models.Password;
 
 @Repository
 public interface PasswordRepository extends JpaRepository<Password, Long> {
-    String getAccountPasswordById(long accountId);
+    String getAccountPasswordByAccountId(long accountId);
 }

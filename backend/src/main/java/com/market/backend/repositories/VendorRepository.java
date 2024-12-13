@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, Long> {
     Optional<Vendor> findByAccount_Id(Long accountId);
-    boolean existsByOrganisationName(String organizationName);
+    boolean existsByOrganizationName(String organizationName);
     boolean existsByTaxNumber(String taxNumber);
 }

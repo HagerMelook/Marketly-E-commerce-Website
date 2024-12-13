@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ShippingInfoRepository extends JpaRepository<ShippingInfo, Long> {
     Optional<ShippingInfo> findByAccount_Id(Long accountId);
     boolean existsByAddress(String address);
-    boolean existsByPhone(String phone);
+    boolean existsByPhoneNumber(String phone);
 }

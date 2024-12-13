@@ -27,7 +27,7 @@ public class AuthService {
             return false; // Authentication failed
 
         com.market.backend.models.Account acc = account.get();
-        String pass = passwordRepository.getAccountPasswordById(acc.getId());
+        String pass = passwordRepository.getAccountPasswordByAccountId(acc.getId());
         // Check if the password matches
         if (pass.equals(password))
             // Authentication succeeded, return the username or token as required
