@@ -1,18 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminDashboard from "./pages/AdminDashboard";
-import Home from "./pages/Home";
+import RadialChoice from "./pages/RadialChoice/RadialChoice";
+import Home from "./pages/Home/Home";
+import ClientReg from "./pages/ClientReg/ClientReg";
+import VendorReg from "./pages/VendorReg/VendorReg";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 
-// import VendorRequestsPage from './components/VendorRequestsPage'
-
-function App() {
+function AppRouter() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home isAdmin={true} />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route index element={<RadialChoice />} />
+        <Route path="home" element={<Home isAdmin={false} />} />
+        <Route path="clientSignUp" element={<ClientReg />} />
+        <Route path="vendorSignUp" element={<VendorReg />} />
+        <Route path="admin-dashboard" element={<AdminDashboard />} />
+        <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
-export default App;
+export default AppRouter;

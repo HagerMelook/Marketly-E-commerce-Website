@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../../assets/background.png";
 import ClientBasicSignUp from "../../components/API/ClientApi.jsx";
-// import GoogleButton from "../../components/GoogleSignButton/GoogleSignButton.jsx";
-
 import "./ClientReg.css";
 
 function ClientReg() {
   const navigate = useNavigate();
-
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isVisible_1, setIsVisible_1] = useState(false);
   const [isVisible_2, setIsVisible_2] = useState(false);
@@ -35,9 +32,9 @@ function ClientReg() {
     const messageContainer_1 = document.getElementById("messageContainer-1");
     if (val.length > 80) {
       messageContainer_1.textContent =
-        "The username can't be more than 80 character";
+        "The username can't be more than 80 characters";
       setIsVisible_1(true);
-    } else if (val.length == 0) {
+    } else if (val.length === 0) {
       messageContainer_1.textContent = "The username can't be empty";
       setIsVisible_1(true);
     } else {
@@ -52,10 +49,9 @@ function ClientReg() {
     const messageContainer_2 = document.getElementById("messageContainer-2");
     if (val.length > 80) {
       messageContainer_2.textContent =
-        "The password can't be more than 80 character";
+        "The password can't be more than 80 characters";
       setIsVisible_2(true);
-    }
-    if (val.length == 0) {
+    } else if (val.length === 0) {
       messageContainer_2.textContent = "The password can't be empty";
       setIsVisible_2(true);
     } else {
@@ -65,18 +61,13 @@ function ClientReg() {
   }
 
   const Register = async (event) => {
-    console.log("Registering");
-    event.preventDefault();
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    console.log(username);
-    console.log(password);
+    event.preventDefault(); // Prevent the default form submission
     if (!isVisible_1 && !isVisible_2) {
       const response = await ClientBasicSignUp(username, password);
       console.log(response);
 
-      if (response == "Successfully registered") {
-        console.log("response");
+      if (response === "Successfully registered") {
+        navigate("/home"); // Trigger navigation after successful registration
       } else if (response.includes("username")) {
         const messageContainer_1 =
           document.getElementById("messageContainer-1");
@@ -128,7 +119,7 @@ function ClientReg() {
               onChange={handlePasswordChange}
               required
             />
-            <span className="eye-icon" onClick={() => switchVisibility()}>
+            <span className="eye-icon" onClick={switchVisibility}>
               {passwordVisible ? <FaEye /> : <FaEyeSlash />}
             </span>
           </div>
@@ -140,18 +131,15 @@ function ClientReg() {
         <button type="submit" className="form-button">
           Submit
         </button>
-        {/* {<GoogleButton></GoogleButton>} */}
         <button
           type="button"
-          // onClick={SignUpPage}
-          // onClick={navigate("localhost:8080/SignUp/Google/Client")}
           onClick={() =>
             (window.location.href =
               "http://localhost:8080/SignUp/Google/Client")
           }
           className="googleOauth"
         >
-          <img src="src\assets\google.png" className="googleIcon" />
+          <img src="src/assets/google.png" className="googleIcon" />
           Sign Up with Google Account
         </button>
       </form>
