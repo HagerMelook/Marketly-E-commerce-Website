@@ -1,16 +1,24 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function AccountCard({ account }) {
+function AccountCard({ account, resetMsg }) {
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const resetLocalMsg = () => setMsg("");
+
+  // Reset the message when the `resetMsg` prop changes
+  useEffect(() => {
+    if (resetMsg) {
+      resetLocalMsg();
+    }
+  }, [resetMsg]);
+
   const handleAction = async (action) => {
-    setMsg("");
+    resetLocalMsg();
     setLoading(true);
 
     try {
-      let result;
       const urlMap = {
         activate: `http://localhost:8080/admin/activate/${account.id}`,
         deactivate: `http://localhost:8080/admin/deactivate/${account.id}`,
@@ -25,7 +33,7 @@ function AccountCard({ account }) {
       }
 
       const method = action === "remove" ? "DELETE" : "PUT";
-      result = await fetch(urlMap[action], { method });
+      const result = await fetch(urlMap[action], { method });
 
       if (!result.ok) {
         setMsg(`Failed to ${action} account: ${result.statusText || "Error"}`);
@@ -69,6 +77,7 @@ function AccountCard({ account }) {
               onClick={() => handleAction(action)}
               disabled={loading}
             >
+              {loading && <span className="spinner"></span>}
               {action.charAt(0).toUpperCase() + action.slice(1)}
             </button>
           )
@@ -85,6 +94,7 @@ AccountCard.propTypes = {
     role: PropTypes.string,
     id: PropTypes.number.isRequired,
   }).isRequired,
+  resetMsg: PropTypes.bool.isRequired,
 };
 
 export default AccountCard;

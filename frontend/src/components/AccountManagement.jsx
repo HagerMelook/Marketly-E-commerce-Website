@@ -6,22 +6,26 @@ function AccountManagement() {
   const [username, setUsername] = useState("");
   const [account, setAccount] = useState(null);
   const [msg, setMsg] = useState("");
+  const [resetCardMsg, setResetCardMsg] = useState(false);
+
+  const resetMsg = () => setMsg("");
 
   const handleSearch = async () => {
-    setMsg("");
-    if (!username) {
-      setMsg("Please enter username to search.");
+    resetMsg();
+    setResetCardMsg(true); // Trigger AccountCard to reset msg
+    if (!username.trim()) {
+      setMsg("Please enter a username to search.");
       setAccount(null);
       return;
     }
 
     try {
-      let result;
-      if (username) {
-        result = await fetch(`http://localhost:8080/admin/info/${username}`, {
+      const result = await fetch(
+        `http://localhost:8080/admin/info/${username}`,
+        {
           method: "GET",
-        });
-      }
+        }
+      );
 
       if (!result.ok) {
         setMsg("Account not found.");
@@ -30,7 +34,6 @@ function AccountManagement() {
       }
 
       const data = await result.json();
-      console.log(data);
       setAccount({
         username: data.username,
         status: data.active ? "active" : "inactive",
@@ -40,6 +43,8 @@ function AccountManagement() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setMsg("Failed to fetch data. Please try again later.");
+    } finally {
+      setResetCardMsg(false); // Reset back after action
     }
   };
 
@@ -53,12 +58,13 @@ function AccountManagement() {
             placeholder="Search by Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            onFocus={resetMsg}
           />
         </div>
         {msg && <span className="message">{msg}</span>}
         <button onClick={handleSearch}>Search</button>
       </div>
-      {account && <AccountCard account={account} />}
+      {account && <AccountCard account={account} resetMsg={resetCardMsg} />}
     </div>
   );
 }
