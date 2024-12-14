@@ -79,10 +79,11 @@ public class SignUpService {
         client.setType("client");
         client.setAuthType("basic");
 
-        Account acc = accountRepository.save(client);
-        long id  = acc.getId();
-        System.out.println("His id is "+id);
-//        passwordRepository.save(new Password(id, password, acc));
+        Password pass = Password.builder()
+                .account(client)
+                .accountPassword(password)
+                .build();
+        passwordRepository.save(pass);
 
         return "Successfully registered";
     }
