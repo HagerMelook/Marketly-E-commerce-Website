@@ -14,10 +14,10 @@ public class Vendor {
     private Long id;
 
     @Column(name = "organization_name")
-    private String organizationName;
+    private String organizationName;  
 
     @Column(name = "tax_number")
-    private String taxNumber;
+    private long taxNumber;
 
     @MapsId
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
