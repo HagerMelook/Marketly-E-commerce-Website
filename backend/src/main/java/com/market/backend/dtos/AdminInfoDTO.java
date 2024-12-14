@@ -3,6 +3,7 @@ package com.market.backend.dtos;
 import com.market.backend.models.Account;
 import com.market.backend.models.Admin;
 
+import com.market.backend.models.Password;
 import com.market.backend.models.ShippingInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class AdminInfoDTO {
     // Fields from Account
     private Long accountId;
-    private String email;
     private String password;
     private boolean isActive;
     private String type;
     private String username;
+    private String authType;
 
     // Fields from admin
     private String firstName;
@@ -28,14 +29,16 @@ public class AdminInfoDTO {
     private String address;
     private String phone;
 
-    public AdminInfoDTO(Account account, Admin admin, ShippingInfo shippingInfo) {
+    public AdminInfoDTO(Account account, Password password, Admin admin, ShippingInfo shippingInfo) {
         if (account!=null) {
             this.accountId = account.getId();
-            this.email = account.getEmail();
-            this.password = account.getPassword();
             this.isActive = account.isActive();
             this.type = account.getType();
             this.username = account.getUsername();
+            this.authType = account.getAuthType();
+        }
+        if (password!=null) {
+            this.password = password.getAccountPassword();
         }
         if (admin!=null) {
             this.firstName = admin.getFirstName();
@@ -43,7 +46,7 @@ public class AdminInfoDTO {
         }
         if (shippingInfo!=null) {
             this.address = shippingInfo.getAddress();
-            this.phone = shippingInfo.getPhone();
+            this.phone = shippingInfo.getPhoneNumber();
         }
     }
 }
