@@ -10,6 +10,8 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -33,10 +35,13 @@ public class JWTService {
     }
 
     public String generateToken(String username) {
+         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
-                .subject(username)
+                .claims()
+                .add(claims)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .and()
                 .signWith(getKey())
                 .compact();
     }
