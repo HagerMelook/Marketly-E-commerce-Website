@@ -11,11 +11,13 @@ import com.market.backend.dtos.VendorInfoDTO;
 import com.market.backend.models.*;
 import com.market.backend.repositories.*;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class EditProfileService {
     private final AdminRepository adminRepository;
     private final ClientRepository clientRepository;
@@ -25,16 +27,6 @@ public class EditProfileService {
     private final ShippingInfoRepository shippingInfoRepository;
 
     private final ObjectMapper objectMapper;
-
-    public EditProfileService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, PasswordRepository passwordRepository, ShippingInfoRepository shippingInfoRepository, ObjectMapper objectMapper) {
-        this.adminRepository = adminRepository;
-        this.clientRepository = clientRepository;
-        this.vendorRepository = vendorRepository;
-        this.accountRepository = accountRepository;
-        this.passwordRepository = passwordRepository;
-        this.shippingInfoRepository = shippingInfoRepository;
-        this.objectMapper = objectMapper;
-    }
 
     @Transactional
     public AdminInfoDTO getAdminInfo(Long id) {
@@ -90,6 +82,17 @@ public class EditProfileService {
         return new VendorInfoDTO(account, password, vendor, shippingInfo);
     }
 
+    void checkRestrictedAttrs(Account account, Long accountId, String username, String type, boolean isActive, String authType) throws JsonPatchException {
+        if (!accountId.equals(account.getId())
+                || !type.equals(account.getType())
+                || !username.equals(account.getUsername())
+                || isActive != (account.isActive())
+                || !authType.equals(account.getAuthType())) {
+
+            throw new JsonPatchException("Restricted attribute");
+        }
+    }
+
     @Transactional
     public void updateAdminInfo(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
         Account account = accountRepository.findById(id)
@@ -110,18 +113,12 @@ public class EditProfileService {
         JsonNode patched = patch.apply(objectMapper.convertValue(adminInfoDTO, JsonNode.class));
         adminInfoDTO = objectMapper.treeToValue(patched, AdminInfoDTO.class);
 
-        if(!adminInfoDTO.getAccountId().equals(account.getId())
-                || !adminInfoDTO.getType().equals(account.getType())
-                || !adminInfoDTO.getUsername().equals(account.getUsername())
-                || adminInfoDTO.isActive()!=(account.isActive())) {
+        checkRestrictedAttrs(account, adminInfoDTO.getAccountId(), adminInfoDTO.getUsername()
+                , adminInfoDTO.getType(), adminInfoDTO.isActive(), adminInfoDTO.getAuthType());
 
-            throw new JsonPatchException("Restricted attribute");
-        }
-
-        if (password!=null) {
+        if (password != null) {
             password.setAccountPassword(adminInfoDTO.getPassword());
-        }
-        else if (adminInfoDTO.getPassword()!=null) {
+        } else if (adminInfoDTO.getPassword() != null) {
             throw new JsonPatchException("Restricted attribute");
         }
 
@@ -154,18 +151,12 @@ public class EditProfileService {
         JsonNode patched = patch.apply(objectMapper.convertValue(vendorInfoDTO, JsonNode.class));
         vendorInfoDTO = objectMapper.treeToValue(patched, VendorInfoDTO.class);
 
-        if(!vendorInfoDTO.getAccountId().equals(account.getId())
-                || !vendorInfoDTO.getType().equals(account.getType())
-                || !vendorInfoDTO.getUsername().equals(account.getUsername())
-                || vendorInfoDTO.isActive()!=(account.isActive())) {
+        checkRestrictedAttrs(account, vendorInfoDTO.getAccountId(), vendorInfoDTO.getUsername()
+                , vendorInfoDTO.getType(), vendorInfoDTO.isActive(), vendorInfoDTO.getAuthType());
 
-            throw new JsonPatchException("Restricted attribute");
-        }
-
-        if (password!=null) {
+        if (password != null) {
             password.setAccountPassword(vendorInfoDTO.getPassword());
-        }
-        else if (vendorInfoDTO.getPassword()!=null) {
+        } else if (vendorInfoDTO.getPassword() != null) {
             throw new JsonPatchException("Restricted attribute");
         }
 
@@ -196,18 +187,12 @@ public class EditProfileService {
         JsonNode patched = patch.apply(objectMapper.convertValue(clientInfoDTO, JsonNode.class));
         clientInfoDTO = objectMapper.treeToValue(patched, ClientInfoDTO.class);
 
-        if(!clientInfoDTO.getAccountId().equals(account.getId())
-                || !clientInfoDTO.getType().equals(account.getType())
-                || !clientInfoDTO.getUsername().equals(account.getUsername())
-                || clientInfoDTO.isActive()!=(account.isActive())) {
+        checkRestrictedAttrs(account, clientInfoDTO.getAccountId(), clientInfoDTO.getUsername()
+                , clientInfoDTO.getType(), clientInfoDTO.isActive(), clientInfoDTO.getAuthType());
 
-            throw new JsonPatchException("Restricted attribute");
-        }
-
-        if (password!=null) {
+        if (password != null) {
             password.setAccountPassword(clientInfoDTO.getPassword());
-        }
-        else if (clientInfoDTO.getPassword()!=null) {
+        } else if (clientInfoDTO.getPassword() != null) {
             throw new JsonPatchException("Restricted attribute");
         }
 

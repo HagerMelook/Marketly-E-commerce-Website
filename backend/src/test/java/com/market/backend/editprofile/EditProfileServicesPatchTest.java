@@ -186,26 +186,6 @@ public class EditProfileServicesPatchTest {
     }
 
     @Test
-    void updateAdminInfoRestrictedAttr() throws IOException {
-        //arrange
-        Long id = 1L;
-        String patchContent = """
-                [
-                    {"op":"replace","path":"/type","value":"new"}
-                ]
-                """;
-        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
-
-        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[0]));
-        Mockito.when(adminRepository.findById(id)).thenReturn(Optional.of(admins[0]));
-        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[0]);
-        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[0]));
-
-        //act and assert
-        assertThrows(JsonPatchException.class, ()->editProfileService.updateAdminInfo(id, patch));
-    }
-
-    @Test
     void updateAdminInfoPasswordForOauth() throws IOException {
         //arrange
         Long id = 4L;
@@ -328,26 +308,6 @@ public class EditProfileServicesPatchTest {
         String patchContent = """
                 [
                     {"op":"replace","path":"/wrong","value":"new"}
-                ]
-                """;
-        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
-
-        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[1]));
-        Mockito.when(clientRepository.findByAccount_Id(id)).thenReturn(Optional.of(clients[0]));
-        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[1]);
-        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[1]));
-
-        //act and assert
-        assertThrows(JsonPatchException.class, ()->editProfileService.updateClientInfo(id, patch));
-    }
-
-    @Test
-    void updateClientInfoRestrictedAttr() throws IOException {
-        //arrange
-        Long id = 2L;
-        String patchContent = """
-                [
-                    {"op":"replace","path":"/type","value":"new"}
                 ]
                 """;
         JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
@@ -499,26 +459,6 @@ public class EditProfileServicesPatchTest {
     }
 
     @Test
-    void updateVendorInfoRestrictedAttr() throws IOException {
-        //arrange
-        Long id = 3L;
-        String patchContent = """
-                [
-                    {"op":"replace","path":"/type","value":"newval"}
-                ]
-                """;
-        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
-
-        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[2]));
-        Mockito.when(vendorRepository.findById(id)).thenReturn(Optional.of(vendors[0]));
-        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[2]);
-        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[2]));
-
-        //act and assert
-        assertThrows(JsonPatchException.class, ()->editProfileService.updateVendorInfo(id, patch));
-    }
-
-    @Test
     void updateVendorInfoPasswordForOauth() throws IOException {
         //arrange
         Long id = 6L;
@@ -569,5 +509,108 @@ public class EditProfileServicesPatchTest {
 
         //act and assert
         assertThrows(NoSuchElementException.class, ()->editProfileService.updateVendorInfo(id, patch));
+    }
+
+
+
+
+    @Test
+    void updateInfoRestrictedAttrType() throws IOException {
+        //arrange
+        Long id = 3L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/type","value":"newval"}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[2]));
+        Mockito.when(vendorRepository.findById(id)).thenReturn(Optional.of(vendors[0]));
+        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[2]);
+        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[2]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateVendorInfo(id, patch));
+    }
+
+    @Test
+    void updateInfoRestrictedAttrAuthType() throws IOException {
+        //arrange
+        Long id = 3L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/authType","value":"newval"}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[2]));
+        Mockito.when(vendorRepository.findById(id)).thenReturn(Optional.of(vendors[0]));
+        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[2]);
+        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[2]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateVendorInfo(id, patch));
+    }
+
+    @Test
+    void updateInfoRestrictedAttrAccountId() throws IOException {
+        //arrange
+        Long id = 3L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/accountId","value":12}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[2]));
+        Mockito.when(vendorRepository.findById(id)).thenReturn(Optional.of(vendors[0]));
+        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[2]);
+        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[2]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateVendorInfo(id, patch));
+    }
+
+    @Test
+    void updateInfoRestrictedAttrUsername() throws IOException {
+        //arrange
+        Long id = 3L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/username","value":"newval"}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[2]));
+        Mockito.when(vendorRepository.findById(id)).thenReturn(Optional.of(vendors[0]));
+        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[2]);
+        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[2]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateVendorInfo(id, patch));
+    }
+
+    @Test
+    void updateInfoRestrictedAttrIsActive() throws IOException {
+        //arrange
+        Long id = 3L;
+        String patchContent = """
+                [
+                    {"op":"replace","path":"/active","value":false}
+                ]
+                """;
+        JsonPatch patch = JsonPatch.fromJson(new ObjectMapper().readTree(patchContent));
+
+        Mockito.when(accountRepository.findById(id)).thenReturn(Optional.of(accounts[2]));
+        Mockito.when(vendorRepository.findById(id)).thenReturn(Optional.of(vendors[0]));
+        Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[2]);
+        Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[2]));
+
+        //act and assert
+        assertThrows(JsonPatchException.class, ()->editProfileService.updateVendorInfo(id, patch));
     }
 }
