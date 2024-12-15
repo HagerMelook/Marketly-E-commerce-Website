@@ -7,7 +7,6 @@ function AccountCard({ account, resetMsg }) {
 
   const resetLocalMsg = () => setMsg("");
 
-  // Reset the message when the `resetMsg` prop changes
   useEffect(() => {
     if (resetMsg) {
       resetLocalMsg();
