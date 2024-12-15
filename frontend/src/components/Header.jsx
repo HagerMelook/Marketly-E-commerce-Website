@@ -10,7 +10,7 @@ function Header({ isAdmin }) {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">
+        <Link to="/home">
           <img src={logo} alt="Company Logo" />
         </Link>
       </div>
