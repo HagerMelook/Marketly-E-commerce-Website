@@ -20,22 +20,29 @@ public class GoogleOAuthConfig {
         http.headers().frameOptions().disable();
 
         http
-            .authorizeHttpRequests(authRequest -> authRequest
-                .requestMatchers("/SignUp/Google/**").authenticated()  // Require google OAuth for this url
-                .anyRequest().permitAll()  // Don't require auth for the rest
+                .authorizeHttpRequests(authRequest -> authRequest
+                                .requestMatchers("/SignUp/Google/**").authenticated()  // Require google OAuth for this url
+                                .anyRequest().permitAll()  // Don't require auth for the rest
 //                .anyRequest().authenticated()  // Don't require auth for the rest
-            )
-            .logout(logout -> logout
+                )
+                .logout(logout -> logout
 //                    .logoutSuccessUrl("/")  // Redirect after logout
-                    .invalidateHttpSession(true)  // Invalidate session
-                    .deleteCookies("JSESSIONID")  // Delete session cookies
-            )
-            .csrf(csrf -> csrf
-                    .disable()
+                                .invalidateHttpSession(true)  // Invalidate session
+                                .deleteCookies("JSESSIONID")  // Delete session cookies
+                )
+                .csrf(csrf -> csrf
+                                .disable()
 //                    .ignoringRequestMatchers("/SignUp/Google/Client", "/SignUp/ClientBasicSignUp")
-            )
-            .cors(cors -> cors.
-                    configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))  // Enable CORS globally
+                )
+                .cors(cors -> cors.configurationSource(request -> {
+                            CorsConfiguration configuration = new CorsConfiguration();
+                            configuration.addAllowedOrigin("http://localhost:5175"); // Allow frontend
+                            configuration.addAllowedMethod("*"); // Allow all HTTP methods
+                            configuration.addAllowedHeader("*"); // Allow all headers
+                            configuration.setAllowCredentials(true); // Allow cookies
+                            return configuration;
+                        })
+                )  // Enable CORS globally
 
                 .oauth2Login(Customizer.withDefaults()) //Specifically require Google oauth2
         ;
