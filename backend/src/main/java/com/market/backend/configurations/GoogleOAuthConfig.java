@@ -36,7 +36,7 @@ public class GoogleOAuthConfig {
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                             CorsConfiguration configuration = new CorsConfiguration();
-                            configuration.addAllowedOrigin("http://localhost:5175"); // Allow frontend
+                            configuration.addAllowedOrigin("http://localhost:5173"); // Allow frontend
                             configuration.addAllowedMethod("*"); // Allow all HTTP methods
                             configuration.addAllowedHeader("*"); // Allow all headers
                             configuration.setAllowCredentials(true); // Allow cookies
