@@ -57,6 +57,7 @@ public class AdminService {
                 throw new IllegalArgumentException("Invalid action");
         }
 
+        passwordRepository.deleteById(account.getId());
         accountRepository.delete(account);
     }
 
@@ -78,6 +79,10 @@ public class AdminService {
         if (account.getType().equalsIgnoreCase("client")) {
             account.setType("admin");
 
+            if (!clientRepository.existsById(id)) {
+                return;
+            }
+
             Client client = clientRepository.findByAccount_Id(id)
                     .orElseThrow(() -> new NoSuchElementException("Client not found"));
 
@@ -98,6 +103,10 @@ public class AdminService {
 
         if (account.getType().equalsIgnoreCase("admin")) {
             account.setType("client");
+
+            if (!adminRepository.existsById(id)) {
+                return;
+            }
 
             Admin admin = adminRepository.findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Admin not found"));
