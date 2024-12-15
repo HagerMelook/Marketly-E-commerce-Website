@@ -114,16 +114,3 @@
     font-size: 14px;
   }
 }
-
-.orders-text {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.3s, transform 0.3s;
-}
-
-.orders-text:hover {
-  transform: scale(1.2);
-  filter: brightness(1.2);
-}

@@ -6,15 +6,16 @@
 }
 
 .search-section {
+  margin-top: 100px;
   margin-bottom: 20px;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Centers child elements horizontally */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .search-section h2 {
@@ -27,51 +28,54 @@
   margin-bottom: 15px;
   width: 100%;
   max-width: 600px;
-  /* Restricts the width for symmetry */
 }
 
 .search-section input {
   background-color: #fff;
   color: #333;
   width: 100%;
-  /* Ensures inputs take full width of the container */
   padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   box-sizing: border-box;
-  /* Ensures padding is included in width */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .search-section input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  border-color: #0074d9;
+  box-shadow: 0 0 5px rgba(0, 116, 217, 0.5);
 }
 
 .search-section button {
-  background-color: #007bff;
-  color: white;
+  background-color: #0074d9;
+  color: #fff;
   padding: 10px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   width: 25%;
   margin-top: 10px;
-  /* Adds some spacing above the button */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .search-section button:hover {
-  background-color: #0056b3;
+  background-color: #005bb5;
+}
+
+.search-section button:active {
+  transform: scale(0.98);
 }
 
 .account-card {
-  border: 1px solid #ddd;
+  margin-top: 100px;
+  border: 1px solid #e0e0e0;
   padding: 20px;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .account-card h3 {
@@ -99,6 +103,10 @@
 
 .account-card .action-buttons {
   margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 .account-card .action-buttons button {
@@ -108,47 +116,15 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  color: white;
-  background-color: #007bff;
+  color: #fff;
+  background-color: #0074d9;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.account-card .action-buttons button.activate {
-  background-color: #28a745;
+.account-card .action-buttons button:active {
+  transform: scale(0.98);
 }
 
-.account-card .action-buttons button.activate:hover {
-  background-color: #218838;
-}
-
-.account-card .action-buttons button.deactivate {
-  background-color: #ffc107;
-  color: #333;
-}
-
-.account-card .action-buttons button.deactivate:hover {
-  background-color: #e0a800;
-}
-
-.account-card .action-buttons button.remove {
-  background-color: #dc3545;
-}
-
-.account-card .action-buttons button.remove:hover {
-  background-color: #c82333;
-}
-
-.account-card .action-buttons button.promote {
-  background-color: #17a2b8;
-}
-
-.account-card .action-buttons button.promote:hover {
-  background-color: #138496;
-}
-
-.account-card .action-buttons button.demote {
-  background-color: #6c757d;
-}
-
-.account-card .action-buttons button.demote:hover {
-  background-color: #5a6268;
+.account-card .action-buttons button:hover {
+  background-color: #005bb5;
 }
