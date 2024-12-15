@@ -1,5 +1,6 @@
 package com.market.backend.services;
 
+import com.market.backend.models.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
