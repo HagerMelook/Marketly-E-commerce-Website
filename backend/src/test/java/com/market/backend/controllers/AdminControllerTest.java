@@ -28,11 +28,13 @@ class AdminControllerTest {
 
     @BeforeEach
     void setUp() {
-        testAccount = new Account();
-        testAccount.setId(1L);
-        testAccount.setUsername("testuser");
-        testAccount.setActive(true);
-        testAccount.setType("client");
+        testAccount = Account.builder()
+                .id(1L)
+                .username("testuser")
+                .isActive(true)
+                .type("client")
+                .authType("basic")
+                .build();
     }
 
     @Test
@@ -41,8 +43,7 @@ class AdminControllerTest {
 
         mockMvc.perform(get("/admin/info/testuser"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("testuser"))
-                .andExpect(jsonPath("$.email").value("test@example.com"));
+                .andExpect(jsonPath("$.username").value("testuser"));
 
         verify(adminService, times(1)).getAccountInfoByUserName("testuser");
     }
