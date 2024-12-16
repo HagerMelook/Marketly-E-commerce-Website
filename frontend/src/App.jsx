@@ -4,6 +4,7 @@ import ClientReg from "./pages/registeration/ClientReg";
 import Home from "./pages/home/Home";
 import RadialChoice from "./pages/registeration/RadialChoice";
 import VendorReg from "./pages/registeration/VendorReg";
+import ProductPage from "./pages/ProductPage/ProductPage";
 
 function AppRouter() {
   return (
@@ -11,6 +12,7 @@ function AppRouter() {
       <Routes>
         <Route index element={<RadialChoice />} />
         <Route path="clientSignUp" element={<ClientReg />} />
+        <Route path="productPage/:productId" element={<ProductPage />} />
         <Route path="vendorSignUp" element={<VendorReg />} />
         <Route path="home" element={<Home isAdmin={false} />} />
         <Route path="admin-dashboard" element={<AdminDashboard />} />
