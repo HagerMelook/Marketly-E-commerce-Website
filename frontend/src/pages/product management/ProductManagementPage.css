@@ -1,0 +1,14 @@
+.product-management-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.product-management-page .page-body {
+  display: flex;
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+}
