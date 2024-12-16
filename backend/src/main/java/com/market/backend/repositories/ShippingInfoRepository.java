@@ -9,7 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ShippingInfoRepository extends JpaRepository<ShippingInfo, Long> {
-    Optional<ShippingInfo> findByAccount_Id(Long accountId);
-    boolean existsByAddress(String address);
-    boolean existsByPhoneNumber(String phone);
+    Optional<ShippingInfo> findByAccountId(Long accountId);
 }
