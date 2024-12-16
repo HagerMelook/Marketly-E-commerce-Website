@@ -83,7 +83,7 @@ public class AdminService {
                 return;
             }
 
-            Client client = clientRepository.findByAccount_Id(id)
+            Client client = clientRepository.findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Client not found"));
 
             Admin admin = new Admin(client.getFirstName(), client.getLastName(), account);
