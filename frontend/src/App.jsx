@@ -1,15 +1,15 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AdminDashboard from "./pages/AdminDashboard";
-import ClientReg from "./pages/ClientReg/ClientReg";
-import Home from "./pages/Home";
-import RadialChoice from "./pages/RadialChoice/RadialChoice";
-import VendorReg from "./pages/VendorReg/VendorReg";
+import AdminDashboard from "./pages/admin dashboard/AdminDashboard";
+import ClientReg from "./pages/registeration/ClientReg";
+import Home from "./pages/home/Home";
+import RadialChoice from "./pages/registeration/RadialChoice";
+import VendorReg from "./pages/registeration/VendorReg";
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<RadialChoice />}/>
+        <Route index element={<RadialChoice />} />
         <Route path="clientSignUp" element={<ClientReg />} />
         <Route path="vendorSignUp" element={<VendorReg />} />
         <Route path="home" element={<Home isAdmin={false} />} />
