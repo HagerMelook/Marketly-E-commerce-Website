@@ -25,4 +25,7 @@ public class Comment {
 
     @Column(name = "comment_body", nullable = false)
     private String body;
+
+    @Column(name = "rating", nullable = false)
+    private double rating;
 }
