@@ -29,4 +29,13 @@ public class SignInController {
 
         throw new IllegalStateException("User is not authenticated");
     }
+    @PostMapping("/testo")
+    public String testo() {
+        return"hurray testo";
+    }
+    
+    @PostMapping("/admino")
+    public String admino() {
+        return"hurray admino";
+    }
 }

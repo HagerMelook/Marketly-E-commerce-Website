@@ -2,14 +2,10 @@ package com.market.backend.Services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Date;
@@ -24,8 +20,7 @@ import javax.crypto.SecretKey;
 public class JWTService {
 
     private String SECRET_KEY = "";
-    private static final long EXPIRATION_TIME = 60*60*30; // 30 mins in milliseconds
-
+    private static final int EXPIRATION_TIME = 30 * 60 * 1000; // 30 mins in milliseconds
 
     public JWTService() {
 
@@ -43,6 +38,7 @@ public class JWTService {
         return Jwts.builder()
                 .claims()
                 .add(claims)
+                .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .and()
