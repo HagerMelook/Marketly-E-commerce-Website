@@ -1,7 +1,6 @@
 package com.market.backend.services;
 
 import com.market.backend.dtos.ProductDTO;
-import com.market.backend.models.Category;
 import com.market.backend.models.Product;
 import com.market.backend.models.ProductImage;
 import com.market.backend.models.Vendor;
