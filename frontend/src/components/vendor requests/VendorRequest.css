@@ -1,0 +1,56 @@
+.vendor-request-page {
+    background-color: #ffffff;  
+    border: 1px solid #ddd;    
+    border-radius: 8px;       
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+    padding: 16px;            
+    margin: 8px 0; 
+    font-size: 25px;                     
+    font-family: Arial, sans-serif;
+    display: flex;  
+    flex-direction: column;
+  }
+  
+  .vendor-request-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 8px 0;
+    display: flex;         
+    justify-content: space-between; 
+    align-items: center;   
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  .vendor-info {
+    flex: 1; 
+  }
+  
+  .vendor-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  
+  .accept-btn,
+  .reject-btn {
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 26px;
+    cursor: pointer;
+  }
+  
+  .reject-btn {
+    background-color: #dc3545; 
+  }
+  
+  .accept-btn:hover,
+  .reject-btn:hover {
+    opacity: 0.9;
+  }
