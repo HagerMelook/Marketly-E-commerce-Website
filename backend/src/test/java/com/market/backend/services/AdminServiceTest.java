@@ -3,142 +3,171 @@ package com.market.backend.services;
 import com.market.backend.models.Account;
 import com.market.backend.models.Admin;
 import com.market.backend.models.Client;
-import com.market.backend.repositories.AccountRepository;
-import com.market.backend.repositories.AdminRepository;
-import com.market.backend.repositories.ClientRepository;
-import com.market.backend.repositories.VendorRepository;
+import com.market.backend.repositories.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class AdminServiceTest {
-    @Autowired
-    private AdminService adminService;
-
-    @Autowired
+    @Mock
     private AccountRepository accountRepository;
 
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
+    @Mock
     private VendorRepository vendorRepository;
 
-    @Autowired
+    @Mock
     private AdminRepository adminRepository;
 
-    @Test
-    void getAccountInfoByUserName() {
-        Account account = Account.builder()
+    @Mock
+    private ClientRepository clientRepository;
+
+    @Mock
+    private PasswordRepository passwordRepository;
+
+    @InjectMocks
+    private AdminService adminService;
+
+    private Account testAccount;
+
+    @BeforeEach
+    void setUp() {
+        testAccount = Account.builder()
+                .id(1L)
                 .isActive(true)
                 .username("client2")
                 .type("client")
-                .authType("OAuth")
+                .authType("basic")
                 .build();
+    }
 
-        Client client = Client.builder()
-                .firstName("john")
-                .lastName("dann")
-                .account(account)
-                .build();
+    @Test
+    void getAccountInfoByUserName() {
+        when(accountRepository.findByUsername("client2")).thenReturn(Optional.of(testAccount));
 
-        clientRepository.save(client);
+        Account result = adminService.getAccountInfoByUserName("client2");
 
-        assertEquals(adminService.getAccountInfoByUserName("client2"), account);
+        assertEquals(testAccount, result);
+        verify(accountRepository).findByUsername("client2");
     }
 
     @Test
     void getAccountInfoByInvalidUserName() {
-        assertThrows(NoSuchElementException.class, () -> {
-            adminService.getAccountInfoByUserName("dslfsdo");
-        });
+        when(accountRepository.findByUsername("dslfsdo")).thenReturn(Optional.empty());
+
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () ->
+                adminService.getAccountInfoByUserName("dslfsdo"));
+        assertEquals("User not found", exception.getMessage());
+
+        verify(accountRepository).findByUsername("dslfsdo");
     }
+
 
     @Test
     void testDeleteAccount() {
-        Account account = Account.builder()
-                .isActive(true)
-                .type("client")
-                .authType("OAuth")
-                .username("client3")
-                .build();
+        when(accountRepository.findById(1L)).thenReturn(Optional.of(testAccount));
 
-        Account savedAccount = accountRepository.save(account);
-        adminService.deleteAccount(savedAccount.getId());
+        adminService.deleteAccount(1L);
 
-        assertFalse(accountRepository.findById(savedAccount.getId()).isPresent());
+        verify(accountRepository).findById(1L);
+        verify(clientRepository).deleteById(1L);
+        verify(passwordRepository).deleteById(1L);
+        verify(accountRepository).delete(testAccount);
+
+        verifyNoInteractions(adminRepository, vendorRepository);
     }
 
     @Test
-    void testDeleteInvalidAccount() {
-        assertThrows(NoSuchElementException.class, () -> {
-            adminService.deleteAccount(25654L);
-        });
+    void testDeleteAccount_UserNotFound() {
+        when(accountRepository.findById(testAccount.getId()))
+                .thenReturn(java.util.Optional.empty());
+
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () ->
+                adminService.deleteAccount(testAccount.getId()));
+
+        assertEquals("User not found", exception.getMessage());
+
+        verify(accountRepository).findById(testAccount.getId());
+        verifyNoMoreInteractions(accountRepository, adminRepository, clientRepository, vendorRepository, passwordRepository);
     }
 
     @Test
-    void testActivateUser() {
-        Account account = Account.builder()
-                .isActive(false)
-                .type("client")
-                .username("client4")
-                .authType("OAuth")
-                .build();
+    void testChangeAccountStatus_Success() {
+        when(accountRepository.findById(1L)).thenReturn(Optional.of(testAccount));
 
-        Account savedAccount = accountRepository.save(account);
-        adminService.changeAccountStatus(true, savedAccount.getId());
-        assertTrue(accountRepository.findById(savedAccount.getId()).get().isActive());
+        adminService.changeAccountStatus(true, 1L);
+
+        assertTrue(testAccount.isActive());
+        verify(accountRepository).findById(1L);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
-    void testDeactivateUser() {
-        Account account = Account.builder()
-                .isActive(true)
-                .type("client")
-                .authType("OAuth")
-                .username("client5")
-                .build();
-        Account savedAccount = accountRepository.save(account);
-        adminService.changeAccountStatus(false, savedAccount.getId());
-        assertFalse(accountRepository.findById(savedAccount.getId()).get().isActive());
+    void testChangeAccountStatus_UserNotFound() {
+        when(accountRepository.findById(1L)).thenReturn(Optional.empty());
+
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () ->
+                adminService.changeAccountStatus(true, 1L));
+        assertEquals("User not found", exception.getMessage());
+
+        verify(accountRepository).findById(1L);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
     void testPromoteUser() {
-        Account account = Account.builder()
-                .isActive(true)
-                .type("client")
-                .authType("OAuth")
-                .username("client6")
-                .build();
-        Client client = new Client("john", "dann", account);
-        Client savedClient = clientRepository.save(client);
-        adminService.promoteAccount(savedClient.getAccount().getId());
-        assertTrue(adminRepository.findById(savedClient.getAccount().getId()).isPresent());
+        Client client = Client.builder()
+                    .firstName("john")
+                    .lastName("dan")
+                    .account(testAccount)
+                    .build();
+
+        when(accountRepository.findById(1L)).thenReturn(Optional.of(testAccount));
+        when(clientRepository.existsById(1L)).thenReturn(true);
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+
+        adminService.promoteAccount(1L);
+
+        assertEquals("admin", testAccount.getType());
+        verify(accountRepository).findById(1L);
+        verify(clientRepository).existsById(1L);
+        verify(clientRepository).findById(1L);
+        verify(clientRepository).delete(any(Client.class));
+        verify(adminRepository).save(any(Admin.class));
+        verifyNoMoreInteractions(accountRepository, clientRepository);
     }
 
     @Test
     void testDemoteUser() {
-        Account account = Account.builder()
-                .isActive(true)
-                .type("admin")
-                .authType("Basic")
-                .username("admin8")
-                .build();
+        testAccount.setType("admin");
 
         Admin admin = Admin.builder()
-                .account(account)
+                .account(testAccount)
                 .firstName("ahmed")
-                .lastName("a")
+                .lastName("ahmed")
                 .build();
 
-        Admin savedAdmin = adminRepository.save(admin);
-        adminService.demoteAccount(savedAdmin.getAccount().getId());
-        assertTrue(clientRepository.findByAccount_Id(savedAdmin.getAccount().getId()).isPresent());
+        when(accountRepository.findById(1L)).thenReturn(Optional.of(testAccount));
+        when(adminRepository.existsById(1L)).thenReturn(true);
+        when(adminRepository.findById(1L)).thenReturn(Optional.of(admin));
+
+        adminService.demoteAccount(1L);
+
+        assertEquals("client", testAccount.getType());
+
+        verify(accountRepository).findById(1L);
+        verify(adminRepository).existsById(1L);
+        verify(adminRepository).findById(1L);
+        verify(adminRepository).deleteById(1L);
+        verify(clientRepository).save(any(Client.class));
+        verifyNoMoreInteractions(accountRepository, clientRepository);
     }
 }
