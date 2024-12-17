@@ -20,8 +20,4 @@ public class Category {
 
     @Column(name = "category_image_path", nullable = false)
     private String categoryImagePath;
-
-    public void setCategoryName(String categoryName){
-        this.categoryName = categoryName;
-    }
 }
