@@ -1,4 +1,4 @@
-package com.market.backend.security;
+package com.market.backend.configurations;
 
 import javax.sql.DataSource;
 
