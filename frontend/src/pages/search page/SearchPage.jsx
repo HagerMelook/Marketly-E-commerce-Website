@@ -1,8 +1,8 @@
 // import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Header from "../../../../../../يييييييييييييييييييييييييييييييييييييييييييي/frontend/src/components/Header.jsx";
-import ProductListing from "../components/ProductListing";
+import Header from "../../components/header/Header";
+import ProductListing from "../../components/product listing/ProductListing";
 import "./SearchPage.css";
 
 function SearchPage() {

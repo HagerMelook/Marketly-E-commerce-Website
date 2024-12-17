@@ -9,12 +9,15 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/SignUp")
 public class SignUpController {
 
-    @Autowired
-    private SignUpService service;
+    private final SignUpService service;
+
+    public SignUpController(SignUpService service) {
+        this.service = service;
+    }
 
     @GetMapping("/Google/Client")
     public String googleOauthClient(@AuthenticationPrincipal OAuth2User principal){

@@ -1,5 +1,5 @@
-import Header from "../../../../../../يييييييييييييييييييييييييييييييييييييييييييي/frontend/src/components/Header.jsx";
-import Category from "../../../../../../يييييييييييييييييييييييييييييييييييييييييييي/frontend/src/components/Category.jsx";
+import Header from "../../components/header/Header.jsx";
+import Category from "../../components/category/Category.jsx";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import "./Home.css";

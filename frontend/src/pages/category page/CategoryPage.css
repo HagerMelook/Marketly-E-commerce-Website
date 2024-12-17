@@ -1,4 +1,4 @@
-.home {
+.category-page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,15 +11,14 @@
   overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
-.categories {
-  display: flex;
-  width: 95%;
-  /* margin: 10px 10px; */
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 0 20px;
-}
+/* .search-listing {
+  width: 100%;
+} */
 
 h1 {
   color: black;
+  font-size: 2.5rem;
+  position: relative;
+  margin-top: 10px;
+  padding-bottom: 0px;
 }
