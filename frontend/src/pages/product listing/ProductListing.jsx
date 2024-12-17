@@ -1,14 +1,17 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Filter from "../../components/filter/Filter";
-import Header from "../../components/header/Header";
 import "./ProductListing.css";
 
 function ProductListing({ products = [], showFilter = false }) {
     const navigate = useNavigate();
     const [filteredProducts, setFilteredProducts] = useState(products);
     const [selectedCategories, setSelectedCategories] = useState([]);
+
+    useEffect(() => {
+        setFilteredProducts(products);
+    }, [products]);
 
     const categories = [...new Set(products.map((product) => product.category))];
 
@@ -62,34 +65,31 @@ function ProductListing({ products = [], showFilter = false }) {
     };
 
     return (
-        <div>
-            <Header isAdmin={false} />
-            <div className="container">
-                <aside className="sidebar">
-                    <Filter
-                        categories={categories}
-                        minRating={minRating}
-                        maxRating={maxRating}
-                        minPrice={minPrice}
-                        maxPrice={maxPrice}
-                        selectedCategories={selectedCategories}
-                        onFilterChange={handleFilterChange}
-                        showFilter={showFilter}
-                    />
-                </aside>
-                <main className="main">
-                    <div className="product-list">
-                        {filteredProducts.map((product) => (
-                            <div className="product-card" key={product.id} onClick={() => navigate(`productPage/${product.id}`)}>
-                                <img src={product.image} alt={product.name} className="product-image" />
-                                <h3 className="product-name">{product.name}</h3>
-                                <div className="product-rating">{renderStars(product.rating)}</div>
-                                <p className="product-price">{product.price} EGP</p>
-                            </div>
-                        ))}
-                    </div>
-                </main>
-            </div>
+        <div className="container">
+            <aside className="sidebar">
+                <Filter
+                    categories={categories}
+                    minRating={minRating}
+                    maxRating={maxRating}
+                    minPrice={minPrice}
+                    maxPrice={maxPrice}
+                    selectedCategories={selectedCategories}
+                    onFilterChange={handleFilterChange}
+                    showFilter={showFilter}
+                />
+            </aside>
+            <main className="main">
+                <div className="product-list">
+                    {filteredProducts.map((product) => (
+                        <div className="product-card" key={product.id} onClick={() => navigate(`productPage/${product.id}`)}>
+                            <img src={product.image} alt={product.name} className="product-image" />
+                            <h3 className="product-name">{product.name}</h3>
+                            <div className="product-rating">{renderStars(product.rating)}</div>
+                            <p className="product-price">{product.price} EGP</p>
+                        </div>
+                    ))}
+                </div>
+            </main>
         </div>
     );
 };
