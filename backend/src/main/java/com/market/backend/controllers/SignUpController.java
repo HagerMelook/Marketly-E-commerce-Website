@@ -1,19 +1,12 @@
 package com.market.backend.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.market.backend.models.Account;
 import com.market.backend.models.VendorRequest;
 import com.market.backend.services.SignUpService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -35,16 +28,6 @@ public class SignUpController {
         return service.registerVendorRequest(request.getAttributes().get("email").toString(), org, tax);
     }
 
-//    @GetMapping("/")
-//    public String testHome(){
-//        return "Welcome";
-//    }
-//
-//    @GetMapping("/about")
-//    public String testAbout(){
-//        return "I'm Ahmed";
-//    }
-
     @PostMapping("/ClientBasicSignUp/{password}")
     public String clientBasicSignUp(@RequestBody Account client, @PathVariable String password) {
         System.out.println("Received User: " + client.getUsername() + ", " + password);
@@ -54,7 +37,7 @@ public class SignUpController {
     @PostMapping("/VendorBasicSignUp")
     public String vendorBasicSignUp(@RequestBody VendorRequest vendor) {
         System.out.println("Received User: " + vendor.getOrganizationName() + ", " + vendor.getPassword() + ", "
-                + vendor.getTaxNumber()+ ", " + vendor.getUsername());
+                + vendor.getTaxNumber());
         return service.insertBasicVendor(vendor);
     }
 

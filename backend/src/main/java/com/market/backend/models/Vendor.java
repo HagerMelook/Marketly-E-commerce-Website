@@ -2,6 +2,7 @@ package com.market.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,8 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Vendor {
     @Id
+    @Column(unique=true, name = "account_id")
     private Long id;
 
     @Column(name = "organization_name")
