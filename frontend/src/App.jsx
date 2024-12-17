@@ -5,11 +5,11 @@ import Home from "./pages/home/Home";
 import RadialChoice from "./pages/registeration/RadialChoice";
 import VendorReg from "./pages/registeration/VendorReg";
 import ProductManagementPage from "./pages/product management/ProductManagementPage";
-import VendorInventory from "./pages/vendor inventory/VendorInventory"; // Ensure this import
+import VendorInventory from "./pages/vendor inventory/VendorInventory";
 import { ProductProvider } from "./contexts/ProductProvider";
 import { AccountInfoProvider } from "./contexts/AccountInfoProvider";
 
-function AppRouter() {
+function App() {
   return (
     <AccountInfoProvider>
       <BrowserRouter>
@@ -40,4 +40,4 @@ function AppRouter() {
   );
 }
 
-export default AppRouter;
+export default App;
