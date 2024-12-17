@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import jakarta.servlet.Filter;
 
@@ -32,15 +33,29 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http.csrf(customizer -> customizer.disable())
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Enforce stateless sessions
-                    .httpBasic(Customizer.withDefaults())
-                    .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                    .authorizeHttpRequests(configurer -> configurer
-                            .requestMatchers(HttpMethod.POST, "/auth/testo").hasRole("USER") 
-                            .requestMatchers(HttpMethod.POST, "/auth/admino").hasRole("ADMIN") 
-                            .anyRequest().authenticated() // Secure all other APIs
-                    )
-                    .build();
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Enforce
+                                                                                                              // stateless
+                                                                                                              // sessions
+                .httpBasic(Customizer.withDefaults())
+                .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(configurer -> configurer
+                        .requestMatchers(HttpMethod.POST, "/auth/testo").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/auth/admino").hasRole("ADMIN")
+                        .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth for this url
+                        .anyRequest().authenticated() // Secure all other APIs
+                )
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.addAllowedOrigin("http://localhost:5173"); // Allow frontend
+                    configuration.addAllowedMethod("*"); // Allow all HTTP methods
+                    configuration.addAllowedHeader("*"); // Allow all headers
+                    configuration.setAllowCredentials(true); // Allow cookies
+                    return configuration;
+                })) // Enable CORS globally
+                .logout(logout -> logout.logoutSuccessUrl("/"))
+                // Redirect after logout, no need to delete session ids
+                // as we using statless session mangment policy
+                .build();
     }
 
     @Bean
