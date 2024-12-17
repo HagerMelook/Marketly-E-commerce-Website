@@ -90,7 +90,7 @@ const Login = () => {
           type="button"
           onClick={() =>
           (window.location.href =
-            "http://localhost:8080/SignUp/Google/Client")
+            "http://localhost:8080/auth/signin/google")
           }
           className="googleOauth"
         >

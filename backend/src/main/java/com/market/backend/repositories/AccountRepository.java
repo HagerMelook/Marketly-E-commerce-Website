@@ -13,4 +13,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     boolean existsByUsername(String username);
     @Query("SELECT a.id FROM Account a WHERE a.username = :username")
     Long findIdByUsername(String username);
+    @Query("SELECT a.type FROM Account a WHERE a.username = :username")
+    String getTypeByUserName(String username);
 }
