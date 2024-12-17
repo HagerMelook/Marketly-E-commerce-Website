@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import "./ProductForm.css";
 import { useProductContext } from "../../contexts/ProductProvider";
+import "./ProductForm.css";
 
 function ProductForm() {
   const { selectedProduct } = useProductContext();
