@@ -2,6 +2,7 @@ package com.market.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Product {
     @Id
     @Column(name = "product_id", nullable = false, unique = true)

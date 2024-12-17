@@ -5,6 +5,7 @@ import com.market.backend.services.AdminService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AdminController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -71,6 +73,7 @@ class AdminControllerTest {
     }
 
     @Test
+//    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void testActivateUserAccount_NotFound() throws Exception {
         doThrow(new NoSuchElementException()).when(adminService).changeAccountStatus(true, 999L);
 
@@ -139,8 +142,8 @@ class AdminControllerTest {
         doThrow(new IllegalArgumentException("Unauthorized")).when(adminService).demoteAccount(1L);
 
         mockMvc.perform(put("/admin/demote/1"))
-                .andExpect(status().isUnauthorized())  // Expecting 401 Unauthorized response
-                .andExpect(content().string("Unauthorized"));  // Expecting unauthorized message
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Unauthorized"));
 
         verify(adminService, times(1)).demoteAccount(1L);
     }
