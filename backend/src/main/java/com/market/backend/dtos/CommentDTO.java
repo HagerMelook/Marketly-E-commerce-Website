@@ -12,6 +12,7 @@ public class CommentDTO {
     private Long id;
     private Long accountId;
     private Long productId;
+    private String name;
     private String body;
     private Integer rating;
 
@@ -21,5 +22,6 @@ public class CommentDTO {
         this.rating  = comment.getRating();
         this.accountId = comment.getAccount().getId();
         this.productId = comment.getProduct().getId();
+        this.name = comment.getAccount().getUsername();
     }
 }
