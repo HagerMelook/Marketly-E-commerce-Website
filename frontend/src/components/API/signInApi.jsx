@@ -13,7 +13,7 @@ async function BasicSignIn(username, password) {
           let errorDetails = null;
           try {
             errorDetails = await response.json(); // Try to parse JSON error response
-          } catch (jsonError) {
+          } catch {
             // If JSON parsing fails, use the text response
             errorDetails = await response.text();
           }
