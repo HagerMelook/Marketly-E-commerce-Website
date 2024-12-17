@@ -25,7 +25,15 @@ public class AdminService {
     private final VendorRequestRepository requestRepository;
     private final PasswordRepository passwordRepository;
 
-    public AdminService(AdminRepository adminRepository, ClientRepository clientRepository, VendorRepository vendorRepository, AccountRepository accountRepository, FeedbackRepository feedbackRepository, VendorRequestRepository requestRepository, PasswordRepository passwordRepository) {
+    public AdminService(
+            AdminRepository adminRepository,
+            ClientRepository clientRepository,
+            VendorRepository vendorRepository,
+            AccountRepository accountRepository,
+            FeedbackRepository feedbackRepository,
+            VendorRequestRepository requestRepository,
+            PasswordRepository passwordRepository
+    ) {
         this.adminRepository = adminRepository;
         this.clientRepository = clientRepository;
         this.vendorRepository = vendorRepository;
@@ -33,7 +41,6 @@ public class AdminService {
         this.feedbackRepository = feedbackRepository;
         this.requestRepository = requestRepository;
         this.passwordRepository = passwordRepository;
-
     }
 
     @Transactional
