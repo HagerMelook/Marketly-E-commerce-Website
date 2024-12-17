@@ -11,6 +11,12 @@ import java.util.Optional;
 
 @Service
 public class AdminService {
+    private static final String USER_NOT_FOUND = "User not found";
+    private static final String ACCOUNT_TYPE_ADMIN = "admin";
+    private static final String ACCOUNT_TYPE_CLIENT = "client";
+    private static final String ACCOUNT_TYPE_VENDOR = "vendor";
+    private static final String HARDCODED_ADMIN = "hardcoded admin";
+
     private final AdminRepository adminRepository;
     private final ClientRepository clientRepository;
     private final VendorRepository vendorRepository;
@@ -33,28 +39,20 @@ public class AdminService {
     @Transactional
     public void changeAccountStatus(boolean isActive, Long id) {
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
-
+                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
         account.setActive(isActive);
     }
 
     @Transactional
     public void deleteAccount(Long id) {
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
 
         switch (account.getType().toLowerCase()) {
-            case "admin":
-                adminRepository.deleteById(account.getId());
-                break;
-            case "client":
-                clientRepository.deleteById(account.getId());
-                break;
-            case "vendor":
-                vendorRepository.deleteById(account.getId());
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid action");
+            case ACCOUNT_TYPE_ADMIN -> adminRepository.deleteById(account.getId());
+            case ACCOUNT_TYPE_CLIENT -> clientRepository.deleteById(account.getId());
+            case ACCOUNT_TYPE_VENDOR -> vendorRepository.deleteById(account.getId());
+            default -> throw new IllegalArgumentException("Invalid account type");
         }
 
         passwordRepository.deleteById(account.getId());
@@ -64,20 +62,20 @@ public class AdminService {
     @Transactional
     public Account getAccountInfoByUserName(String username) {
         return accountRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
     }
 
     @Transactional
     public void promoteAccount(Long id) {
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
 
-        if (account.getType().equalsIgnoreCase("vendor")) {
+        if (ACCOUNT_TYPE_VENDOR.equalsIgnoreCase(account.getType())) {
             throw new IllegalArgumentException("Cannot promote a vendor");
         }
 
-        if (account.getType().equalsIgnoreCase("client")) {
-            account.setType("admin");
+        if (ACCOUNT_TYPE_CLIENT.equalsIgnoreCase(account.getType())) {
+            account.setType(ACCOUNT_TYPE_ADMIN);
 
             if (!clientRepository.existsById(id)) {
                 return;
@@ -95,14 +93,14 @@ public class AdminService {
     @Transactional
     public void demoteAccount(Long id) {
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElseThrow(() -> new NoSuchElementException(USER_NOT_FOUND));
 
-        if (account.getType().equalsIgnoreCase("hardcoded admin")) {
+        if (HARDCODED_ADMIN.equalsIgnoreCase(account.getType())) {
             throw new IllegalArgumentException("Cannot demote the hardcoded admin");
         }
 
-        if (account.getType().equalsIgnoreCase("admin")) {
-            account.setType("client");
+        if (ACCOUNT_TYPE_ADMIN.equalsIgnoreCase(account.getType())) {
+            account.setType(ACCOUNT_TYPE_CLIENT);
 
             if (!adminRepository.existsById(id)) {
                 return;
@@ -148,7 +146,7 @@ public class AdminService {
             Vendor vendor = new Vendor();
             account.setUsername(pendingVendor.getUsername());
             account.setActive(true);
-            account.setType("vendor");
+            account.setType(ACCOUNT_TYPE_VENDOR);
             account.setAuthType(pendingVendor.getAuthType());
             accountRepository.save(account);
 
