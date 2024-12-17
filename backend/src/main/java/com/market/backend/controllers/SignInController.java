@@ -1,39 +1,41 @@
 package com.market.backend.controllers;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+import com.market.backend.Services.JWTService;
 
 @RestController
 @RequestMapping("/auth")
 public class SignInController {
 
+    @Autowired
+    private JWTService jwtService;
+
     @PostMapping("/signin")
     public String signIn() {
-        // You would typically authenticate the user here, for now we are just testing
-        return "ok";
+        // Get the authenticated user from the Security Context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Extract username (principal)
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            // Generate and return the JWT
+            return jwtService.generateToken(userDetails.getUsername());
+        }
+
+        throw new IllegalStateException("User is not authenticated");
     }
-
-    // Simple DTO for sign-in request
-    public static class SignInRequest {
-        private String username;
-        private String password;
-
-        // Getters and setters
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
+    @PostMapping("/testo")
+    public String testo() {
+        return"hurray testo";
+    }
+    
+    @PostMapping("/admino")
+    public String admino() {
+        return"hurray admino";
     }
 }
