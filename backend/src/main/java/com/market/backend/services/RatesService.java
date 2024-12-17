@@ -37,6 +37,14 @@ public class RatesService {
         return slice.map(RateDTO::new);
     }
 
+    @Transactional
+    public RateDTO getRateByProductId(Long accountId, Long productId) {
+        Rate rate = rateRepository.findByAccountIdAndProductId(accountId, productId)
+                .orElseThrow(() -> new NoSuchElementException("Rate not found"));
+
+        return new RateDTO(rate);
+    }
+
     private void updateProductRate(Product product) {
         Double allCommentsRate = commentRepository.findAverageValue();
         Long commentsCount = commentRepository.count();
