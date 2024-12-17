@@ -4,18 +4,36 @@ import "./ProductForm.css";
 
 function ProductForm() {
   const { selectedProduct } = useProductContext();
-  const isNewProduct = selectedProduct ? true : false;
-  const [productData, setProductData] = useState(selectedProduct);
+  const isNewProduct = selectedProduct === null ? true : false;
+
+  const product = !isNewProduct
+    ? selectedProduct
+    : {
+        id: "",
+        name: "",
+        description: "",
+        quantity: "",
+        price: "",
+        category: "",
+        vendorId: "5",
+        images: [],
+      };
+
+  const [productData, setProductData] = useState(product);
   const [categories, setCategories] = useState([]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    console.log("Fetching categories");
+
     const fetchCategories = async () => {
       try {
         const response = await fetch("http://localhost:8080/vendor/categories");
         if (response.ok) {
           const data = await response.json();
-          data.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+          console.log(data);
+
+          data.sort();
           setCategories(data);
         } else {
           console.error("Failed to fetch categories");
@@ -76,8 +94,7 @@ function ProductForm() {
 
       if (response.ok) {
         setMessage("Product added successfully!");
-        setProductData(null);
-        setMessage("");
+        setProductData(product);
       } else {
         setMessage("Failed to add product!");
       }
@@ -93,6 +110,7 @@ function ProductForm() {
       <form
         className="product-form-container"
         onSubmit={handleSubmit}
+        onFocus={() => setMessage("")}
         encType="multipart/form-data"
       >
         <div>
@@ -112,7 +130,7 @@ function ProductForm() {
             value={productData.description}
             onChange={handleChange}
             required
-            maxLength="500"
+            maxLength="250"
           />
         </div>
         {productData.images && (
@@ -160,9 +178,9 @@ function ProductForm() {
             required
           >
             <option value="">Select Category</option>
-            {categories.map(({ categoryName }) => (
-              <option key={categoryName} value={categoryName}>
-                {categoryName}
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
               </option>
             ))}
           </select>

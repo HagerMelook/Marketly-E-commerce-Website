@@ -1,5 +1,5 @@
-import ProductForm from "../components/ProductForm";
-import Header from "../components/Header";
+import ProductForm from "../../components/product form/ProductForm";
+import Header from "../../components/header/Header";
 import "./ProductManagementPage.css";
 
 function ProductManagementPage() {
