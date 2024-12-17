@@ -1,0 +1,79 @@
+/* LogIn.css */
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .titleContainer {
+    display: flex;
+    flex-direction: column;
+    font-size: 64px;
+    font-weight: bolder;
+    align-items: center;
+    justify-content: center;
+    color: #333; /* Dark text for the title */
+    margin-bottom: 20px;
+  }
+  
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 400px;
+    margin-bottom: 15px;
+  }
+  
+  .inputBox {
+    height: 48px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 25px; /* Rounded corners */
+    border: 1px solid #ccc; /* Light border for a soft look */
+    background-color: #fff; /* White background for the input fields */
+    color: #333; /* Dark text for the input */
+    padding-left: 16px;
+    margin-top: 8px;
+    outline: none;
+    transition: all 0.3s ease; /* Smooth transition for focus */
+  }
+  
+  .inputBox:focus {
+    border-color: #4CAF50; /* Green color when focused */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4); /* Green shadow */
+  }
+  
+  .inputBox::placeholder {
+    color: #aaa; /* Light gray placeholder text */
+    font-style: italic;
+  }
+  
+  .errorLabel {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  
+  .inputButton {
+    height: 48px;
+  width: 200px; /* Set a smaller width */
+  font-size: 16px;
+  background-color:#162852;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0 auto; /* Center the button horizontally */
+  display: block; /* Ensure the button behaves like a block element */
+}
+  
+  
+  .inputButton:hover {
+    background-color:#657fbc ; /* Darker green on hover */
+  }
+  
