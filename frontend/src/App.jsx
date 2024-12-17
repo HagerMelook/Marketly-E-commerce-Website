@@ -4,6 +4,8 @@ import ClientReg from "./pages/registeration/ClientReg";
 import Home from "./pages/home/Home";
 import RadialChoice from "./pages/registeration/RadialChoice";
 import VendorReg from "./pages/registeration/VendorReg";
+import SearchPage from "./pages/search page/SearchPage.jsx";
+
 
 function AppRouter() {
   return (
@@ -15,6 +17,7 @@ function AppRouter() {
         <Route path="home" element={<Home isAdmin={false} />} />
         <Route path="admin-dashboard" element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to="/home" />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </BrowserRouter>
   );
