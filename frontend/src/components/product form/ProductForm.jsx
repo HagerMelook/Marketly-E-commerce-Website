@@ -15,7 +15,7 @@ function ProductForm() {
         quantity: "",
         price: "",
         category: "",
-        vendorId: "5",
+        vendorId: "",
         images: [],
       };
 
