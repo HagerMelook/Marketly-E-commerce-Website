@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Builder
+
 public class VendorRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

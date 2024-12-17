@@ -28,5 +28,4 @@ public class Account {
 
     @Column(name = "auth_type", nullable = false)
     private String authType;
-
 }
