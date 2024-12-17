@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@
 public class Product {
     @Id
     @Column(name = "product_id", nullable = false, unique = true)
