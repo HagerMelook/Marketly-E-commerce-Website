@@ -1,5 +1,6 @@
 package com.market.backend.models;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +35,7 @@ public class VendorRequest {
     @Column(name = "tax_number", unique = true)
     private Long taxNumber;
 
-    @Column(name = "auth_type", unique = true)
+
+    @Column(name = "auth_type", nullable = false)
     private String authType;
 }
