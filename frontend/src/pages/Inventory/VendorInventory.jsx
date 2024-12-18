@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo} from "react";
-// import { useNavigate } from "react-router-dom";
-// import {setSelectedProduct} from  "../../contexts/ProductProvider"
+import { useNavigate } from "react-router-dom";
+import { useProductContext} from "../../contexts/ProductProvider"
 import Header from "../../components/header/Header";
 import searchIcon from "../../assets/search-icon.svg";
 import InventoryProductListing from "../../components/Inventory/InventoryProductListing";
@@ -13,6 +13,8 @@ function VendorInventory() {
     const [isPending, setIsPending] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const {setSelectedProduct} = useProductContext();
+    const navigate = useNavigate();
     const productsPerPage = 4;
     const id = 10;
 
@@ -35,7 +37,7 @@ function VendorInventory() {
         fetch('http://localhost:8080/vendor/categories')
             .then(res => res.json())
             .then(data => setCategories(data))
-            .catch(error => console.error(error)); // Logging category fetch errors
+            .catch(error => console.error(error)); 
     }, []);
 
     
@@ -108,8 +110,8 @@ function VendorInventory() {
 
 
     const handleCreate = () => {
-        // setSelectedProduct(null)
-        // useNavigate('inventory/product-form')
+        setSelectedProduct(null)
+        navigate('product-form')
     };
 
     return (

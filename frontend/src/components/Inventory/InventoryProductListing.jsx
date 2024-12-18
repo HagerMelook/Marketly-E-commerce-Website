@@ -37,7 +37,7 @@ InventoryProductListing.propTypes = {
             quantity: PropTypes.number,                   
             price: PropTypes.number,                      
             category: PropTypes.string,                  
-            images: PropTypes.arrayOf(PropTypes.string), 
+            imagePaths: PropTypes.arrayOf(PropTypes.string), 
         })
     ).isRequired,
     onRemove: PropTypes.func.isRequired

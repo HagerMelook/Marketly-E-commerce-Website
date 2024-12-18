@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types';
 import editIcon from "../../assets/edit-icon.svg";
-// import {setSelectedProduct} from  "../../contexts/ProductProvider"
+import { useProductContext} from "../../contexts/ProductProvider"
 import trashIcon from "../../assets/trash-icon.svg";
 import './InventoryProductListing.css'
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function InventoryProduct({product, onRemove}){
+    const {setSelectedProduct} = useProductContext();
+    const navigate = useNavigate();
 
     const handleEdit = () => {
-        // setSelectedProduct(product)
-        // useNavigate('inventory/product-form')
+        setSelectedProduct(product)
+        navigate('inventory/product-form')
     };
 
     const handleRemoveProduct = () => {
@@ -31,7 +33,7 @@ function InventoryProduct({product, onRemove}){
         <tr>
             <td>{product.id}</td>
             <td>
-                <img src={product.images[0]} alt="Product" style={{height: "120px" }} className ="product-image" />
+                <img src={product.imagePaths[0]} alt="Product" style={{height: "120px" }} className ="product-image" />
             </td>
             <td>{product.name}</td>
             <td>{product.quantity}</td>
@@ -61,7 +63,7 @@ InventoryProduct.propTypes = {
                 quantity: PropTypes.number,
                 price: PropTypes.number,
                 category: PropTypes.string,
-                images: PropTypes.arrayOf(PropTypes.string),
+                imagePaths: PropTypes.arrayOf(PropTypes.string),
             }).isRequired,
     onRemove: PropTypes.func.isRequired
 };

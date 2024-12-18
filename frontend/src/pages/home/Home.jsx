@@ -11,8 +11,8 @@ function Home({ isAdmin , isVendor }) {
 }
 
 Home.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
-  isVendor: PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool,
+  isVendor: PropTypes.bool
 };
 
 export default Home;
