@@ -17,7 +17,7 @@ import com.market.backend.models.Category;
 import com.market.backend.repositories.CategoryRepository;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/categories")
 public class CategoryController {
 
     @Autowired

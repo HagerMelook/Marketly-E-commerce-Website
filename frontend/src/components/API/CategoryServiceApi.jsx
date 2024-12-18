@@ -1,7 +1,7 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "http://localhost:8080/categories";
 
 export function fetchCategories() {
-  return fetch(`${API_BASE_URL}/categories`)
+  return fetch(`${API_BASE_URL}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to fetch categories");
@@ -15,7 +15,7 @@ export function fetchCategories() {
 }
 
 export function addCategory(category) {
-  return fetch(`${API_BASE_URL}/categories`, {
+  return fetch(`${API_BASE_URL}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export function addCategory(category) {
 }
 
 export function updateCategory(categoryName, updatedCategory) {
-  return fetch(`${API_BASE_URL}/categories/${categoryName}`, {
+  return fetch(`${API_BASE_URL}/${categoryName}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -55,7 +55,7 @@ export function updateCategory(categoryName, updatedCategory) {
 }
 
 export function deleteCategory(categoryName) {
-  return fetch(`${API_BASE_URL}/categories/${categoryName}`, {
+  return fetch(`${API_BASE_URL}/${categoryName}`, {
     method: "DELETE",
   })
     .then((response) => {
