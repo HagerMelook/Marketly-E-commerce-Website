@@ -64,16 +64,4 @@ public class SignInController {
         return jwtService.generateToken(email, roles,id); // You can assign roles accordingly
         
     }
-
-
-
-    @PostMapping("/testo")
-    public String testo() {
-        return "hurray testo";
-    }
-
-    @PostMapping("/admino")
-    public String admino() {
-        return "hurray admino";
-    }
 }
