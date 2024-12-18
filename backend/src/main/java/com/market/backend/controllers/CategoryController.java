@@ -13,8 +13,11 @@ import java.util.List;
 @RestController
 public class CategoryController {
 
-    @Autowired
-    CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/Home")
     List<Category> homeCategories(){

@@ -18,13 +18,13 @@ public class VendorRequest {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name = "organization_name")
+    @Column(name = "organization_name", unique = true)
     private String organizationName;
 
-    @Column(name = "tax_number")
+    @Column(name = "tax_number", unique = true)
     private Long taxNumber;
 
     @Column(name = "auth_type", nullable = false)

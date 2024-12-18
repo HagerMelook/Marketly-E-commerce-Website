@@ -93,6 +93,10 @@ public class SignUpService {
             return "The business name can't be empty";
         if (vendor.getOrganizationName().length() > 80)
             return "The business name can't be more than 80 character";
+        if (vendor.getUsername() == null)
+            return "The username can't be empty";
+        if (vendor.getUsername().length() > 80)
+            return "The username can't be more than 80 character";
         if (vendor.getPassword() == null)
             return "The password can't be empty";
         if (vendor.getPassword().length() > 80)
@@ -102,6 +106,9 @@ public class SignUpService {
         if (String.valueOf(vendor.getTaxNumber()).length() != 9) {
             System.out.println(String.valueOf(vendor.getTaxNumber()).length());
             return "The tax number must be of 9 numbers only";
+        }
+        if (vendorRequestRepository.existsByUsername(vendor.getUsername())) {
+            return "The username is already exist";
         }
         if (vendorRequestRepository.existsByOrganizationName(vendor.getOrganizationName())) {
             return "The business name is already exist";

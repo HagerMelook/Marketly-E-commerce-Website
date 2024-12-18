@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin
 @RequestMapping("/SignUp")
 public class SignUpController {
 
@@ -40,7 +40,7 @@ public class SignUpController {
     @PostMapping("/VendorBasicSignUp")
     public String vendorBasicSignUp(@RequestBody VendorRequest vendor) {
         System.out.println("Received User: " + vendor.getOrganizationName() + ", " + vendor.getPassword() + ", "
-                + vendor.getTaxNumber());
+                + vendor.getTaxNumber()+ ", " + vendor.getUsername());
         return service.insertBasicVendor(vendor);
     }
 
