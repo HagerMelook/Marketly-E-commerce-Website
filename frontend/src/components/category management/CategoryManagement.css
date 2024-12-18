@@ -1,0 +1,150 @@
+/* General Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Title */
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Add New Category Section */
+.add-category {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+}
+
+.add-category h2 {
+  font-size: 1.5rem;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+.add-category input[type="text"],
+.add-category input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.add-category button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-category button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.add-category button:hover:enabled {
+  background-color: #45a049;
+}
+
+/* Category List Section */
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.category-item {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.category-display img {
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.category-display h3 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.category-display button {
+  background-color: #007BFF;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px;
+}
+
+.category-display button:hover {
+  background-color: #0056b3;
+}
+
+/* Edit Category Section */
+.edit-category {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-category input[type="text"],
+.edit-category input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.edit-category button {
+  background-color: #ff9800;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-category button:hover {
+  background-color: #e68900;
+}
+
+.edit-category button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Loading Indicator */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  padding: 20px;
+}
+
