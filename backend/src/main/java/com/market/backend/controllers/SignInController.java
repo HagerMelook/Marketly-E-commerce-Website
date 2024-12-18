@@ -24,6 +24,11 @@ public class SignInController {
     @Autowired
     private AccountRepository accountRepository;
 
+    public SignInController(JWTService jwtService, AccountRepository accountRepository) {
+        this.jwtService = jwtService;
+        this.accountRepository = accountRepository;
+    }
+
     @PostMapping("/signin")
     public String signIn() {
         // Get the authenticated user from the Security Context
