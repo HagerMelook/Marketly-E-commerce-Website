@@ -85,7 +85,7 @@ function Header({ isAdmin = false }) {
               </table>
             ) : (
               <table className="searchTable">
-                {searchResults.map((result) => (
+                {searchResults.slice(0, 6).map((result) => (
                   <SmallProductCard key={result.id} product={result} />
                 ))}
               </table>
