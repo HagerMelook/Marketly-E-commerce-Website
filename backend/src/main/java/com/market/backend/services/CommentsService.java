@@ -37,6 +37,14 @@ public class CommentsService {
         return slice.map(CommentDTO::new);
     }
 
+    @Transactional
+    public CommentDTO getCommentByProductId(Long accountId, Long productId) {
+        Comment comment = commentRepository.findByAccountIdAndProductId(accountId, productId)
+                .orElseThrow(() -> new NoSuchElementException("Comment not found"));
+
+        return new CommentDTO(comment);
+    }
+
     private void updateRate(Product product) {
         Double allCommentsRate = commentRepository.findAverageValue();
         Long commentsCount = commentRepository.count();

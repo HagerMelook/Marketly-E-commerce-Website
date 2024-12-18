@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 @RestController
@@ -41,6 +42,17 @@ public class RatesController {
             return ResponseEntity.created(locationOfNewCashCard).build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/product/{productId}/{accountId}")
+    ResponseEntity<RateDTO> getComment(@PathVariable Long productId, @PathVariable Long accountId) {
+        try {
+            RateDTO commentDTO = ratesService.getRateByProductId(accountId, productId);
+            return new ResponseEntity<>(commentDTO, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 

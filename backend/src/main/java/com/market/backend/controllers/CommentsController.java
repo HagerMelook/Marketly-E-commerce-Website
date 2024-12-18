@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 @RestController
@@ -27,6 +28,17 @@ public class CommentsController {
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/product/{productId}/{accountId}")
+    ResponseEntity<CommentDTO> getComment(@PathVariable Long productId, @PathVariable Long accountId) {
+        try {
+            CommentDTO commentDTO = commentsService.getCommentByProductId(accountId, productId);
+            return new ResponseEntity<>(commentDTO, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
