@@ -1,9 +1,8 @@
 package com.market.backend.services;
 
-import com.market.backend.models.Account;
-import com.market.backend.models.Admin;
-import com.market.backend.models.Client;
+import com.market.backend.models.*;
 import com.market.backend.repositories.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -33,6 +33,12 @@ class AdminServiceTest {
 
     @Mock
     private PasswordRepository passwordRepository;
+
+    @Mock
+    private FeedbackRepository feedbackRepository;
+
+    @Mock
+    private VendorRequestRepository requestRepository;
 
     @InjectMocks
     private AdminService adminService;
@@ -62,13 +68,13 @@ class AdminServiceTest {
 
     @Test
     void getAccountInfoByInvalidUserName() {
-        when(accountRepository.findByUsername("dslfsdo")).thenReturn(Optional.empty());
+        when(accountRepository.findByUsername("invalid username")).thenReturn(Optional.empty());
 
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () ->
-                adminService.getAccountInfoByUserName("dslfsdo"));
+                adminService.getAccountInfoByUserName("invalid username"));
         assertEquals("User not found", exception.getMessage());
 
-        verify(accountRepository).findByUsername("dslfsdo");
+        verify(accountRepository).findByUsername("invalid username");
     }
 
 
@@ -170,5 +176,116 @@ class AdminServiceTest {
         verify(adminRepository).deleteById(1L);
         verify(clientRepository).save(any(Client.class));
         verifyNoMoreInteractions(accountRepository, clientRepository);
+    }
+
+    @Test
+     void TestGetFeedbacks(){
+        Feedback feedback1 = new Feedback(1L, "Great product!");
+        Feedback feedback2 = new Feedback(2L, "Needs improvement.");
+        List<Feedback> feedbacks = List.of(feedback1, feedback2);
+
+        when(feedbackRepository.findAll()).thenReturn(feedbacks);
+
+        List<Feedback> result = adminService.getFeedbacks();
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals("Great product!", result.get(0).getBody());
+        Assertions.assertEquals("Needs improvement.", result.get(1).getBody());
+    }
+
+    @Test
+    void TestDeleteFeedback(){
+        long feedbackId = 1L;
+        adminService.deleteFeedback(feedbackId);
+        verify(feedbackRepository, times(1)).deleteById(feedbackId);
+    }
+
+//    @Test
+//    void TestDeleteFeedback2(){
+//        Feedback feedback = new Feedback(1L, "Great product!");
+//        when(feedbackRepository.findById(1L)).thenReturn(Optional.of(feedback));
+//        adminService.deleteFeedback(1L);
+//
+//    }
+
+    @Test
+    void TestGetVendorRequests(){
+        VendorRequest vendorRequest1 = VendorRequest.builder()
+                .id(1L)
+                .password("password")
+                .username("vendor1")
+                .organizationName("Vendor One")
+                .taxNumber(123L)
+                .authType("basic")
+                .build();
+
+        VendorRequest vendorRequest2 = VendorRequest.builder()
+                .id(2L)
+                .password("password2")
+                .username("vendor2")
+                .organizationName("Vendor Two")
+                .taxNumber(456L)
+                .authType("basic")
+                .build();
+
+        List<VendorRequest> requests = List.of(vendorRequest1, vendorRequest2);
+
+        when(requestRepository.findAll()).thenReturn(requests);
+
+        List<VendorRequest> result = adminService.getVendorRequests();
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals("vendor1", result.get(0).getUsername());
+        Assertions.assertEquals("vendor2", result.get(1).getUsername());
+    }
+
+    @Test
+    void TestAddVendor() {
+        VendorRequest vendorRequest = VendorRequest.builder()
+                .id(1L)
+                .password("password")
+                .username("vendor1")
+                .organizationName("Vendor One")
+                .taxNumber(123L)
+                .authType("basic")
+                .build();
+
+        Account account = Account.builder()
+                .isActive(true)
+                .type("vendor")
+                .username("vendor1")
+                .authType("basic")
+                .build();
+
+        Vendor vendor = Vendor.builder()
+                .organizationName("Vendor One")
+                .taxNumber(123L)
+                .account(account)
+                .build();
+
+        when(requestRepository.findById(1L)).thenReturn(Optional.of(vendorRequest));
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
+        when(vendorRepository.save(any(Vendor.class))).thenReturn(vendor);
+
+        adminService.addVendor(1L);
+
+        verify(requestRepository, times(1)).delete(vendorRequest);
+        verify(accountRepository, times(1)).save(account);
+        verify(vendorRepository, times(1)).save(argThat(savedVendor ->
+                savedVendor.getId() == null && // ID is null before saving
+                        savedVendor.getOrganizationName().equals("Vendor One") &&
+                        savedVendor.getTaxNumber().equals(123L) &&
+                        savedVendor.getAccount().equals(account)
+        ));
+    }
+
+
+    @Test
+    void TestDeclineVendorRequest(){
+        long requestId = 1L;
+        adminService.declineVendorRequest(requestId);
+        verify(requestRepository, times(1)).deleteById(requestId);
     }
 }

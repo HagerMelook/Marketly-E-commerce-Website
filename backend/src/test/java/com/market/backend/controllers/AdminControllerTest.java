@@ -1,15 +1,20 @@
 package com.market.backend.controllers;
 
 import com.market.backend.models.Account;
+import com.market.backend.models.Feedback;
+import com.market.backend.models.VendorRequest;
 import com.market.backend.services.AdminService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
@@ -169,5 +174,84 @@ class AdminControllerTest {
                 .andExpect(content().string("Invalid ID"));
 
         verify(adminService, times(1)).deleteAccount(999L);
+    }
+
+    @Test
+    void getFeedback_ShouldReturnFeedbackList() throws Exception {
+        List<Feedback> feedbacks = Arrays.asList(new Feedback(1L, "Great!"), new Feedback(2L, "Needs improvement"));
+        when(adminService.getFeedbacks()).thenReturn(feedbacks);
+        mockMvc.perform(get("/admin/feedback"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].body").value("Great!"));
+
+        verify(adminService, times(1)).getFeedbacks();
+    }
+
+    @Test
+    void deleteFeedback_ShouldReturnSuccessMessage() throws Exception {
+        long feedbackId = 1L;
+        doNothing().when(adminService).deleteFeedback(feedbackId);
+
+        mockMvc.perform(delete("/admin/feedback/{feedbackId}", feedbackId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Feedback deleted successfully"));
+
+        verify(adminService, times(1)).deleteFeedback(feedbackId);
+    }
+
+    @Test
+    void getVendorRequests_ShouldReturnVendorRequestList() throws Exception {
+        List<VendorRequest> requests = Arrays.asList(
+                VendorRequest.builder().id(1L).username("Request 1").build(),
+                VendorRequest.builder().id(2L).username("Request 2").build()
+        );
+        when(adminService.getVendorRequests()).thenReturn(requests);
+
+        mockMvc.perform(get("/admin/request"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].username").value("Request 1"));
+
+        verify(adminService, times(1)).getVendorRequests();
+    }
+
+    @Test
+    void acceptVendorRequest_ShouldReturnSuccessMessage() throws Exception {
+        long requestId = 1L;
+        doNothing().when(adminService).addVendor(requestId);
+
+        mockMvc.perform(post("/admin/request/accept/{requestId}", requestId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Vendor has been added successfully"));
+
+        verify(adminService, times(1)).addVendor(requestId);
+    }
+
+    @Test
+    void deleteVendorRequest_ShouldReturnSuccessMessage() throws Exception {
+        long requestId = 1L;
+        doNothing().when(adminService).declineVendorRequest(requestId);
+
+        mockMvc.perform(delete("/admin/request/delete/{requestId}", requestId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Vendor deleted successfully"));
+
+        verify(adminService, times(1)).declineVendorRequest(requestId);
+    }
+
+    @Test
+    void deleteFeedback_ShouldReturnBadRequestOnException() throws Exception {
+        long feedbackId = 1L;
+        doThrow(new IllegalArgumentException("Invalid feedback ID")).when(adminService).deleteFeedback(feedbackId);
+        mockMvc.perform(delete("/admin/feedback/{feedbackId}", feedbackId))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid feedback ID"));
+
+        verify(adminService, times(1)).deleteFeedback(feedbackId);
     }
 }
