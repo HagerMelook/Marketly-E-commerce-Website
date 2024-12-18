@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Filter from "../../components/filter/Filter";
+import Filter from "../filter/Filter";
 import "./ProductListing.css";
 
 function ProductListing({ products = [], showFilter = false }) {
