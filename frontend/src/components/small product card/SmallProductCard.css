@@ -1,0 +1,17 @@
+.small-product-card {
+  margin: 0;
+  padding-left: 3px;
+  cursor: pointer;
+}
+
+.small-product-card:hover {
+  filter: brightness(1.2);
+  background-color: #b6afaf;
+  border-radius: 2px;
+}
+
+h3,
+p {
+  margin: 0;
+  /* padding-left: 3px; */
+}
