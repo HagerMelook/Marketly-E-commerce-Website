@@ -25,6 +25,7 @@ public class AdminService {
     private final VendorRequestRepository requestRepository;
     private final PasswordRepository passwordRepository;
 
+  
     public AdminService(
             AdminRepository adminRepository,
             ClientRepository clientRepository,
@@ -34,6 +35,8 @@ public class AdminService {
             VendorRequestRepository requestRepository,
             PasswordRepository passwordRepository
     ) {
+
+
         this.adminRepository = adminRepository;
         this.clientRepository = clientRepository;
         this.vendorRepository = vendorRepository;

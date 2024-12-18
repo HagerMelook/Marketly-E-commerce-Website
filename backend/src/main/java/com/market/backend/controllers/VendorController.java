@@ -1,6 +1,8 @@
 package com.market.backend.controllers;
 
 import com.market.backend.dtos.ProductDTO;
+import com.market.backend.dtos.VendorProductDTO;
+import com.market.backend.models.Product;
 import com.market.backend.services.VendorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,4 +82,28 @@ public class VendorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+
+    @GetMapping("/products/{vendorId}")
+    public ResponseEntity<List<VendorProductDTO>> getVendorProducts(@PathVariable long vendorId){
+        return ResponseEntity.ok(vendorService.getAllVendorProducts(vendorId));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteVendorProduct(@PathVariable long id) {
+        try {
+            vendorService.deleteProduct(id);
+            return ResponseEntity.ok("{\"message\": \"Product deleted successfully\"}");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+   //TODO requesting parameters
+    @GetMapping("/search/{vendorId}/{name}")
+    public ResponseEntity<List<VendorProductDTO>> searchForProduct(@PathVariable long vendorId, @PathVariable String name) {
+        return  ResponseEntity.ok(vendorService.getProductByName(vendorId, name));
+    }
+
 }
+

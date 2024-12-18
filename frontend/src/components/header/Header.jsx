@@ -6,7 +6,7 @@ import searchIcon from "../../assets/search-icon.svg";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-function Header({ isAdmin }) {
+function Header({ isAdmin, isVendor }) {
   return (
     <header className="header">
       <div className="logo">
@@ -29,6 +29,11 @@ function Header({ isAdmin }) {
             Admin Dashboard
           </Link>
         )}
+        {isVendor && (
+          <Link to="/inventory" className="orders-text">
+            Inventory
+          </Link>
+        )}
         <img src={cartIcon} alt="Cart" title="View Cart" />
         <img src={profileIcon} alt="Profile" title="Your Profile" />
       </div>
@@ -38,6 +43,7 @@ function Header({ isAdmin }) {
 
 Header.propTypes = {
   isAdmin: PropTypes.bool,
+  isVendor: PropTypes.bool
 };
 
 export default Header;

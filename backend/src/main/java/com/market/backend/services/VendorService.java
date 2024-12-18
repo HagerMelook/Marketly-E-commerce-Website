@@ -1,6 +1,7 @@
 package com.market.backend.services;
 
 import com.market.backend.dtos.ProductDTO;
+import com.market.backend.dtos.VendorProductDTO;
 import com.market.backend.models.Product;
 import com.market.backend.models.ProductImage;
 import com.market.backend.models.Vendor;
@@ -16,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -102,4 +105,48 @@ public class VendorService {
     public List<String> getAllCategories() {
         return categoryRepository.findAllCategoryNames();
     }
+
+    @Transactional
+    public List<VendorProductDTO> getAllVendorProducts(long vendorId) {
+        List<Product> products = productRepository.findByVendorId(vendorId);
+        return getProductDTOS(products);
+    }
+
+    @Transactional
+    public void deleteProduct(Long id){
+        productImageRepository.deleteByProductId(id);
+        productRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<VendorProductDTO> getProductByName(long vendorId, String name){
+        List<Product> products = productRepository.findByVendorIdAndNameContaining(vendorId, name);
+        return getProductDTOS(products);
+    }
+
+    private List<VendorProductDTO> getProductDTOS(List<Product> products) {
+        List<VendorProductDTO> productsDTO = new ArrayList<>();
+
+        for (Product product : products) {
+            List<String> images = productImageRepository.findByProductId(product.getId());
+            //TODO using builder
+            VendorProductDTO productDTO = VendorProductDTO.builder()
+                    .id(product.getId())
+                    .vendorId(product.getVendor().getId())
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .rating(product.getRating())
+                    .quantity(product.getQuantity())
+                    .category(product.getCategory())
+                    .images(images)
+                    .build();
+
+            productsDTO.add(productDTO);
+        }
+
+        return productsDTO;
+    }
+
 }
+
