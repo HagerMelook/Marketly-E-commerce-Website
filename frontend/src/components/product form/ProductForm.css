@@ -1,0 +1,104 @@
+.add-product-container {
+  width: 50%;
+  height: 25%;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.add-product-container h2 {
+  text-align: center;
+  color: #333;
+  font-size: 26px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.add-product-container form div {
+  margin-bottom: 20px;
+}
+
+.product-form-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.product-form-container input,
+.product-form-container select,
+.product-form-container textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-form-container input[type="file"] {
+  border: none;
+}
+
+.product-form-container input:focus,
+.product-form-container select:focus,
+.product-form-container textarea:focus {
+  outline: none;
+  border-color: #0074d9;
+  box-shadow: 0 0 5px rgba(0, 116, 217, 0.5);
+}
+
+.product-form-container textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.product-form-container select {
+  cursor: pointer;
+}
+
+.product-form-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0074d9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.product-form-container button:hover {
+  background-color: #005bb5;
+}
+
+.product-form-container button:active {
+  transform: scale(0.98);
+}
+
+.product-form-container .error-message {
+  color: red;
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .product-form-container {
+    width: 90%;
+  }
+
+  .product-form-container h2 {
+    font-size: 22px;
+  }
+}

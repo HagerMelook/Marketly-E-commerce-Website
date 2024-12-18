@@ -83,6 +83,7 @@ public class VendorController {
         }
     }
 
+
     @GetMapping("/products/{vendorId}")
     public ResponseEntity<List<VendorProductDTO>> getVendorProducts(@PathVariable long vendorId){
         return ResponseEntity.ok(vendorService.getAllVendorProducts(vendorId));
@@ -105,3 +106,4 @@ public class VendorController {
     }
 
 }
+
