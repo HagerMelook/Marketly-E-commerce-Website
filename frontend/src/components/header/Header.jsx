@@ -43,7 +43,7 @@ function Header({ isAdmin, isVendor }) {
 
 Header.propTypes = {
   isAdmin: PropTypes.bool,
-  isVendor: PropTypes
+  isVendor: PropTypes.bool
 };
 
 export default Header;

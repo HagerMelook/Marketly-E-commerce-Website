@@ -25,8 +25,9 @@ const FeedbackPage = () => {
 
     return (  
         <>
-            <h1 style={{ textAlign: 'center' }}>Feedback Review</h1>
             <div className="feedback-page">
+                <h1 style={{ textAlign: 'center' }}>Feedback Review</h1>
+                <hr style={{backgroundColor: 'grey'}} />
                 {feedbacks.length > 0 ? (
                     feedbacks.map((feedback) => (
                         <FeedbackCard key={feedback.id} feedback={feedback} onRemove={handleRemoveFeedback}/>

@@ -4,6 +4,7 @@ import ClientReg from "./pages/registeration/ClientReg";
 import Home from "./pages/home/Home";
 import RadialChoice from "./pages/registeration/RadialChoice";
 import VendorReg from "./pages/registeration/VendorReg";
+import VendorInventory from "./pages/Inventory/VendorInventory";
 
 function AppRouter() {
   return (
@@ -14,6 +15,7 @@ function AppRouter() {
         <Route path="vendorSignUp" element={<VendorReg />} />
         <Route path="home" element={<Home isAdmin={false} isVendor={true}/>} />
         <Route path="admin-dashboard" element={<AdminDashboard />} />
+        <Route path="inventory" element = {<VendorInventory/>}/>
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>

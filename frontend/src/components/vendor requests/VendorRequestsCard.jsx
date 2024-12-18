@@ -19,7 +19,6 @@ const VendorRequestsCard = (props) => {
         })
         .catch((error) => {
             console.error("Error deleting vendor:", error);
-            alert("Failed to delete vendor");
         });
         
     };
