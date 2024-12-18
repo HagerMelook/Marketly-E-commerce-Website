@@ -13,6 +13,22 @@ export async function getComments(accountId, queryParams) {
   }
 }
 
+export async function getCommentByProduct(accountId, productId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.log("No comment exists"+error);
+  }
+}
+
 export async function createComment(commentDTO) {
   try {
     const response = await fetch(API_BASE_URL, {
@@ -55,10 +71,10 @@ export async function deleteComment(commentId) {
       method: "DELETE",
     });
     if (!response.ok) {
-      throw new Error("Failed to delete comment");
+      throw new Error("Failed to delete rate");
     }
   } catch (error) {
-    console.error("Error deleting comment:", error);
+    console.error("Error deleting rate:", error);
     throw error;
   }
 }

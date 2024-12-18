@@ -13,6 +13,20 @@ export async function getRates(accountId, queryParams) {
   }
 }
 
+export async function getRateByProduct(accountId, productId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`);
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+    }
+    return await response.json();
+  } catch (error) {
+    console.log("No rate found"+error);
+  }
+}
+
 export async function createRate(rateDTO) {
   try {
     const response = await fetch(API_BASE_URL, {
