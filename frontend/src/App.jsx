@@ -12,7 +12,7 @@ function AppRouter() {
         <Route index element={<RadialChoice />} />
         <Route path="clientSignUp" element={<ClientReg />} />
         <Route path="vendorSignUp" element={<VendorReg />} />
-        <Route path="home" element={<Home isAdmin={false} />} />
+        <Route path="home" element={<Home isAdmin={false} isVendor={true}/>} />
         <Route path="admin-dashboard" element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>

@@ -26,7 +26,7 @@ const VendorRequestsPage = () => {
 
     return (  
         <>
-            <h1>Vendor Requests</h1>
+            <h1 style={{ textAlign: 'center' }}>Vendor Requests</h1>
             <div className="vendor-request-page">
                 {requests.length > 0 ? (
                     requests.map((request) => (

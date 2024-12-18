@@ -25,7 +25,7 @@ const FeedbackPage = () => {
 
     return (  
         <>
-            <h2>Feedback Review</h2>
+            <h1 style={{ textAlign: 'center' }}>Feedback Review</h1>
             <div className="feedback-page">
                 {feedbacks.length > 0 ? (
                     feedbacks.map((feedback) => (

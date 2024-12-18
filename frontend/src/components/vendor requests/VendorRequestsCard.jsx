@@ -40,7 +40,6 @@ const VendorRequestsCard = (props) => {
         })
         .catch((error) => {
             console.error("Error adding vendor:", error);
-            alert("Failed to add vendor");
         });
     };
 
