@@ -5,128 +5,137 @@ import {
   updateCategory,
   deleteCategory,
 } from "../../components/API/CategoryServiceApi";
-
-const CategoryManagement = () => {
+import "./CategoryManagement.css";
+function CategoryManager() {
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState({
-    categoryName: "",
-    categoryImagePath: "",
-  });
-  const [editCategory, setEditCategory] = useState(null);
+  const [newCategory, setNewCategory] = useState({ name: "", image: null });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Fetch categories on component mount
+  // Fetch categories on load
   useEffect(() => {
-    loadCategories();
+    fetchCategories()
+      .then(setCategories)
+      .catch((err) => setError(err.message))
+      .finally(() => setIsLoading(false));
   }, []);
 
-  const loadCategories = async () => {
-    try {
-      const data = await fetchCategories();
-      setCategories(data);
-    } catch (error) {
-      console.error("Error loading categories:", error);
-    }
+  // Handle new category input
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewCategory({ ...newCategory, [name]: value });
   };
 
-  const handleAddCategory = async () => {
-    try {
-      await addCategory(newCategory);
-      setNewCategory({ categoryName: "", categoryImagePath: "" });
-      loadCategories();
-    } catch (error) {
-      console.error("Error adding category:", error);
-    }
+  const handleFileChange = (e) => {
+    setNewCategory({ ...newCategory, image: e.target.files[0] });
   };
 
-  const handleUpdateCategory = async () => {
-    try {
-      await updateCategory(editCategory.categoryName, editCategory);
-      setEditCategory(null);
-      loadCategories();
-    } catch (error) {
-      console.error("Error updating category:", error);
+  // Add category
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    if (!newCategory.name || !newCategory.image) {
+      setError("Both name and image are required.");
+      return;
     }
+
+    const formData = new FormData();
+    formData.append("name", newCategory.name);
+    formData.append("image", newCategory.image);
+
+    addCategory(formData)
+      .then((addedCategory) => {
+        setCategories([...categories, addedCategory]);
+        setNewCategory({ name: "", image: null });
+        setError("");
+      })
+      .catch((err) => setError(err.message));
   };
 
-  const handleDeleteCategory = async (categoryName) => {
-    try {
-      await deleteCategory(categoryName);
-      loadCategories();
-    } catch (error) {
-      console.error("Error deleting category:", error);
-    }
+  // Update category
+  const handleUpdateCategory = (categoryName, updatedName) => {
+    const updatedCategory = { name: updatedName };
+
+    updateCategory(categoryName, updatedCategory)
+      .then(() => {
+        setCategories(
+          categories.map((cat) =>
+            cat.name === categoryName ? { ...cat, name: updatedName } : cat
+          )
+        );
+        setError("");
+      })
+      .catch((err) => setError(err.message));
   };
 
-  const handleImageUpload = (e, setCategory) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setCategory((prev) => ({
-          ...prev,
-          categoryImagePath: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
+  // Delete category
+  const handleDeleteCategory = (categoryName) => {
+    deleteCategory(categoryName)
+      .then(() => {
+        setCategories(categories.filter((cat) => cat.name !== categoryName));
+        setError("");
+      })
+      .catch((err) => setError(err.message));
   };
 
   return (
     <div className="container">
       <h1>Category Management</h1>
 
+      {error && <p className="error">{error}</p>}
+
       {/* Add New Category */}
       <div className="add-category">
-        <h2>Add Category</h2>
-        <input
-          type="text"
-          placeholder="Category Name"
-          value={newCategory.categoryName}
-          onChange={(e) =>
-            setNewCategory((prev) => ({ ...prev, categoryName: e.target.value }))
-          }
-        />
-        <input
-          type="file"
-          onChange={(e) => handleImageUpload(e, setNewCategory)}
-        />
-        <button onClick={handleAddCategory}>Add Category</button>
+        <h2>Add New Category</h2>
+        <form onSubmit={handleAddCategory}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Category Name"
+            value={newCategory.name}
+            onChange={handleInputChange}
+          />
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          <button type="submit" disabled={isLoading}>
+            Add Category
+          </button>
+        </form>
       </div>
 
-      {/* Existing Categories */}
-      <div className="category-list">
-        <h2>Existing Categories</h2>
-        {categories.map((category) => (
-          <div key={category.categoryName} className="category-item">
-            {editCategory && editCategory.categoryName === category.categoryName ? (
-              <div className="edit-category">
-                <input
-                  type="text"
-                  value={editCategory.categoryName}
-                  disabled
-                />
-                <input
-                  type="file"
-                  onChange={(e) => handleImageUpload(e, setEditCategory)}
-                />
-                <button onClick={handleUpdateCategory}>Save</button>
-                <button onClick={() => setEditCategory(null)}>Cancel</button>
-              </div>
-            ) : (
+      {/* Loading Indicator */}
+      {isLoading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <div className="category-list">
+          {categories.map((category) => (
+            <div key={category.categoryName} className="category-item">
               <div className="category-display">
                 <img src={category.categoryImagePath} alt={category.categoryName} />
                 <h3>{category.categoryName}</h3>
-                <button onClick={() => setEditCategory(category)}>Edit</button>
+                <button
+                  onClick={() =>
+                    handleUpdateCategory(
+                      category.categoryName,
+                      prompt("Enter new name:", category.categoryName)
+                    )
+                  }
+                >
+                  Edit
+                </button>
                 <button onClick={() => handleDeleteCategory(category.categoryName)}>
                   Delete
                 </button>
               </div>
-            )}
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
-};
+}
 
-export default CategoryManagement;
+export default CategoryManager;
