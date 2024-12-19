@@ -1,4 +1,4 @@
-package com.market.backend.DTOs;
+package com.market.backend.dtos;
 
 // DTO for the response
 public  class AuthResponse {

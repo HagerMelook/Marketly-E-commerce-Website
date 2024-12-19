@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.market.backend.Services.JWTService;
+import com.market.backend.services.JWTService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

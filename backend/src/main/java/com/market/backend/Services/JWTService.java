@@ -1,4 +1,4 @@
-package com.market.backend.Services;
+package com.market.backend.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

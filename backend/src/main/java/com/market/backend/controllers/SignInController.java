@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.market.backend.Services.JWTService;
 import com.market.backend.repositories.AccountRepository;
+import com.market.backend.services.JWTService;
 
 @RestController
 @RequestMapping("/auth")
