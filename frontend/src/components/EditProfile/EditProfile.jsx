@@ -29,11 +29,11 @@ const UserAccount = () => {
   const [isModified, setIsModified] = useState(false);
 
   const getUserType = () => {
-    return "client";
+    return "admin";
   }
 
   const getUserId = () => {
-    return 2; 
+    return 1; 
   }
 
   const handleEditClick = (field) => {

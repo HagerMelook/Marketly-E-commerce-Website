@@ -28,6 +28,7 @@ public class AdminInfoDTO {
     //fields from ShippingInfo
     private String address;
     private String phone;
+    private String postalCode;
 
     public AdminInfoDTO(Account account, Password password, Admin admin, ShippingInfo shippingInfo) {
         if (account!=null) {
@@ -47,6 +48,7 @@ public class AdminInfoDTO {
         if (shippingInfo!=null) {
             this.address = shippingInfo.getAddress();
             this.phone = shippingInfo.getPhoneNumber();
+            this.postalCode = shippingInfo.getPostalCode();
         }
     }
 }

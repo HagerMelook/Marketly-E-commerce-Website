@@ -28,6 +28,7 @@ public class ClientInfoDTO {
     //fields from ShippingInfo
     private String address;
     private String phone;
+    private String postalCode;
 
     public ClientInfoDTO(Account account, Password password, Client client, ShippingInfo shippingInfo) {
         if (account!=null) {
@@ -47,6 +48,7 @@ public class ClientInfoDTO {
         if (shippingInfo!=null) {
             this.address = shippingInfo.getAddress();
             this.phone = shippingInfo.getPhoneNumber();
+            this.postalCode = shippingInfo.getPostalCode();
         }
     }
 }
