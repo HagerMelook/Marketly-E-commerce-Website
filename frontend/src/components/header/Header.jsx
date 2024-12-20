@@ -30,7 +30,9 @@ function Header({ isAdmin }) {
           </Link>
         )}
         <img src={cartIcon} alt="Cart" title="View Cart" />
-        <img src={profileIcon} alt="Profile" title="Your Profile" />
+        <Link to="/EditProfile">
+          <img src={profileIcon} alt="Profile" title="Your Profile" />
+        </Link>
       </div>
     </header>
   );

@@ -5,6 +5,7 @@ import * as EditProfileApi from '../../components/API/EditProfileApi';
 
 const UserAccount = () => {
   const [userData, setUserData] = useState(null);
+  const [originalData, setOriginalData] = useState(null);
 
   useEffect(() => {
     const fetchFunction = () => {
@@ -16,7 +17,8 @@ const UserAccount = () => {
     }
       fetchFunction().then(adminInfo => {
             if (adminInfo) {
-                setUserData(adminInfo)
+                setUserData(adminInfo);
+                setOriginalData(adminInfo);
             } else {
                 console.log('Admin info not found or an error occurred.');
             }
@@ -47,7 +49,36 @@ const UserAccount = () => {
   };
 
   const handleSave = () => {
-    console.log("Saved data:", userData);
+    if (!originalData) {
+    console.error("Original data is not available.");
+    return;
+    }
+
+    const updateFunction = (patch) => {
+        switch (getUserType()) {
+            case "admin": return EditProfileApi.updateAdminInfo(getUserId(), patch);
+            case "vendor": return EditProfileApi.updateVendorInfo(getUserId(), patch);
+            case "client": return EditProfileApi.updateClientInfo(getUserId(), patch);
+        }
+    }
+
+    const patch = Object.keys(userData)
+    .filter((key) => userData[key] !== originalData[key])
+    .map((key) => ({
+        op: "replace",
+        path: `/${key}`,
+        value: userData[key],
+    }));
+
+    updateFunction(patch)
+    .then(() => {
+        setOriginalData(userData);
+        setIsModified(false);
+    })
+    .catch((error) => {
+        console.error("Failed to save changes:", error);
+    });
+
     setEditingField(null);
     setIsModified(false);
   };
