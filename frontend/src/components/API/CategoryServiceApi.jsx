@@ -68,3 +68,27 @@ export function deleteCategory(categoryName) {
       throw error;
     });
 }
+
+const uploadImage = (image, categoryName) => {
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("imagePath", `${categoryName}.jpg`); // Name the image using the category name with a .jpg extension
+
+  return fetch(`${API_BASE_URL}/upload-image`, {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json()) // Parse the JSON response
+    .then((data) => {
+      if (!data.success) {
+        throw new Error(data.message || "Failed to upload image");
+      }
+      return data.imagePath;  // Use the imagePath from the response
+    })
+    .catch((err) => {
+      console.error("Error uploading image:", err);
+      throw err;
+    });
+};
+
+export { uploadImage };

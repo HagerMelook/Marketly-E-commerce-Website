@@ -1,4 +1,4 @@
-/* General Container */
+/* General Container */ 
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -176,4 +176,24 @@ h1 {
   font-weight: 500;
   color: #555;
   padding: 20px;
+}
+
+.category-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+button {
+  margin: 10px 0; /* Add margin to buttons for vertical spacing */
+}
+
+.update-cancel-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Add space between the buttons */
+}
+
+.update-cancel-buttons button {
+  width: 100%;
 }

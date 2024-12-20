@@ -1,23 +1,31 @@
 import { useState, useEffect } from "react";
-import {
-  fetchCategories,
-  addCategory,
-  updateCategory,
-  deleteCategory,
-} from "../../components/API/CategoryServiceApi";
+import { fetchCategories, addCategory, updateCategory, deleteCategory, uploadImage } from "../../components/API/CategoryServiceApi";
 import "./CategoryManagement.css";
+
 function CategoryManager() {
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState({ name: "", image: null });
+  const [newCategory, setNewCategory] = useState({ name: "", imagePath: "" });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryImagePath, setNewCategoryImagePath] = useState("");
+
+  // Fetch categories function
+  const fetchCategoriesData = () => {
+    setIsLoading(true);
+    fetchCategories()
+      .then((fetchedCategories) => {
+        setCategories(fetchedCategories);
+        setError("");
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setIsLoading(false));
+  };
 
   // Fetch categories on load
   useEffect(() => {
-    fetchCategories()
-      .then(setCategories)
-      .catch((err) => setError(err.message))
-      .finally(() => setIsLoading(false));
+    fetchCategoriesData();
   }, []);
 
   // Handle new category input
@@ -27,51 +35,68 @@ function CategoryManager() {
   };
 
   const handleFileChange = (e) => {
-    setNewCategory({ ...newCategory, image: e.target.files[0] });
+    const file = e.target.files[0];
+    if (file) {
+      setNewCategory({ ...newCategory, imagePath: file.name });
+    }
   };
 
   // Add category
-  const handleAddCategory = (e) => {
+  const handleAddCategory = async (e) => {
     e.preventDefault();
-    if (!newCategory.name || !newCategory.image) {
-      setError("Both name and image are required.");
-      return;
+    const addedCategory = {
+      categoryName: newCategory.name,
+      categoryImagePath: newCategory.imagePath, // This will hold the full path after upload
+    };
+
+    try {
+      const image = e.target.image.files[0];
+      if (image) {
+        // Upload the image and get the full path from the backend
+        const uploadedImagePath = await uploadImage(image, newCategory.name);
+        addedCategory.categoryImagePath = uploadedImagePath;
+
+        // Add the category with the uploaded image's path
+        await addCategory(addedCategory);
+        fetchCategoriesData();
+        setNewCategory({ name: "", imagePath: "" });
+        setError(""); // Clear error
+      }
+    } catch (err) {
+      setError(err.message);
     }
-
-    const formData = new FormData();
-    formData.append("name", newCategory.name);
-    formData.append("image", newCategory.image);
-
-    addCategory(formData)
-      .then((addedCategory) => {
-        setCategories([...categories, addedCategory]);
-        setNewCategory({ name: "", image: null });
-        setError("");
-      })
-      .catch((err) => setError(err.message));
   };
 
   // Update category
-  const handleUpdateCategory = (categoryName, updatedName) => {
-    const updatedCategory = { name: updatedName };
+  const handleUpdateCategory = async (categoryName, updatedName, updatedImagePath) => {
+    const updatedCategory = {
+      categoryName: updatedName,
+      categoryImagePath: updatedImagePath, // This will hold the full path after upload
+    };
 
-    updateCategory(categoryName, updatedCategory)
-      .then(() => {
-        setCategories(
-          categories.map((cat) =>
-            cat.name === categoryName ? { ...cat, name: updatedName } : cat
-          )
-        );
-        setError("");
-      })
-      .catch((err) => setError(err.message));
+    try {
+      const image = document.getElementById('image-input').files[0];
+      if (image) {
+        // Upload the image and get the full path from the backend
+        const uploadedImagePath = await uploadImage(image, updatedName);
+        updatedCategory.categoryImagePath = uploadedImagePath;
+      }
+
+      await updateCategory(categoryName, updatedCategory);
+      fetchCategoriesData();
+      setEditingCategory(null);
+      setNewCategory({ name: "", imagePath: "" });
+      setError(""); // Clear error
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   // Delete category
   const handleDeleteCategory = (categoryName) => {
     deleteCategory(categoryName)
       .then(() => {
-        setCategories(categories.filter((cat) => cat.name !== categoryName));
+        fetchCategoriesData();
         setError("");
       })
       .catch((err) => setError(err.message));
@@ -100,9 +125,7 @@ function CategoryManager() {
             accept="image/*"
             onChange={handleFileChange}
           />
-          <button type="submit" disabled={isLoading}>
-            Add Category
-          </button>
+          <button type="submit" disabled={isLoading}>Add Category</button>
         </form>
       </div>
 
@@ -116,16 +139,62 @@ function CategoryManager() {
               <div className="category-display">
                 <img src={category.categoryImagePath} alt={category.categoryName} />
                 <h3>{category.categoryName}</h3>
-                <button
-                  onClick={() =>
-                    handleUpdateCategory(
-                      category.categoryName,
-                      prompt("Enter new name:", category.categoryName)
-                    )
-                  }
-                >
-                  Edit
-                </button>
+
+                {/* If editing, show input fields to update the category */}
+                {editingCategory === category.categoryName ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={newCategoryName}
+                      onChange={(e) => setNewCategoryName(e.target.value)}
+                      placeholder="New Category Name"
+                    />
+                    <input
+                      id="image-input"
+                      type="file"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          setNewCategoryImagePath(file.name);
+                        }
+                      }}
+                    />
+                    <div className="update-cancel-buttons">
+                      <button
+                        onClick={() =>
+                          handleUpdateCategory(
+                            category.categoryName,
+                            newCategoryName,
+                            newCategoryImagePath
+                          )
+                        }
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingCategory(null);
+                          setNewCategoryName("");
+                          setNewCategoryImagePath("");
+                        }}
+                      >
+                        Cancel Update
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setEditingCategory(category.categoryName);
+                      setNewCategoryName(category.categoryName);
+                      setNewCategoryImagePath(category.categoryImagePath);
+                    }}
+                  >
+                    Edit
+                  </button>
+                )}
+
+                {/* Delete button for category */}
                 <button onClick={() => handleDeleteCategory(category.categoryName)}>
                   Delete
                 </button>
