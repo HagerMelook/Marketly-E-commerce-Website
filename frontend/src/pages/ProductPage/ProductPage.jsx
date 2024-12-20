@@ -3,9 +3,9 @@ import './ProductPage.css';
 import Header from '../../components/header/Header';
 import { useEffect, useState } from 'react';
 import ProductInfoContainer from '../../components/product page/ProductInfoContainer/ProductInfoContainer';
-import * as ProductPageApi from '../../components/API/ProductPageApi'
-import Description from '../../components/product page/Description/Description'
-import Comments from '../../components/product page/Comments/Comments'
+import * as ProductPageApi from '../../components/API/ProductPageApi';
+import Description from '../../components/product page/Description/Description';
+import Comments from '../../components/product page/Comments/Comments';
 
 function ProductPage() {
   const { productId } = useParams();
