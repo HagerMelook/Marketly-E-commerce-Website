@@ -1,5 +1,6 @@
 package com.market.backend.controllers;
 
+import com.market.backend.dtos.CommentDTO;
 import com.market.backend.dtos.RateDTO;
 import com.market.backend.services.RatesService;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,20 @@ public class RatesController {
         }
     }
 
+    @GetMapping("/product/{productId}/{accountId}")
+    ResponseEntity<RateDTO> getComment(@PathVariable Long productId, @PathVariable Long accountId) {
+        try {
+            RateDTO commentDTO = ratesService.getRateByProductId(accountId, productId);
+            return new ResponseEntity<>(commentDTO, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(new RateDTO(), HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping
     private ResponseEntity<Void> createRate(@RequestBody RateDTO rateDTO, UriComponentsBuilder ucb) {
         try {
@@ -42,17 +57,6 @@ public class RatesController {
             return ResponseEntity.created(locationOfNewCashCard).build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/product/{productId}/{accountId}")
-    ResponseEntity<RateDTO> getComment(@PathVariable Long productId, @PathVariable Long accountId) {
-        try {
-            RateDTO commentDTO = ratesService.getRateByProductId(accountId, productId);
-            return new ResponseEntity<>(commentDTO, HttpStatus.OK);
-        }
-        catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
         }
     }
 

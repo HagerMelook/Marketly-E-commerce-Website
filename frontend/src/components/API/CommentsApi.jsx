@@ -16,16 +16,13 @@ export async function getComments(accountId, queryParams) {
 export async function getCommentByProduct(accountId, productId) {
   try {
     const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`);
-    
     if (!response.ok) {
-      if (response.status === 404) {
-        return null;
-      }
+      throw new Error("Failed to fetch comment");
     }
-
     return await response.json();
   } catch (error) {
-    console.log("No comment exists"+error);
+    console.error("Error fetching comment:", error);
+    throw error;
   }
 }
 

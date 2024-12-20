@@ -46,11 +46,16 @@ public class RatesService {
     }
 
     private void updateProductRate(Product product) {
-        Double allCommentsRate = commentRepository.findAverageValue();
-        Long commentsCount = commentRepository.count();
-        Double allRatesRate = rateRepository.findAverageValue();
-        Long ratesCount = rateRepository.count();
-        product.setRating((allRatesRate*ratesCount+allCommentsRate*commentsCount)/(ratesCount+commentsCount));
+        Long allCommentsRate = commentRepository.findSumValueByProductId(product.getId());
+        Long commentsCount = commentRepository.countByProductId(product.getId());
+        Long allRatesRate = rateRepository.findSumValueByProductId(product.getId());
+        Long ratesCount = rateRepository.countByProductId(product.getId());
+        if (ratesCount+commentsCount==0) {
+            product.setRating(0);
+        }
+        else {
+            product.setRating((double) (allRatesRate + allCommentsRate) /(ratesCount+commentsCount));
+        }
     }
 
     @Transactional
@@ -84,6 +89,12 @@ public class RatesService {
 
     @Transactional
     public void deleteRate(Long id) {
+        Rate rate = rateRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Rate not found"));
+        Product product = rate.getProduct();
+
         rateRepository.deleteById(id);
+
+        updateProductRate(product);
     }
 }

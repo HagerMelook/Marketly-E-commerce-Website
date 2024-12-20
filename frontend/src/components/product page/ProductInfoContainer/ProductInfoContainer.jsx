@@ -7,28 +7,12 @@ function ProductInfoContainer({ images, product }) {
 
     return (
         <div
-          className="product-info-container"
-          style={{
-            display: "flex",
-            gap: "20px",
-            alignItems: "flex-start",
-            justifyContent: "center",
-            maxWidth: "1200px"
-          }}
+          className="product-all-info-container"
         >
           <ImagesContainer images={images} />
 
           <div
-            className="info-container"
-            style={{
-              flex: "1", // Takes up 50% of available space
-              maxWidth: "50%", // Ensures it doesn't exceed 50%
-              padding: "10px",
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              backgroundColor: "#f9f9f9",
-            }}
-            
+            className="info-container"            
           >
             {product ? (
                 <ProductInfo product={product}/>

@@ -1,7 +1,57 @@
 .image-button {
-    display: none;
+    opacity: 0.2;
 }
 
 .image-container:hover .image-button {
-    display: block;
+    opacity: 1;
 }
+
+.image-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 500px;
+    align-content: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border-style: groove;
+    border-width: 1px;
+    box-sizing: border-box;
+  }
+  
+  .image-container img {
+    display: block;
+    align-self: center;
+    justify-self: center;
+    max-width: 500px;
+    max-height: 500px;
+  }
+  
+  .image-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .image-button-left {
+    left: 10px;
+  }
+  
+  .image-button-right {
+    right: 10px;
+  }
+  
+  .no-image-placeholder img {
+    display: block;
+    align-self: center;
+    justify-self: center;
+    max-width: 500px;
+    max-height: 500px;
+  }
+  

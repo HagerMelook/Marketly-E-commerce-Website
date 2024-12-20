@@ -17,13 +17,12 @@ export async function getRateByProduct(accountId, productId) {
   try {
     const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`);
     if (!response.ok) {
-      if (response.status === 404) {
-        return null;
-      }
-    }
+      throw new Error("Failed to fetch rate");
+    }    
     return await response.json();
   } catch (error) {
-    console.log("No rate found"+error);
+    console.error("Error fetching rates:", error);
+    throw error;
   }
 }
 

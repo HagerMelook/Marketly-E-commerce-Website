@@ -46,11 +46,16 @@ public class CommentsService {
     }
 
     private void updateRate(Product product) {
-        Double allCommentsRate = commentRepository.findAverageValue();
-        Long commentsCount = commentRepository.count();
-        Double allRatesRate = rateRepository.findAverageValue();
-        Long ratesCount = rateRepository.count();
-        product.setRating((allRatesRate*ratesCount+allCommentsRate*commentsCount)/(ratesCount+commentsCount));
+        Long allCommentsRate = commentRepository.findSumValueByProductId(product.getId());
+        Long commentsCount = commentRepository.countByProductId(product.getId());
+        Long allRatesRate = rateRepository.findSumValueByProductId(product.getId());
+        Long ratesCount = rateRepository.countByProductId(product.getId());
+        if (ratesCount+commentsCount==0) {
+            product.setRating(0);
+        }
+        else {
+            product.setRating((double) (allRatesRate + allCommentsRate) /(ratesCount+commentsCount));
+        }
     }
 
     @Transactional
@@ -85,6 +90,12 @@ public class CommentsService {
 
     @Transactional
     public void deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Comment not found"));
+        Product product = comment.getProduct();
+
         commentRepository.deleteById(id);
+
+        updateRate(product);
     }
 }

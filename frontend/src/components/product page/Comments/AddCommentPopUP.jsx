@@ -11,19 +11,19 @@ const AddCommentPopup = ({
   accountId, 
   onCommentSubmitted, 
   existingComment, 
-  existingRate 
+  existingRate, 
+  isEditing
 }) => {
   const [rating, setRating] = useState(0);
   const [commentBody, setCommentBody] = useState("");
 
-  // Populate fields if editing existing feedback
   useEffect(() => {
-    if (existingComment) {
+    if (existingComment && existingComment.id) {
       setRating(existingComment.rating);
       setCommentBody(existingComment.body || "");
-    } else if (existingRate) {
+    } else if (existingRate && existingRate.id) {
       setRating(existingRate.rating);
-      setCommentBody(""); // Clear the comment body for rates
+      setCommentBody(""); 
     } else {
       setRating(0);
       setCommentBody("");
@@ -32,11 +32,11 @@ const AddCommentPopup = ({
 
   const handleSubmit = async () => {
     try {
-      if (existingComment) {
+      if (existingComment && existingComment.id) {
         existingComment.rating = rating;
         existingComment.body = commentBody;
         await updateComment(existingComment.id, existingComment);
-      } else if (existingRate) {
+      } else if (existingRate && existingRate.id) {
         existingRate.rating = rating
         await updateRate(existingRate.id, existingRate);
       } else {
@@ -58,7 +58,6 @@ const AddCommentPopup = ({
       <Box sx={styles.modalContainer}>
         <Typography variant="h6" sx={{ mb: 2 }}>{existingComment || existingRate ? "Edit Feedback" : "Add Feedback"}</Typography>
 
-        {/* Rating */}
         <Box sx={{ mb: 2 }}>
           <Typography variant="subtitle1">Rate the product:</Typography>
           <Rating
@@ -67,8 +66,7 @@ const AddCommentPopup = ({
           />
         </Box>
 
-        {/* Comment Body */}
-        <TextField
+        {((existingComment && existingComment.id) || !isEditing) && <TextField
           label="Comment Body"
           placeholder="Write your comment here"
           multiline
@@ -77,12 +75,24 @@ const AddCommentPopup = ({
           value={commentBody}
           onChange={(e) => setCommentBody(e.target.value)}
           sx={{ mb: 2 }}
-        />
+        />}
 
-        {/* Submit Button */}
-        <Button variant="contained" color="primary" onClick={handleSubmit} disabled={!rating}>
-          Submit
-        </Button>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={!rating || (isEditing && existingComment && existingComment.id && commentBody == "") || commentBody.length>255}
+          >
+            Submit
+          </Button>
+          <Typography variant="body2" sx={{ color: "gray" }}>
+            {commentBody ? "Full Review" : "Rate Only"}
+          </Typography>
+          {commentBody.length>255 && <Typography variant="body2" sx={{ color: "red" }}>
+            Body is too long.<br/> Max: 255 characters.
+          </Typography>}
+        </Box>
       </Box>
     </Modal>
   );
@@ -111,6 +121,7 @@ AddCommentPopup.propTypes = {
   onCommentSubmitted: PropTypes.func.isRequired,
   existingComment: PropTypes.object,
   existingRate: PropTypes.object,
+  isEditing: PropTypes.bool
 };
 
 export default AddCommentPopup;

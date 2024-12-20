@@ -2,7 +2,6 @@ export async function getProductInfo(id) {
     try {
         const response = await fetch("http://localhost:8080/productpage/" + id);
         const data = await response.json();
-        console.log("Response from the backend:", data);
         return data;
     } catch (error) {
         console.error(error);
@@ -14,7 +13,6 @@ export async function getComments(productId, queryParams) {
     try {
         const response = await fetch(`http://localhost:8080/productpage/comments/${productId}?${queryParams}`);
         const data = await response.json();
-        console.log("Response from the backend:", data);
         return data;
     } catch (error) {
         console.error(error);

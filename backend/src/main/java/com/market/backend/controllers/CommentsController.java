@@ -38,7 +38,10 @@ public class CommentsController {
             return new ResponseEntity<>(commentDTO, HttpStatus.OK);
         }
         catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(new CommentDTO(), HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
