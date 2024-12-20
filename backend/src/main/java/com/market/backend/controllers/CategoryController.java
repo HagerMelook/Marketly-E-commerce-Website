@@ -1,6 +1,12 @@
 package com.market.backend.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.market.backend.models.Category;
 import com.market.backend.repositories.CategoryRepository;
@@ -19,6 +27,8 @@ import com.market.backend.repositories.CategoryRepository;
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
+   
+    private static final String IMAGE_UPLOAD_DIR = System.getProperty("user.dir") + "/marketly/backend/src/main/resources";
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -57,11 +67,9 @@ public class CategoryController {
         if (!existingCategory.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-
-        // Update the category
-        category.setCategoryName(categoryName);  // Set the categoryName as it's used as the primary key
-        Category updatedCategory = categoryRepository.save(category);
-        return ResponseEntity.ok(updatedCategory);
+        //delete old category
+        categoryRepository.deleteById(categoryName);
+        return addCategory(category);
     }
 
     // 5. Delete a category
@@ -73,4 +81,27 @@ public class CategoryController {
         categoryRepository.deleteById(categoryName);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/upload-image")
+public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile image,
+                                     @RequestParam("imagePath") String imagePath) {
+    try {
+        // Save the image to the specified directory
+        File uploadDir = new File(IMAGE_UPLOAD_DIR);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        // Save the image with the category name as the filename
+        Path path = new File(IMAGE_UPLOAD_DIR, imagePath).toPath();
+        Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+        return ResponseEntity.ok().body("Image uploaded successfully");
+
+    } catch (IOException e) {
+        return ResponseEntity.status(500).body("Failed to upload image");
+    }
+}
+
+
 }
