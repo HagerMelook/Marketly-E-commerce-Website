@@ -1,8 +1,6 @@
 package com.market.backend.controllers;
 
 import com.market.backend.dtos.ProductDTO;
-import com.market.backend.dtos.VendorProductDTO;
-import com.market.backend.models.Product;
 import com.market.backend.services.VendorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,7 +83,7 @@ public class VendorController {
 
 
     @GetMapping("/products/{vendorId}")
-    public ResponseEntity<List<VendorProductDTO>> getVendorProducts(@PathVariable long vendorId){
+    public ResponseEntity<List<ProductDTO>> getVendorProducts(@PathVariable long vendorId){
         return ResponseEntity.ok(vendorService.getAllVendorProducts(vendorId));
     }
 
@@ -101,9 +99,8 @@ public class VendorController {
 
    //TODO requesting parameters
     @GetMapping("/search/{vendorId}/{name}")
-    public ResponseEntity<List<VendorProductDTO>> searchForProduct(@PathVariable long vendorId, @PathVariable String name) {
+    public ResponseEntity<List<ProductDTO>> searchForProduct(@PathVariable long vendorId, @PathVariable String name) {
         return  ResponseEntity.ok(vendorService.getProductByName(vendorId, name));
     }
 
 }
-
