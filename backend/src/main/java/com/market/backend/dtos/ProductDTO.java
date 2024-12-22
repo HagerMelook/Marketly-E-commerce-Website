@@ -17,5 +17,7 @@ public class ProductDTO {
     private double rating;
     private int quantity;
     private String category;
-    List<MultipartFile> images;
+    private List<MultipartFile> images;
+    private List<String> imagePaths;
 }
+
