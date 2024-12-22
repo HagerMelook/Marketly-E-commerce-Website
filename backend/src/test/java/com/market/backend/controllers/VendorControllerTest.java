@@ -4,6 +4,7 @@ import com.market.backend.dtos.ProductDTO;
 import com.market.backend.models.Product;
 import com.market.backend.services.VendorService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
 import static org.hamcrest.Matchers.hasSize;
@@ -200,4 +202,89 @@ class VendorControllerTest {
 
         verify(vendorService, times(1)).updateProduct(any(ProductDTO.class), eq(id));
     }
+
+//    @Test
+//    public void testGetVendorProducts() throws Exception {
+//        long vendorId = 1L;
+//
+//        ProductDTO productDTO = ProductDTO.builder()
+//                .id(1L)
+//                .vendorId(vendorId)
+//                .name("Product1")
+//                .description("Description1")
+//                .price(10.0)
+//                .rating(5)
+//                .quantity(10)
+//                .category("Category1")
+//                .imagePaths(Arrays.asList("img1.jpg"))
+//                .build();
+//
+//        Mockito.when(vendorService.getAllVendorProducts(vendorId))
+//                .thenReturn(Collections.singletonList(productDTO));
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/products/{vendorId}", vendorId)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$[0].id").value(1L))
+//                .andExpect(jsonPath("$[0].name").value("Product1"))
+//                .andExpect(jsonPath("$[0].imagePaths[0]").value("img1.jpg"));
+//    }
+//
+//
+//    @Test
+//    public void testDeleteVendorProduct() throws Exception {
+//        long productId = 1L;
+//
+//        Mockito.doNothing().when(vendorService).deleteProduct(productId);
+//
+//        mockMvc.perform(MockMvcRequestBuilders.delete("/delete/{id}", productId)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.message").value("Product deleted successfully"));
+//
+//        Mockito.verify(vendorService).deleteProduct(productId);
+//    }
+//
+//    @Test
+//    public void testDeleteVendorProductWithException() throws Exception {
+//        long productId = 1L;
+//
+//        Mockito.doThrow(new IllegalArgumentException("Product not found")).when(vendorService).deleteProduct(productId);
+//
+//        mockMvc.perform(MockMvcRequestBuilders.delete("/delete/{id}", productId)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(content().string("Product not found"));
+//
+//        Mockito.verify(vendorService).deleteProduct(productId);
+//    }
+//
+//    @Test
+//    public void testSearchForProduct() throws Exception {
+//        long vendorId = 1L;
+//        String name = "Product";
+//
+//        ProductDTO productDTO = ProductDTO.builder()
+//                .id(1L)
+//                .vendorId(vendorId)
+//                .name("Product1")
+//                .description("Description1")
+//                .price(10.0)
+//                .rating(5)
+//                .quantity(10)
+//                .category("Category1")
+//                .imagePaths(Arrays.asList("img1.jpg"))
+//                .build();
+//
+//        Mockito.when(vendorService.getProductByName(vendorId, name))
+//                .thenReturn(Collections.singletonList(productDTO));
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/search/{vendorId}/{name}", vendorId, name)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$[0].id").value(1L))
+//                .andExpect(jsonPath("$[0].name").value("Product1"))
+//                .andExpect(jsonPath("$[0].imagePaths[0]").value("img1.jpg"));
+//    }
 }
+
