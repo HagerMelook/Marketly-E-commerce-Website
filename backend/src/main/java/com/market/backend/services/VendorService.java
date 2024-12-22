@@ -1,7 +1,6 @@
 package com.market.backend.services;
 
 import com.market.backend.dtos.ProductDTO;
-import com.market.backend.dtos.VendorProductDTO;
 import com.market.backend.models.Product;
 import com.market.backend.models.ProductImage;
 import com.market.backend.models.Vendor;
@@ -107,7 +106,7 @@ public class VendorService {
     }
 
     @Transactional
-    public List<VendorProductDTO> getAllVendorProducts(long vendorId) {
+    public List<ProductDTO> getAllVendorProducts(long vendorId) {
         List<Product> products = productRepository.findByVendorId(vendorId);
         return getProductDTOS(products);
     }
@@ -119,18 +118,17 @@ public class VendorService {
     }
 
     @Transactional
-    public List<VendorProductDTO> getProductByName(long vendorId, String name){
+    public List<ProductDTO> getProductByName(long vendorId, String name){
         List<Product> products = productRepository.findByVendorIdAndNameContaining(vendorId, name);
         return getProductDTOS(products);
     }
 
-    private List<VendorProductDTO> getProductDTOS(List<Product> products) {
-        List<VendorProductDTO> productsDTO = new ArrayList<>();
+    private List<ProductDTO> getProductDTOS(List<Product> products) {
+        List<ProductDTO> productsDTO = new ArrayList<>();
 
         for (Product product : products) {
             List<String> images = productImageRepository.findByProductId(product.getId());
-            //TODO using builder
-            VendorProductDTO productDTO = VendorProductDTO.builder()
+            ProductDTO productDTO = ProductDTO.builder()
                     .id(product.getId())
                     .vendorId(product.getVendor().getId())
                     .name(product.getName())
@@ -139,7 +137,7 @@ public class VendorService {
                     .rating(product.getRating())
                     .quantity(product.getQuantity())
                     .category(product.getCategory())
-                    .images(images)
+                    .imagePaths(images)
                     .build();
 
             productsDTO.add(productDTO);
