@@ -11,7 +11,7 @@ function InventoryProduct({product, onRemove}){
 
     const handleEdit = () => {
         setSelectedProduct(product)
-        navigate('inventory/product-form')
+        navigate('product-form')
     };
 
     const handleRemoveProduct = () => {
