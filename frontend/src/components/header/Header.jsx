@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 // import { use } from "react";
 
-function Header({ isAdmin = false }) {
+function Header({ isAdmin, isVendor }) {
   const [searchWord, setSearchWord] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchTableState, setSearchTableState] = useState(false);
@@ -101,11 +101,13 @@ function Header({ isAdmin = false }) {
             Admin Dashboard
           </Link>
         )}
-        {/* {isVendor && (
-          <Link to="/vendor-dashboard" className="orders-text">
+
+        {isVendor && (
+          <Link to="/inventory" className="orders-text">
             Inventory
           </Link>
-        )} */}
+        )}
+
         <img src={cartIcon} alt="Cart" title="View Cart" />
         <img src={profileIcon} alt="Profile" title="Your Profile" />
       </div>
@@ -115,7 +117,7 @@ function Header({ isAdmin = false }) {
 
 Header.propTypes = {
   isAdmin: PropTypes.bool,
-  // isVendor: PropTypes.bool,
+  isVendor: PropTypes.bool
 };
 
 export default Header;

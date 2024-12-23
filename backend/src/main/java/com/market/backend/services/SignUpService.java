@@ -53,6 +53,7 @@ public class SignUpService {
                 .organizationName(org)
                 .username(username)
                 .taxNumber(tax)
+                .authType("oauth")
                 .build();
             vendorRequestRepository.save(ven);
             return "Request Registered Successfully";

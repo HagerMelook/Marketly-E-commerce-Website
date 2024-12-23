@@ -24,6 +24,7 @@ function Home({ isAdmin, isVendor }) {
       });
   });
 
+
   return (
     <div className="home">
       <Header isAdmin={isAdmin} isVendor={isVendor} />
@@ -37,8 +38,8 @@ function Home({ isAdmin, isVendor }) {
 }
 
 Home.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
-  isVendor: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool,
+  isVendor: PropTypes.bool
 };
 Category.propTypes = {
   category: PropTypes.object,
