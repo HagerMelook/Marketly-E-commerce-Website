@@ -1,27 +1,23 @@
 package com.market.backend.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.market.backend.models.Account;
 import com.market.backend.models.VendorRequest;
 import com.market.backend.services.SignUpService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/SignUp")
 public class SignUpController {
 
-    @Autowired
-    private SignUpService service;
+    private final SignUpService service;
+
+    public SignUpController(SignUpService service) {
+        this.service = service;
+    }
 
     @GetMapping("/Google/Client")
     public String googleOauthClient(@AuthenticationPrincipal OAuth2User principal){
@@ -34,16 +30,6 @@ public class SignUpController {
         System.out.println("Initiating a Vendor Request");
         return service.registerVendorRequest(request.getAttributes().get("email").toString(), org, tax);
     }
-
-//    @GetMapping("/")
-//    public String testHome(){
-//        return "Welcome";
-//    }
-//
-//    @GetMapping("/about")
-//    public String testAbout(){
-//        return "I'm Ahmed";
-//    }
 
     @PostMapping("/ClientBasicSignUp/{password}")
     public String clientBasicSignUp(@RequestBody Account client, @PathVariable String password) {

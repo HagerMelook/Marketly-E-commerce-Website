@@ -1,16 +1,14 @@
 package com.market.backend.services;
 
 import com.market.backend.models.Password;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.market.backend.models.Account;
 import com.market.backend.models.VendorRequest;
-import com.market.backend.repositories.AccountRepository;
 import com.market.backend.repositories.PasswordRepository;
 import com.market.backend.repositories.VendorRequestRepository;
-
+import com.market.backend.models.Account;
+import com.market.backend.repositories.AccountRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SignUpService {
@@ -110,16 +108,19 @@ public class SignUpService {
             System.out.println(String.valueOf(vendor.getTaxNumber()).length());
             return "The tax number must be of 9 numbers only";
         }
-        if (vendorRequestRepository.existsByOrganizationName(vendor.getOrganizationName())) {
-            return "The business name is already exist";
-        }
         if (vendorRequestRepository.existsByUsername(vendor.getUsername())) {
             return "The username is already exist";
         }
+        if (vendorRequestRepository.existsByOrganizationName(vendor.getOrganizationName())) {
+            return "The business name is already exist";
+        }
         if (vendorRequestRepository.existsBytaxNumber(vendor.getTaxNumber()))
             return "The tax number is already exist";
-        
+
         vendorRequestRepository.save(vendor);
         return "Successfully registered";
     }
+
+
+
 }

@@ -7,6 +7,9 @@ import VendorReg from "./pages/registeration/VendorReg";
 import VendorInventory from "./pages/Inventory/VendorInventory";
 import ProductManagementPage from "./pages/product management/ProductManagementPage";
 import { ProductProvider } from "./contexts/ProductProvider";
+import SearchPage from "./pages/search page/SearchPage.jsx";
+import CategoryPage from "./pages/category page/CategoryPage.jsx";
+
 
 
 function App() {
@@ -18,6 +21,9 @@ function App() {
           <Route path="vendorSignUp" element={<VendorReg />} />
           <Route path="home" element={<Home isAdmin={false} />} />
           <Route path="admin-dashboard" element={<AdminDashboard />} />
+          <Route path="*" element={<Navigate to="/home" />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/category" element={<CategoryPage />} />
           <Route
             path="inventory/*"
             element={
