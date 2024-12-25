@@ -1,0 +1,95 @@
+.vendor-inventory{
+    color: black;
+    font-size: 16px;
+    background-color: #ddd;
+    height: 100vh;
+}
+
+.inventory-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensure all elements are spaced */
+    gap: 10px; /* Adds space between elements */
+    padding: 10px;
+    border-radius: 6px; /* Optional for a rounded container look */
+    margin-top:13px;
+    margin-bottom:14px;
+}
+
+.inventory-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 40%; /* Set a fixed width for the search bar */
+    margin-left:0.5%;
+}
+
+.inventory-search-bar input {
+    width: 100%; /* Makes the input take all available space within its parent */
+    height: 35px;
+    padding: 0 30px; /* Add padding for the icon */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+}
+
+.inventory-search-bar button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.inventory-search-bar button img {
+    width: 14px; /* Smaller icon */
+    height: auto;
+    display: block;
+}
+
+.create-button {
+    width:12%;
+    margin-right: 0.5%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.create-button:hover {
+    background-color: #0056b3;
+}
+
+.filter-dropdown {
+    height: 35px;
+    width: 20%;
+    margin-right: -25%;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.filter-dropdown:focus {
+    border-color: #007bff;
+}
+
+.filter-dropdown option {
+    color: #333;
+}

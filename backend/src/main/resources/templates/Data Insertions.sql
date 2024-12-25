@@ -83,12 +83,12 @@ INSERT INTO order_products (order_id, product_id) VALUES
                                                       (5, 10);
 
 -- Insert data into comment
-INSERT INTO comment (comment_body, account_id, product_id) VALUES
-                                                               ('Amazing quality!', 3, 1),
-                                                               ('Not worth the price.', 4, 2),
-                                                               ('Highly recommended!', 7, 8),
-                                                               ('Good product.', 8, 5),
-                                                               ('Would buy again.', 7, 10);
+INSERT INTO comment (comment_body, account_id, product_id, rating) VALUES
+                                                                       ('Amazing quality!', 3, 1, 0),
+                                                                       ('Not worth the price.', 4, 2, 0),
+                                                                       ('Highly recommended!', 7, 8, 0),
+                                                                       ('Good product.', 8, 5, 0),
+                                                                       ('Would buy again.', 7, 10, 0);
 
 -- Insert data into feedback
 INSERT INTO feedback (feedback_body) VALUES
