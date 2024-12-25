@@ -26,6 +26,7 @@ public class ProductInfoDTO {
     //fields from ShippingInfo
     private String address;
     private String phoneNumber;
+    private String postalCode;
 
     public ProductInfoDTO(Product product, ShippingInfo shippingInfo) {
         if(product!=null) {
@@ -43,6 +44,7 @@ public class ProductInfoDTO {
         if (shippingInfo!=null) {
             this.address = shippingInfo.getAddress();
             this.phoneNumber = shippingInfo.getPhoneNumber();
+            this.postalCode = shippingInfo.getPostalCode();
         }
     }
 }

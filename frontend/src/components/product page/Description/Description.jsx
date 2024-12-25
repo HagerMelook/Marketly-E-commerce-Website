@@ -22,6 +22,12 @@ function Description ({ product }) {
                 <strong className="vendor-label">Address: </strong>
                 {product.address}
             </>
+            )}<br/>
+            {product.postalCode && (
+            <>
+                <strong className="vendor-label">Postal code: </strong>
+                {product.postalCode}
+            </>
             )}
         </p>
         </>)}

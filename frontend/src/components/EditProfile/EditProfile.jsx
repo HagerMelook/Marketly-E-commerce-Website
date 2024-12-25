@@ -87,7 +87,7 @@ const UserAccount = () => {
         <>  
             <Header/>
             <div className="account-page">
-            <h1>Your Profile</h1>
+            <h1>{userData.username} Profile</h1>
             <div className="info-list">
                 <div className="info-row" >
                     <div className="info-label" style={{color: "black", fontSize: "14pt"}}>Account Information</div>

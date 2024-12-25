@@ -74,7 +74,7 @@ const ProductComments = ({ productId, productRating, accountId }) => {
   };
 
   return (
-    <div className="container">
+    <div className="comments-container">
       <TopComponent
         productRating={productRating}
         productId={productId}

@@ -26,6 +26,7 @@
     justify-self: center;
     max-width: 500px;
     max-height: 500px;
+    width: auto;
   }
   
   .image-button {
