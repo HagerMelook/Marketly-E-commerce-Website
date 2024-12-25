@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./EditProfile.css";
-import Header from "../header/Header";
+import Header from "../../components/header/Header";
 import * as EditProfileApi from '../../components/API/EditProfileApi';
 
 const UserAccount = () => {

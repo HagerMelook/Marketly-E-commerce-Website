@@ -11,7 +11,7 @@ import SearchPage from "./pages/search page/SearchPage.jsx";
 import CategoryPage from "./pages/category page/CategoryPage.jsx";
 
 import ProductPage from "./pages/ProductPage/ProductPage";
-import EditProfile from "./components/EditProfile/EditProfile";
+import EditProfile from "./pages/EditProfile/EditProfile.jsx";
 
 
 function App() {
