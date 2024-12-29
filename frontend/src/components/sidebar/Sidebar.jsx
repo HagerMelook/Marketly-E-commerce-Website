@@ -6,7 +6,6 @@ function Sidebar({ handleOnClick, activeIndex }) {
     { id: 1, label: "Account Management" },
     { id: 2, label: "User Feedback" },
     { id: 3, label: "Vendor Requests" },
-    { id: 4, label: "Category Management" }
   ];
 
   return (
