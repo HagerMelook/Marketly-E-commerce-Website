@@ -3,7 +3,7 @@ import { useState } from 'react';
 import backgroundImg from "../../assets/background.png";
 import './LogIn.css';
 import BasicSignIn from '../../components/API/signInApi';
-import decodeJwt from './decoder';
+
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,10 +39,11 @@ const Login = () => {
       const response = await BasicSignIn(email, password);
       // Handle successful login (e.g., store token, navigate to dashboard)
       console.log("Login successful", response);
-      var decodedJWT= decodeJwt(response.token)
-      localStorage.setItem('token', response.token); // INSECURE (use HttpOnly cookies for production)
-      localStorage.setItem('role', decodedJWT.roles); 
-      localStorage.setItem('id', decodedJWT.account_id); 
+      const parsedToken = JSON.parse(response.token); 
+    
+      sessionStorage.setItem('token',  parsedToken.token);
+      sessionStorage.setItem('role',parsedToken.role); 
+      sessionStorage.setItem('id', parsedToken.id); 
       
       navigate('/home');
     } catch (error) {
