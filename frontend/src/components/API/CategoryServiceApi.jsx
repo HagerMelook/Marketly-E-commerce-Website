@@ -49,23 +49,28 @@ export const CategoryService = {
     }
   },
 
-  updateCategory:async (categoryName, categoryDTO) => {
+  updateCategory: async (categoryName, newName) => {
     try {
       const formData = new FormData();
-      formData.append('newName', categoryDTO.categoryName);
+      formData.append('newName', newName);
       
-      // Append image only if it's provided
-      if (categoryDTO.images) {
-        formData.append('image', categoryDTO.images);
-      }
-  
-      const response = await api.put(`/${categoryName}`, formData);
+      console.log(categoryName )
+      console.log(newName)
+      const response = await axios.put(
+        `${BASE_URL}/${categoryName}?newName=${newName}`,
+        null,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      
       return response.data;
     } catch (error) {
       throw new Error('Failed to update category: ' + error.message);
     }
   },
-  
 
   // Delete category
   deleteCategory: async (categoryName) => {

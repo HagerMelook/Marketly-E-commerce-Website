@@ -17,6 +17,8 @@ import com.market.backend.dtos.CategoryDTO;
 import com.market.backend.models.Category;
 import com.market.backend.repositories.CategoryRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CategoryService {
     @Autowired
@@ -26,32 +28,26 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public ResponseEntity<String> updateCategory(String categoryName, CategoryDTO categoryDTO) throws IOException {
-        // Retrieve the existing category from the database
-        Optional<Category> existingCategory = categoryRepository.findById(categoryName);
+    @Transactional
+    public ResponseEntity<String> updateCategory(String categoryName, String newName) {
+        Optional<Category> existingCategoryOpt = categoryRepository.findByCategoryName(categoryName);
         
-        // If the category exists, update its details
-        if (existingCategory.isPresent()) {
-            Category category = existingCategory.get();
-            
-            // Update category name
-            category.setCategoryName(categoryDTO.getCategoryName());
-            
-            // Update image path if an image is provided
-            if (categoryDTO.getImages() != null) {
-                // Save the image (you may need to implement this logic depending on where you want to store the image)
-                String imagePath = saveCategoryImage(categoryDTO.getImages()); // Implement this method to return the image path
-                category.setCategoryImagePath(imagePath);
+        if (existingCategoryOpt.isPresent()) {
+            Category existingCategory = existingCategoryOpt.get();
+            // Check if new name already exists and it's not the same category
+            if (!categoryName.equals(newName)) {
+                Category newCategory = new Category();
+                newCategory.setCategoryName(newName);
+                newCategory.setCategoryImagePath(existingCategory.getCategoryImagePath());
+                categoryRepository.save(newCategory);
+                categoryRepository.deleteById(categoryName);
+                return ResponseEntity.ok("Category updated successfully");
             }
-    
-            // Save the updated category
-            categoryRepository.save(category);
-    
-            // Return a success response
-            return ResponseEntity.ok().body("Category updated successfully");
+            
+            return ResponseEntity.badRequest().body("Category with new name already exists");
+            
         }
-    
-        // Return a 404 if the category is not found
+        
         return ResponseEntity.notFound().build();
     }
     
@@ -63,7 +59,7 @@ public class CategoryService {
 
         return Optional.empty();
     }
-
+ @Transactional
     public ResponseEntity<Object> addCategory(String CategoryName, MultipartFile CategoryImage) {
         if (categoryRepository.existsById(CategoryName)) {
             return ResponseEntity.badRequest().build();

@@ -42,11 +42,7 @@ function CategoryManagement() {
     setNewCategory({ ...newCategory, file });
   };
 
-  const handleEditFileChange = (e) => {
-    const file = e.target.files[0];
-    setEditForm({ ...editForm, newImage: file });
-  };
-
+ 
   const handleAddCategory = async (e) => {
     e.preventDefault();
     if (!newCategory.name.trim() || !newCategory.file) {
@@ -75,18 +71,13 @@ function CategoryManagement() {
 
     setActionLoading(true);
     try {
-      const categoryDTO = {
-        categoryName: editForm.newName,
-        images: editForm.newImage // Only include if there's a new image
-      };
-      
-      await CategoryService.updateCategory(categoryName, categoryDTO);
+      await CategoryService.updateCategory(categoryName, editForm.newName);
       await fetchCategories();
       setEditingCategory(null);
       setEditForm({ newName: "", newImage: null });
       setError("");
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Failed to update category");
     } finally {
       setActionLoading(false);
     }
@@ -171,12 +162,6 @@ function CategoryManagement() {
                     value={editForm.newName}
                     onChange={(e) => setEditForm({...editForm, newName: e.target.value})}
                     placeholder="New Category Name"
-                    className="form-input"
-                  />
-                  <input
-                    type="file"
-                    onChange={handleEditFileChange}
-                    accept="image/*"
                     className="form-input"
                   />
                   <div className="button-group">

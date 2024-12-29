@@ -1,6 +1,5 @@
 package com.market.backend.controllers;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.market.backend.dtos.CategoryDTO;
 import com.market.backend.models.Category;
 import com.market.backend.services.CategoryService;
 
@@ -55,14 +52,11 @@ public class CategoryController {
     @PutMapping("/{categoryName}")
     public ResponseEntity<String> updateCategory(
             @PathVariable String categoryName,
-            @RequestParam(required = false) String newName,
-            @RequestParam(required = false) MultipartFile image) throws IOException {
+            @RequestParam String newName) {
 
-        CategoryDTO categoryDTO = CategoryDTO.builder()
-                .categoryName(newName)
-                .images(image)
-                .build();
-        return categoryService.updateCategory(categoryName, categoryDTO);
+                System.out.println("Category name: " + categoryName+ " New name: " + newName);
+
+        return categoryService.updateCategory(categoryName, newName);
     }
 
     // 5. Delete a category
