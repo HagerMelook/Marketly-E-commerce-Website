@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, String> {
@@ -14,9 +15,8 @@ public interface CategoryRepository extends JpaRepository<Category, String> {
     List<String> findAllCategoryNames();
     @Override
     List<Category> findAll();
-    Category findByCategoryName(String name);
     void deleteByCategoryName(String name);
-  Optional<Category> findByCategoryName(String categoryName);
+    Optional<Category> findByCategoryName(String categoryName);
     boolean existsByCategoryName(String categoryName);
 
 }
