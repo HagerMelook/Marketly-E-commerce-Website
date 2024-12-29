@@ -7,8 +7,12 @@ import VendorReg from "./pages/registeration/VendorReg";
 import VendorInventory from "./pages/Inventory/VendorInventory";
 import ProductManagementPage from "./pages/product management/ProductManagementPage";
 import { ProductProvider } from "./contexts/ProductProvider";
+
+import Login from "./pages/logIn/LogIn";
+
 import SearchPage from "./pages/search page/SearchPage.jsx";
 import CategoryPage from "./pages/category page/CategoryPage.jsx";
+
 
 
 
@@ -17,6 +21,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<RadialChoice />} />
+          <Route path="/login" element={<Login />} />
           <Route path="clientSignUp" element={<ClientReg />} />
           <Route path="vendorSignUp" element={<VendorReg />} />
           <Route path="home" element={<Home isAdmin={false} />} />

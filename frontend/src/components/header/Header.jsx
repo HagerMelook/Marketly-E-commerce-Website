@@ -3,6 +3,7 @@ import logo from "../../assets/logo-2.2.png";
 import cartIcon from "../../assets/cart-icon.svg";
 import profileIcon from "../../assets/profile-icon.svg";
 import searchIcon from "../../assets/search-icon.svg";
+
 import SmallProductCard from "../small product card/SmallProductCard";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
@@ -44,6 +45,7 @@ function Header({ isAdmin, isVendor }) {
       });
   };
 
+
   return (
     <header className="header">
       <div className="logo">
@@ -51,6 +53,7 @@ function Header({ isAdmin, isVendor }) {
           <img src={logo} alt="Company Logo" />
         </Link>
       </div>
+
 
       <div className="searchBox">
         <form
@@ -94,6 +97,7 @@ function Header({ isAdmin, isVendor }) {
         )}
       </div>
 
+
       <div className="icons">
         <span className="orders-text">Orders</span>
         {isAdmin && (
@@ -106,8 +110,7 @@ function Header({ isAdmin, isVendor }) {
           <Link to="/inventory" className="orders-text">
             Inventory
           </Link>
-        )}
-
+        )} */}
         <img src={cartIcon} alt="Cart" title="View Cart" />
         <img src={profileIcon} alt="Profile" title="Your Profile" />
       </div>

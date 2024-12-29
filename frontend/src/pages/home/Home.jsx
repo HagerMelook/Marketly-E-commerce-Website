@@ -1,3 +1,4 @@
+
 import Header from "../../components/header/Header.jsx";
 import Category from "../../components/category/Category.jsx";
 import PropTypes from "prop-types";
@@ -33,6 +34,7 @@ function Home({ isAdmin, isVendor }) {
           <Category key={category.name} category={category} />
         ))}
       </div>
+
     </div>
   );
 }
@@ -43,6 +45,7 @@ Home.propTypes = {
 };
 Category.propTypes = {
   category: PropTypes.object,
+
 };
 
 export default Home;
