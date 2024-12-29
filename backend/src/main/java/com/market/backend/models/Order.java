@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -26,7 +27,7 @@ public class Order {
     private String status;
 
     @Column(name = "order_date", nullable = false)
-    private Date date;
+    private LocalDateTime dateTime;
 
     @Column(name = "order_checkout_price", nullable = false)
     private double checkoutPrice;
