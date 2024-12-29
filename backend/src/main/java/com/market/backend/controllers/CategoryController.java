@@ -66,11 +66,6 @@ public class CategoryController {
         return categoryService.deleteCategory(categoryName);
     }
 
-    @GetMapping("/Home")
-    List<Category> homeCategories(){
-        return categoryService.listAllCategories();
-    }
-
     @GetMapping("/Category/{name}")
     List<Product> categoryProducts(@PathVariable String name){
         return categoryService.listCategoriesProducts(name);
