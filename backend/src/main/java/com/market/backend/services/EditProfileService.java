@@ -128,6 +128,7 @@ public class EditProfileService {
 
         shippingInfo.setAddress(adminInfoDTO.getAddress());
         shippingInfo.setPhoneNumber(adminInfoDTO.getPhone());
+        shippingInfo.setPostalCode(adminInfoDTO.getPostalCode());
         shippingInfoRepository.save(shippingInfo);
     }
 
@@ -162,9 +163,12 @@ public class EditProfileService {
 
         vendor.setOrganizationName(vendorInfoDTO.getOrganizationName());
         vendor.setTaxNumber(vendorInfoDTO.getTaxNumber());
+        vendorRepository.save(vendor);
 
         shippingInfo.setAddress(vendorInfoDTO.getAddress());
         shippingInfo.setPhoneNumber(vendorInfoDTO.getPhone());
+        shippingInfo.setPostalCode(vendorInfoDTO.getPostalCode());
+        shippingInfoRepository.save(shippingInfo);
     }
 
     @Transactional
@@ -198,8 +202,11 @@ public class EditProfileService {
 
         client.setLastName(clientInfoDTO.getLastName());
         client.setFirstName(clientInfoDTO.getFirstName());
+        clientRepository.save(client);
 
         shippingInfo.setAddress(clientInfoDTO.getAddress());
         shippingInfo.setPhoneNumber(clientInfoDTO.getPhone());
+        shippingInfo.setPostalCode(clientInfoDTO.getPostalCode());
+        shippingInfoRepository.save(shippingInfo);
     }
 }

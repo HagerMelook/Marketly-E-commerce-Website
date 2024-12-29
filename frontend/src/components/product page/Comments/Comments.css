@@ -1,0 +1,131 @@
+.comments-container {
+  max-width: 800px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.topContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.leftContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ratingText {
+  font-weight: bold;
+}
+
+.addButton {
+  padding: 5px 10px;
+  background-color: #0074d9;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editButton {
+  padding: 5px 10px;
+  background-color: #ffa500;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.deleteButton {
+  padding: 5px 10px;
+  background-color: #ff4136;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.commentsContainer {
+  padding: 10px 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.commentCard {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  flex-basis: 100%;
+  margin-top: 2px;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.commentText {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.commenterName {
+  font-style: italic;
+  color: #555;
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-top: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.pageIndicator {
+  font-weight: bold;
+}
+
+.pagination-button {
+  appearance: button;
+  backface-visibility: hidden;
+  background-color: #0074D9;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  overflow: hidden;
+  padding: 5px 25px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all .2s,box-shadow .08s ease-in;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.pagination-button:disabled {
+  cursor: default;
+  background-color: #ccc;
+}

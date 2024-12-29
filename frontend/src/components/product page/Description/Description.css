@@ -1,0 +1,56 @@
+.product-info {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto 50px; 
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 6px;
+  }
+  
+  .product-description {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .vendor-info {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  
+  .vendor-label {
+    color: #333;
+    font-weight: 600;
+    margin-right: 8px;
+    display: inline-block;
+  }
+  
+  @media (max-width: 768px) {
+    .product-info {
+      padding: 15px;
+      margin: 10px;
+    }
+  
+    .section-title {
+      font-size: 1.5rem;
+    }
+  
+    .product-description, .vendor-info {
+      font-size: 0.9rem;
+    }
+  }
+  

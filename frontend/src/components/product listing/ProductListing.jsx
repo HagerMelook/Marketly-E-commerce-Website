@@ -81,7 +81,7 @@ function ProductListing({ products = [], showFilter = false }) {
             <main className="main">
                 <div className="product-list">
                     {filteredProducts.map((product) => (
-                        <div className="product-card" key={product.id} onClick={() => navigate(`productPage/${product.id}`)}>
+                        <div className="product-card" key={product.id} onClick={() => navigate(`/productPage/${product.id}`)}>
                             <img src={product.image} alt={product.name} className="product-image" />
                             <h3 className="product-name">{product.name}</h3>
                             <div className="product-rating">{renderStars(product.rating)}</div>

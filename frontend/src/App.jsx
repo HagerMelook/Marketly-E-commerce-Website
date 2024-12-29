@@ -13,6 +13,8 @@ import Login from "./pages/logIn/LogIn";
 import SearchPage from "./pages/search page/SearchPage.jsx";
 import CategoryPage from "./pages/category page/CategoryPage.jsx";
 
+import ProductPage from "./pages/ProductPage/ProductPage";
+import EditProfile from "./pages/EditProfile/EditProfile.jsx";
 
 
 
@@ -24,6 +26,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="clientSignUp" element={<ClientReg />} />
           <Route path="vendorSignUp" element={<VendorReg />} />
+          <Route path="productPage/:productId" element={<ProductPage />} />
+          <Route path="editProfile" element={<EditProfile />} />
           <Route path="home" element={<Home isAdmin={false} />} />
           <Route path="admin-dashboard" element={<AdminDashboard />} />
           <Route path="*" element={<Navigate to="/home" />} />

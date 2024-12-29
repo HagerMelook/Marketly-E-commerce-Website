@@ -24,5 +24,5 @@ public class Rate {
     private Account account;
 
     @Column(name = "rating", nullable = false)
-    private double rating;
+    private Integer rating;
 }

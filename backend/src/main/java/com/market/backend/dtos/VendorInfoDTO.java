@@ -25,6 +25,7 @@ public class VendorInfoDTO {
     //fields from ShippingInfo
     private String address;
     private String phone;
+    private String postalCode;
 
     public VendorInfoDTO(Account account, Password password, Vendor vendor, ShippingInfo shippingInfo) {
         if (account!=null) {
@@ -44,6 +45,7 @@ public class VendorInfoDTO {
         if (shippingInfo!=null) {
             this.address = shippingInfo.getAddress();
             this.phone = shippingInfo.getPhoneNumber();
+            this.postalCode = shippingInfo.getPostalCode();
         }
     }
 }
