@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.market.backend.models.Category;
+import com.market.backend.models.Product;
 import com.market.backend.services.CategoryService;
 
 @RestController
