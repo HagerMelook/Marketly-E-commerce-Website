@@ -1,0 +1,20 @@
+div .product-all-info-container {
+    margin: 40px;
+}
+
+.product-all-info-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1200px;
+}
+
+.info-container {
+  flex: 1; 
+  max-width: 50%; 
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}

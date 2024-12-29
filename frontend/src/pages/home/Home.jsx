@@ -9,7 +9,7 @@ function Home({ isAdmin, isVendor }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/Home", {
+    fetch("http://localhost:8080/categories", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

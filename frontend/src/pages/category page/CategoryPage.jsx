@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/header/Header";
@@ -13,7 +12,7 @@ function CategoryPage() {
   );
 
   useEffect(() => {
-    fetch(`http://localhost:8080/Category/${category}`, {
+    fetch(`http://localhost:8080/categories/Category/${category}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,9 +38,5 @@ function CategoryPage() {
     </div>
   );
 }
-
-CategoryPage.propTypes = {
-  category: PropTypes.string.isRequired,
-};
 
 export default CategoryPage;
