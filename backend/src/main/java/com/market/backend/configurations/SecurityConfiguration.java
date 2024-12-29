@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -43,8 +44,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(configurer -> configurer
                         .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                         .requestMatchers("/categories/**").hasRole("SUPERADMIN")
-                        .anyRequest().authenticated()
-                        .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth for this url
                         .anyRequest().authenticated() // Secure all other APIs
                 )
                 .oauth2Login(Customizer.withDefaults()) //Specifically require Google oauth2
@@ -68,23 +67,23 @@ public class SecurityConfiguration {
 
         // define query to retrieve a user by username
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT a.username, p.account_password, a.status AS enabled " +
+                "SELECT a.username, p.account_password, true AS enabled " +
                         "FROM account a " +
                         "JOIN password p ON a.account_id = p.account_id " +
                         "WHERE a.username = ?");
 
         // define query to retrieve the authorities/roles by username
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT a.username, a.type AS role " +
-                        "FROM account a " +
-                        "WHERE a.username = ?");
+                "SELECT username, type AS role " +
+                        "FROM account  " +
+                        "WHERE username = ?");
 
         return jdbcUserDetailsManager;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
