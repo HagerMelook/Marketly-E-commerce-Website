@@ -22,8 +22,8 @@ function App() {
   return (
       <BrowserRouter>
         <Routes>
-          <Route index element={<RadialChoice />} />
-          <Route path="/login" element={<Login />} />
+          <Route index element={<Login />} />
+          <Route path="/radialChoice" element={<RadialChoice />} />
           <Route path="clientSignUp" element={<ClientReg />} />
           <Route path="vendorSignUp" element={<VendorReg />} />
           <Route path="productPage/:productId" element={<ProductPage />} />
