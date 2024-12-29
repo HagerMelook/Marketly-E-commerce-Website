@@ -29,22 +29,25 @@ public class SecurityConfiguration {
     @Autowired
     private JwtFilter jwtFilter;
 
+    public SecurityConfiguration(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http.csrf(customizer -> customizer.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Enforce
-                                                                                                              // stateless
-                                                                                                              // sessions
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))                                                                                              // stateless
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll() 
-                        .requestMatchers("/categories/**").hasRole("SUPERADMIN") 
+                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                        .requestMatchers("/categories/**").hasRole("SUPERADMIN")
                         .anyRequest().authenticated()
                         .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth for this url
                         .anyRequest().authenticated() // Secure all other APIs
                 )
+                .oauth2Login(Customizer.withDefaults()) //Specifically require Google oauth2
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.addAllowedOrigin("http://localhost:5173"); // Allow frontend
