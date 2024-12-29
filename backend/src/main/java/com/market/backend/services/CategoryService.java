@@ -8,14 +8,16 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
+import com.market.backend.models.Product;
+import com.market.backend.repositories.CategoryRepository;
+import com.market.backend.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.market.backend.dtos.CategoryDTO;
 import com.market.backend.models.Category;
-import com.market.backend.repositories.CategoryRepository;
+
 
 import jakarta.transaction.Transactional;
 
@@ -28,6 +30,17 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Autowired
+    ProductRepository productRepository;
+
+    public List<Category> listAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public List<Product> listCategoriesProducts(String categoryName) {
+        return productRepository.findByCategory(categoryName);
+  
+  
     @Transactional
     public ResponseEntity<String> updateCategory(String categoryName, String newName) {
         Optional<Category> existingCategoryOpt = categoryRepository.findByCategoryName(categoryName);
@@ -106,5 +119,6 @@ public class CategoryService {
         }
         categoryRepository.deleteById(categoryName);
         return ResponseEntity.noContent().build();
+
     }
 }

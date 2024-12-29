@@ -19,12 +19,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Vendor {
     @Id
+    @Column(unique=true, name = "account_id")
     private Long id;
 
-    @Column(name = "organization_name")
+    @Column(name = "organization_name", unique = true, nullable = false)
     private String organizationName;
 
-    @Column(name = "tax_number")
+    @Column(name = "tax_number", unique = true)
     private Long taxNumber;
 
     @MapsId

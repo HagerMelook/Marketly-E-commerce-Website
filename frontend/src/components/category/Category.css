@@ -1,0 +1,33 @@
+.category {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 30%;
+  align-items: center;
+  justify-content: end;
+  margin: 10px 0px;
+  padding: 10px;
+  border-radius: 5px;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  color: black;
+}
+
+img {
+  width: inherit;
+  max-width: 95%;
+}
+
+.category:hover {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category h2 {
+  font-size: 20px;
+  padding: 0px;
+  margin: 3px;
+}
