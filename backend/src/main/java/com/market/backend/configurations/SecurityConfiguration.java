@@ -39,8 +39,9 @@ public class SecurityConfiguration {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers(HttpMethod.POST, "/auth/testo").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/auth/admino").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll() 
+                        .requestMatchers("/categories/**").hasRole("SUPERADMIN") 
+                        .anyRequest().authenticated()
                         .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth for this url
                         .anyRequest().authenticated() // Secure all other APIs
                 )
