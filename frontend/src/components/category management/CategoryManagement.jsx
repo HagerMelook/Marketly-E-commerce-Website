@@ -1,34 +1,37 @@
 import { useState, useEffect } from "react";
-import { fetchCategories, addCategory, updateCategory, deleteCategory, uploadImage } from "../../components/API/CategoryServiceApi";
+import CategoryService from "../API/CategoryServiceApi";
 import "./CategoryManagement.css";
 
-function CategoryManager() {
+function CategoryManagement() {
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState({ name: "", imagePath: "" });
+  const [newCategory, setNewCategory] = useState({ name: "", file: null });
   const [isLoading, setIsLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState("");
   const [editingCategory, setEditingCategory] = useState(null);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [newCategoryImagePath, setNewCategoryImagePath] = useState("");
+  const [editForm, setEditForm] = useState({
+    newName: "",
+    newImage: null
+  });
+  const [fallbackImage] = useState('/placeholder-category.png'); // Add fallback image
 
-  // Fetch categories function
-  const fetchCategoriesData = () => {
-    setIsLoading(true);
-    fetchCategories()
-      .then((fetchedCategories) => {
-        setCategories(fetchedCategories);
-        setError("");
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setIsLoading(false));
+  const fetchCategories = async () => {
+    try {
+      setIsLoading(true);
+      const data = await CategoryService.getAllCategories();
+      setCategories(data);
+      setError("");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Fetch categories on load
   useEffect(() => {
-    fetchCategoriesData();
+    fetchCategories();
   }, []);
 
-  // Handle new category input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCategory({ ...newCategory, [name]: value });
@@ -36,169 +39,191 @@ function CategoryManager() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setNewCategory({ ...newCategory, imagePath: file.name });
-    }
+    setNewCategory({ ...newCategory, file });
   };
 
-  // Add category
+  const handleEditFileChange = (e) => {
+    const file = e.target.files[0];
+    setEditForm({ ...editForm, newImage: file });
+  };
+
   const handleAddCategory = async (e) => {
     e.preventDefault();
-    const addedCategory = {
-      categoryName: newCategory.name,
-      categoryImagePath: newCategory.imagePath, // This will hold the full path after upload
-    };
+    if (!newCategory.name.trim() || !newCategory.file) {
+      setError("Both category name and image are required");
+      return;
+    }
 
+    setActionLoading(true);
     try {
-      const image = e.target.image.files[0];
-      if (image) {
-        // Upload the image and get the full path from the backend
-        const uploadedImagePath = await uploadImage(image, newCategory.name);
-        addedCategory.categoryImagePath = uploadedImagePath;
-
-        // Add the category with the uploaded image's path
-        await addCategory(addedCategory);
-        fetchCategoriesData();
-        setNewCategory({ name: "", imagePath: "" });
-        setError(""); // Clear error
-      }
+      await CategoryService.addCategory(newCategory.name, newCategory.file);
+      await fetchCategories();
+      setNewCategory({ name: "", file: null });
+      setError("");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setActionLoading(false);
     }
   };
 
-  // Update category
-  const handleUpdateCategory = async (categoryName, updatedName, updatedImagePath) => {
-    const updatedCategory = {
-      categoryName: updatedName,
-      categoryImagePath: updatedImagePath, // This will hold the full path after upload
-    };
+  const handleUpdateCategory = async (categoryName) => {
+    if (!editForm.newName.trim()) {
+      setError("Category name is required");
+      return;
+    }
 
+    setActionLoading(true);
     try {
-      const image = document.getElementById('image-input').files[0];
-      if (image) {
-        // Upload the image and get the full path from the backend
-        const uploadedImagePath = await uploadImage(image, updatedName);
-        updatedCategory.categoryImagePath = uploadedImagePath;
-      }
-
-      await updateCategory(categoryName, updatedCategory);
-      fetchCategoriesData();
+      const categoryDTO = {
+        categoryName: editForm.newName,
+        images: editForm.newImage // Only include if there's a new image
+      };
+      
+      await CategoryService.updateCategory(categoryName, categoryDTO);
+      await fetchCategories();
       setEditingCategory(null);
-      setNewCategory({ name: "", imagePath: "" });
-      setError(""); // Clear error
+      setEditForm({ newName: "", newImage: null });
+      setError("");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setActionLoading(false);
     }
   };
 
-  // Delete category
-  const handleDeleteCategory = (categoryName) => {
-    deleteCategory(categoryName)
-      .then(() => {
-        fetchCategoriesData();
-        setError("");
-      })
-      .catch((err) => setError(err.message));
+  const handleDeleteCategory = async (categoryName) => {
+    setActionLoading(true);
+    try {
+      await CategoryService.deleteCategory(categoryName);
+      await fetchCategories();
+      setError("");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = fallbackImage;
+  };
+
+  const getImageUrl = (imagePath) => {
+    return imagePath ? `http://localhost:8080/images/${imagePath}` : fallbackImage;
   };
 
   return (
     <div className="container">
       <h1>Category Management</h1>
 
-      {error && <p className="error">{error}</p>}
+      {error && <div className="error-message">{error}</div>}
 
-      {/* Add New Category */}
-      <div className="add-category">
+      <div className="add-category-form">
         <h2>Add New Category</h2>
         <form onSubmit={handleAddCategory}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Category Name"
-            value={newCategory.name}
-            onChange={handleInputChange}
-          />
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          <button type="submit" disabled={isLoading}>Add Category</button>
+          <div className="form-group">
+            <input
+              type="text"
+              name="name"
+              placeholder="Category Name"
+              value={newCategory.name}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="file"
+              name="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="form-input"
+            />
+          </div>
+          <button 
+            type="submit" 
+            disabled={actionLoading}
+            className="btn btn-primary"
+          >
+            {actionLoading ? "Adding..." : "Add Category"}
+          </button>
         </form>
       </div>
 
-      {/* Loading Indicator */}
       {isLoading ? (
-        <div className="loading">Loading...</div>
+        <div className="loading-spinner">Loading...</div>
       ) : (
-        <div className="category-list">
+        <div className="categories-grid">
           {categories.map((category) => (
-            <div key={category.categoryName} className="category-item">
-              <div className="category-display">
-                <img src={category.categoryImagePath} alt={category.categoryName} />
-                <h3>{category.categoryName}</h3>
-
-                {/* If editing, show input fields to update the category */}
-                {editingCategory === category.categoryName ? (
-                  <div>
-                    <input
-                      type="text"
-                      value={newCategoryName}
-                      onChange={(e) => setNewCategoryName(e.target.value)}
-                      placeholder="New Category Name"
-                    />
-                    <input
-                      id="image-input"
-                      type="file"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          setNewCategoryImagePath(file.name);
-                        }
+            <div key={category.categoryName} className="category-card">
+              <img
+                src={getImageUrl(category.categoryImagePath)}
+                onError={handleImageError}
+                alt={category.categoryName}
+                className="category-image"
+              />
+              
+              {editingCategory === category.categoryName ? (
+                <div className="edit-form">
+                  <input
+                    type="text"
+                    value={editForm.newName}
+                    onChange={(e) => setEditForm({...editForm, newName: e.target.value})}
+                    placeholder="New Category Name"
+                    className="form-input"
+                  />
+                  <input
+                    type="file"
+                    onChange={handleEditFileChange}
+                    accept="image/*"
+                    className="form-input"
+                  />
+                  <div className="button-group">
+                    <button
+                      onClick={() => handleUpdateCategory(category.categoryName)}
+                      disabled={actionLoading}
+                      className="btn btn-success"
+                    >
+                      {actionLoading ? "Updating..." : "Update"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditingCategory(null);
+                        setEditForm({ newName: "", newImage: null });
                       }}
-                    />
-                    <div className="update-cancel-buttons">
-                      <button
-                        onClick={() =>
-                          handleUpdateCategory(
-                            category.categoryName,
-                            newCategoryName,
-                            newCategoryImagePath
-                          )
-                        }
-                      >
-                        Update
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingCategory(null);
-                          setNewCategoryName("");
-                          setNewCategoryImagePath("");
-                        }}
-                      >
-                        Cancel Update
-                      </button>
-                    </div>
+                      className="btn btn-secondary"
+                    >
+                      Cancel
+                    </button>
                   </div>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setEditingCategory(category.categoryName);
-                      setNewCategoryName(category.categoryName);
-                      setNewCategoryImagePath(category.categoryImagePath);
-                    }}
-                  >
-                    Edit
-                  </button>
-                )}
-
-                {/* Delete button for category */}
-                <button onClick={() => handleDeleteCategory(category.categoryName)}>
-                  Delete
-                </button>
-              </div>
+                </div>
+              ) : (
+                <div className="category-info">
+                  <h3>{category.categoryName}</h3>
+                  <div className="button-group">
+                    <button
+                      onClick={() => {
+                        setEditingCategory(category.categoryName);
+                        setEditForm({
+                          newName: category.categoryName,
+                          newImage: null
+                        });
+                      }}
+                      className="btn btn-primary"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteCategory(category.categoryName)}
+                      disabled={actionLoading}
+                      className="btn btn-danger"
+                    >
+                      {actionLoading ? "Deleting..." : "Delete"}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -207,4 +232,4 @@ function CategoryManager() {
   );
 }
 
-export default CategoryManager;
+export default CategoryManagement;

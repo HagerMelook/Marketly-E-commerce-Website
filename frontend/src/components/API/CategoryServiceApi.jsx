@@ -1,94 +1,81 @@
-const API_BASE_URL = "http://localhost:8080/categories";
+import axios from 'axios';
 
-export function fetchCategories() {
-  return fetch(`${API_BASE_URL}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+const BASE_URL = 'http://localhost:8080/categories';
+
+// Create axios instance with base configuration
+const api = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+export const CategoryService = {
+  // Get all categories
+  getAllCategories: async () => {
+    try {
+      const response = await api.get('');
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch categories: ' + error.message);
+    }
+  },
+
+  // Get single category by name
+  getCategory: async (categoryName) => {
+    try {
+      const response = await api.get(`/${categoryName}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch category: ' + error.message);
+    }
+  },
+
+  // Add new category
+  addCategory: async (categoryName, categoryImage) => {
+    try {
+      const formData = new FormData();
+      formData.append('name', categoryName);
+      formData.append('image', categoryImage);
+
+      const response = await api.post('', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to add category: ' + error.message);
+    }
+  },
+
+  updateCategory:async (categoryName, categoryDTO) => {
+    try {
+      const formData = new FormData();
+      formData.append('newName', categoryDTO.categoryName);
+      
+      // Append image only if it's provided
+      if (categoryDTO.images) {
+        formData.append('image', categoryDTO.images);
       }
-      return response.json();
-    })
-    .catch((error) => {
-      console.error("Error fetching categories:", error);
-      throw error;
-    });
-}
+  
+      const response = await api.put(`/${categoryName}`, formData);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to update category: ' + error.message);
+    }
+  },
+  
 
-export function addCategory(category) {
-  return fetch(`${API_BASE_URL}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(category),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to add category");
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      console.error("Error adding category:", error);
-      throw error;
-    });
-}
-
-export function updateCategory(categoryName, updatedCategory) {
-  return fetch(`${API_BASE_URL}/${categoryName}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updatedCategory),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to update category");
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      console.error("Error updating category:", error);
-      throw error;
-    });
-}
-
-export function deleteCategory(categoryName) {
-  return fetch(`${API_BASE_URL}/${categoryName}`, {
-    method: "DELETE",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to delete category");
-      }
-    })
-    .catch((error) => {
-      console.error("Error deleting category:", error);
-      throw error;
-    });
-}
-
-const uploadImage = (image, categoryName) => {
-  const formData = new FormData();
-  formData.append("image", image);
-  formData.append("imagePath", `${categoryName}.jpg`); // Name the image using the category name with a .jpg extension
-
-  return fetch(`${API_BASE_URL}/upload-image`, {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json()) // Parse the JSON response
-    .then((data) => {
-      if (!data.success) {
-        throw new Error(data.message || "Failed to upload image");
-      }
-      return data.imagePath;  // Use the imagePath from the response
-    })
-    .catch((err) => {
-      console.error("Error uploading image:", err);
-      throw err;
-    });
+  // Delete category
+  deleteCategory: async (categoryName) => {
+    try {
+      await api.delete(`/${categoryName}`);
+      return true;
+    } catch (error) {
+      throw new Error('Failed to delete category: ' + error.message);
+    }
+  }
 };
 
-export { uploadImage };
+export default CategoryService;
