@@ -1,10 +1,13 @@
 package com.market.backend.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +33,7 @@ public class SignInController {
     }
 
     @PostMapping("/signin")
-    public String signIn() {
+    public ResponseEntity<Map<String, Object>> signIn() {
         // Get the authenticated user from the Security Context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -46,16 +49,25 @@ public class SignInController {
             // extract account_id
             long id = accountRepository.findIdByUsername(userDetails.getUsername());
             // Generate and return the JWT
-            return jwtService.generateToken(userDetails.getUsername(), roles, id);
+            String token = jwtService.generateToken(userDetails.getUsername());
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("id", id);
+            response.put("driverId", id);
+            response.put("role", roles);
+
+            return ResponseEntity.ok(response);
         }
 
         throw new IllegalStateException("User is not authenticated");
     }
 
     @GetMapping("/signin/google")
-    public String googleSignIn(@AuthenticationPrincipal OAuth2User principal) {
+    public ResponseEntity<Map<String, Object>> googleSignIn(@AuthenticationPrincipal OAuth2User principal) {
         if (principal == null || principal.getAttributes() == null) {
-            return "Google Sign-In failed";
+            Map<String, Object> response = new HashMap<>();
+            response.put("error", "Google Sign-In failed");
+            return ResponseEntity.status(401).body(response);
         }
 
         // Extract email and details from Google
@@ -66,7 +78,13 @@ public class SignInController {
         //extract roles
         String roles = accountRepository.getTypeByUserName(email);
         // Generate a JWT for the authenticated user
-        return jwtService.generateToken(email, roles,id); // You can assign roles accordingly
-        
+        String token =  jwtService.generateToken(email); // You can assign roles accordingly
+        Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("id", id);
+            response.put("driverId", id);
+            response.put("role", roles);
+
+            return ResponseEntity.ok(response);
     }
 }
