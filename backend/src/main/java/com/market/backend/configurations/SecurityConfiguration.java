@@ -41,10 +41,10 @@ public class SecurityConfiguration {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                        .requestMatchers("/categories/**").hasRole("SUPERADMIN")
-                        .anyRequest().authenticated()
-                        .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth for this url
+                        // .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                        // .requestMatchers("/categories/**").hasRole("SUPERADMIN")
+                        // .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth for this url
+                        // .anyRequest().permitAll()
                         .anyRequest().authenticated() // Secure all other APIs
                 )
                 .oauth2Login(Customizer.withDefaults()) //Specifically require Google oauth2
