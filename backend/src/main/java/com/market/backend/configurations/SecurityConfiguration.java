@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,17 +37,21 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http.csrf(customizer -> customizer.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))                                                                                              // stateless
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // stateless
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
-                        // .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                        // .requestMatchers("/categories/**").hasRole("SUPERADMIN")
-                        // .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth for this url
-                        // .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                        .requestMatchers("/categories/**").hasRole("SUPERADMIN")
                         .anyRequest().authenticated() // Secure all other APIs
+                // .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                // .requestMatchers("/categories/**").hasRole("SUPERADMIN")
+                // .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth
+                // for this url
+                // .anyRequest().permitAll()
                 )
-                .oauth2Login(Customizer.withDefaults()) //Specifically require Google oauth2
+
+                .oauth2Login(Customizer.withDefaults()) // Specifically require Google oauth2
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.addAllowedOrigin("http://localhost:5173"); // Allow frontend
@@ -68,23 +72,23 @@ public class SecurityConfiguration {
 
         // define query to retrieve a user by username
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT a.username, p.account_password, a.status AS enabled " +
+                "SELECT a.username, p.account_password, status AS enabled " +
                         "FROM account a " +
                         "JOIN password p ON a.account_id = p.account_id " +
                         "WHERE a.username = ?");
 
         // define query to retrieve the authorities/roles by username
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT a.username, a.type AS role " +
-                        "FROM account a " +
-                        "WHERE a.username = ?");
+                "SELECT username, type AS role " +
+                        "FROM account  " +
+                        "WHERE username = ?");
 
         return jdbcUserDetailsManager;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
