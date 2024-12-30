@@ -10,10 +10,9 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/Search")
 public class SearchController {
+    private final SearchService searchService;
 
-    final SearchService searchService;
-
-    SearchController(SearchService searchService) {
+    public SearchController(SearchService searchService) {
         this.searchService = searchService;
     }
 
@@ -21,5 +20,4 @@ public class SearchController {
     public List<Product> search(@PathVariable("key") String key){
         return searchService.searchWithKey(key);
     }
-
 }

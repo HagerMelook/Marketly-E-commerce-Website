@@ -12,7 +12,7 @@ import com.market.backend.models.*;
 import com.market.backend.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -26,7 +26,7 @@ public class EditProfileService {
     private final AccountRepository accountRepository;
     private final PasswordRepository passwordRepository;
     private final ShippingInfoRepository shippingInfoRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
     private final ObjectMapper objectMapper;
 

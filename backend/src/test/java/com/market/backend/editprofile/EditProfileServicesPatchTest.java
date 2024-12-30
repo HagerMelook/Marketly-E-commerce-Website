@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -22,9 +23,11 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EditProfileServicesPatchTest {
+class EditProfileServicesPatchTest {
     @Spy
     private ObjectMapper objectMapper;
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @Mock
     private AccountRepository accountRepository;
 
@@ -117,10 +120,11 @@ public class EditProfileServicesPatchTest {
         Mockito.when(adminRepository.findById(id)).thenReturn(Optional.of(admins[0]));
         Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[0]);
         Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[0]));
+        Mockito.when(passwordEncoder.encode("newpassword")).thenReturn("encoded");
 
         //act and assert
         assertDoesNotThrow(() -> editProfileService.updateAdminInfo(id, patch));
-        assertEquals("newpassword", passwords[0].getAccountPassword());
+        assertEquals("encoded", passwords[0].getAccountPassword());
     }
 
     @Test
@@ -239,7 +243,7 @@ public class EditProfileServicesPatchTest {
     }
 
     @Test
-    void updateClientInfoValidAccountInfo() throws IOException {
+    void updateClientInfoValidPasswordInfo() throws IOException {
         //arrange
         Long id = 2L;
         String patchContent = """
@@ -253,10 +257,11 @@ public class EditProfileServicesPatchTest {
         Mockito.when(clientRepository.findByAccount_Id(id)).thenReturn(Optional.of(clients[0]));
         Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[1]);
         Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[1]));
+        Mockito.when(passwordEncoder.encode("newpassword")).thenReturn("encoded");
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateClientInfo(id, patch));
-        assertEquals("newpassword", passwords[1].getAccountPassword());
+        assertEquals("encoded", passwords[1].getAccountPassword());
     }
 
     @Test
@@ -375,7 +380,7 @@ public class EditProfileServicesPatchTest {
     }
 
     @Test
-    void updateVendorInfoValidAccountInfo() throws IOException {
+    void updateVendorInfoValidPasswordInfo() throws IOException {
         //arrange
         Long id = 3L;
         String patchContent = """
@@ -389,10 +394,11 @@ public class EditProfileServicesPatchTest {
         Mockito.when(vendorRepository.findById(id)).thenReturn(Optional.of(vendors[0]));
         Mockito.when(passwordRepository.findByAccountId(id)).thenReturn(passwords[2]);
         Mockito.when(shippingInfoRepository.findByAccountId(id)).thenReturn(Optional.of(shippingInfos[2]));
+        Mockito.when(passwordEncoder.encode("newpassword")).thenReturn("encoded");
 
         //act and assert
         assertDoesNotThrow(()->editProfileService.updateVendorInfo(id, patch));
-        assertEquals("newpassword", passwords[2].getAccountPassword());
+        assertEquals("encoded", passwords[2].getAccountPassword());
     }
 
     @Test

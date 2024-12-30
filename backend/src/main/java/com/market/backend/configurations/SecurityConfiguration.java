@@ -27,42 +27,36 @@ import jakarta.servlet.Filter;
 @EnableWebSecurity
 public class SecurityConfiguration {
     @Autowired
-    private JwtFilter jwtFilter;
+    private JWTFilter jwtFilter;
 
-    public SecurityConfiguration(JwtFilter jwtFilter) {
+    public SecurityConfiguration(JWTFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        return http.csrf(customizer -> customizer.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // stateless
+        return http
+                .csrf(customizer -> customizer.disable())
+                .headers(headers -> headers.frameOptions().disable())  // Add this for H2 console
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
+                        .requestMatchers("/h2-console/**").permitAll()  // Add this for H2 console
                         .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                         .requestMatchers("/categories/**").hasRole("SUPERADMIN")
-                        .anyRequest().authenticated() // Secure all other APIs
-                // .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                // .requestMatchers("/categories/**").hasRole("SUPERADMIN")
-                // .requestMatchers("/SignUp/Google/**").authenticated() // Require google OAuth
-                // for this url
-                // .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
-
-                .oauth2Login(Customizer.withDefaults()) // Specifically require Google oauth2
+                .oauth2Login(Customizer.withDefaults())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.addAllowedOrigin("http://localhost:5173"); // Allow frontend
-                    configuration.addAllowedMethod("*"); // Allow all HTTP methods
-                    configuration.addAllowedHeader("*"); // Allow all headers
-                    configuration.setAllowCredentials(true); // Allow cookies
+                    configuration.addAllowedOrigin("http://localhost:5173");
+                    configuration.addAllowedMethod("*");
+                    configuration.addAllowedHeader("*");
+                    configuration.setAllowCredentials(true);
                     return configuration;
-                })) // Enable CORS globally
+                }))
                 .logout(logout -> logout.logoutSuccessUrl("/"))
-                // Redirect after logout, no need to delete session ids
-                // as we using statless session mangment policy
                 .build();
     }
 

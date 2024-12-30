@@ -15,7 +15,7 @@ import java.util.List;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class CategoryRepositoryTest {
+class CategoryRepositoryTest {
 
     CategoryRepository categoryRepository;
 
