@@ -48,7 +48,7 @@ const Login = () => {
   }
 
   const handleSignUpClick = () => {
-    navigate("/");
+    navigate("/radialChoice");
   }
 
   return (
