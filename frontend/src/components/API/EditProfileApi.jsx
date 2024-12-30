@@ -3,7 +3,9 @@ const API_BASE_URL = "http://localhost:8080/account";
 export async function fetchAdminInfo(accountId) {
     const url = `${API_BASE_URL}/admininfo/${accountId}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+        });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -18,7 +20,9 @@ export async function fetchAdminInfo(accountId) {
 export async function fetchClientInfo(accountId) {
     const url = `${API_BASE_URL}/clientinfo/${accountId}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+        });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -33,7 +37,9 @@ export async function fetchClientInfo(accountId) {
 export async function fetchVendorInfo(accountId) {
     const url = `${API_BASE_URL}/vendorinfo/${accountId}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+        });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -53,6 +59,7 @@ export async function updateAdminInfo(accountId, patch) {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json-patch+json",
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
         },
         body: JSON.stringify(patch),
       });
@@ -81,6 +88,7 @@ export async function updateAdminInfo(accountId, patch) {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json-patch+json",
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
         },
         body: JSON.stringify(patch),
       });
@@ -109,6 +117,7 @@ export async function updateAdminInfo(accountId, patch) {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json-patch+json",
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}`
         },
         body: JSON.stringify(patch),
       });

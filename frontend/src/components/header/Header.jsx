@@ -109,7 +109,7 @@ function Header({ isAdmin, isVendor }) {
         )}
 
         <img src={cartIcon} alt="Cart" title="View Cart" />
-        <Link to="/EditProfile">
+        <Link to="/editProfile">
           <img src={profileIcon} alt="Profile" title="Your Profile" />
         </Link>
       </div>

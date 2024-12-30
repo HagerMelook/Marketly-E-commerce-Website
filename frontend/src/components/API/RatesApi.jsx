@@ -2,7 +2,9 @@ const API_BASE_URL = "http://localhost:8080/accountrates";
 
 export async function getRates(accountId, queryParams) {
   try {
-    const response = await fetch(`${API_BASE_URL}/${accountId}?${queryParams}`);
+    const response = await fetch(`${API_BASE_URL}/${accountId}?${queryParams}`, {
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch rates");
     }
@@ -15,7 +17,9 @@ export async function getRates(accountId, queryParams) {
 
 export async function getRateByProduct(accountId, productId) {
   try {
-    const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`);
+    const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`, {
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch rate");
     }    
@@ -30,7 +34,10 @@ export async function createRate(rateDTO) {
   try {
     const response = await fetch(API_BASE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      },
       body: JSON.stringify(rateDTO),
     });
     if (!response.ok) {
@@ -47,7 +54,10 @@ export async function updateRate(rateId, rateDTO) {
   try {
     const response = await fetch(`${API_BASE_URL}/${rateId}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      },
       body: JSON.stringify(rateDTO),
     });
     if (!response.ok) {
@@ -66,6 +76,7 @@ export async function deleteRate(rateId) {
   try {
     const response = await fetch(`${API_BASE_URL}/${rateId}`, {
       method: "DELETE",
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
     });
     if (!response.ok) {
       throw new Error("Failed to delete rate");

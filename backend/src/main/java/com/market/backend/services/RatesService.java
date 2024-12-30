@@ -50,6 +50,8 @@ public class RatesService {
         Long commentsCount = commentRepository.countByProductId(product.getId());
         Long allRatesRate = rateRepository.findSumValueByProductId(product.getId());
         Long ratesCount = rateRepository.countByProductId(product.getId());
+        allCommentsRate = allCommentsRate==null ? 0 : allCommentsRate;
+        allRatesRate = allRatesRate==null ? 0 : allRatesRate;
         if (ratesCount+commentsCount==0) {
             product.setRating(0);
         }
@@ -58,12 +60,21 @@ public class RatesService {
         }
     }
 
+    private boolean reviewExists(Long accountId, Long productId) {
+        return commentRepository.findByAccountIdAndProductId(accountId,productId).isPresent()
+                || rateRepository.findByAccountIdAndProductId(accountId, productId).isPresent();
+    }
+
     @Transactional
     public Long createRate(RateDTO rateDTO) {
         Product product = productRepository.findById(rateDTO.getProductId())
                 .orElseThrow(() -> new NoSuchElementException("Product not found"));
         Account account = accountRepository.findById(rateDTO.getAccountId())
                 .orElseThrow(() -> new NoSuchElementException("Account not found"));
+
+        if (reviewExists(account.getId(), product.getId())) {
+            throw new IllegalArgumentException("Review already exists");
+        }
 
         Rate rate = new Rate(null, product, account, rateDTO.getRating());
         Rate newRate = rateRepository.save(rate);

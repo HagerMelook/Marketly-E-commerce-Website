@@ -2,7 +2,9 @@ const API_BASE_URL = "http://localhost:8080/accountcomments";
 
 export async function getComments(accountId, queryParams) {
   try {
-    const response = await fetch(`${API_BASE_URL}/${accountId}?${queryParams}`);
+    const response = await fetch(`${API_BASE_URL}/${accountId}?${queryParams}`, {
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch comments");
     }
@@ -15,7 +17,9 @@ export async function getComments(accountId, queryParams) {
 
 export async function getCommentByProduct(accountId, productId) {
   try {
-    const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`);
+    const response = await fetch(`${API_BASE_URL}/product/${productId}/${accountId}`, {
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch comment");
     }
@@ -30,7 +34,10 @@ export async function createComment(commentDTO) {
   try {
     const response = await fetch(API_BASE_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      },
       body: JSON.stringify(commentDTO),
     });
     if (!response.ok) {
@@ -47,7 +54,10 @@ export async function updateComment(commentId, commentDTO) {
   try {
     const response = await fetch(`${API_BASE_URL}/${commentId}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      },
       body: JSON.stringify(commentDTO),
     });
     if (!response.ok) {
@@ -66,6 +76,7 @@ export async function deleteComment(commentId) {
   try {
     const response = await fetch(`${API_BASE_URL}/${commentId}`, {
       method: "DELETE",
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` }
     });
     if (!response.ok) {
       throw new Error("Failed to delete rate");

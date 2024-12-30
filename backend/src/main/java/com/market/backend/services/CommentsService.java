@@ -50,6 +50,8 @@ public class CommentsService {
         Long commentsCount = commentRepository.countByProductId(product.getId());
         Long allRatesRate = rateRepository.findSumValueByProductId(product.getId());
         Long ratesCount = rateRepository.countByProductId(product.getId());
+        allCommentsRate = allCommentsRate==null ? 0 : allCommentsRate;
+        allRatesRate = allRatesRate==null ? 0 : allRatesRate;
         if (ratesCount+commentsCount==0) {
             product.setRating(0);
         }
@@ -58,12 +60,23 @@ public class CommentsService {
         }
     }
 
+    private boolean reviewExists(Long accountId, Long productId) {
+        return commentRepository.findByAccountIdAndProductId(accountId,productId).isPresent()
+                || rateRepository.findByAccountIdAndProductId(accountId, productId).isPresent();
+    }
+
     @Transactional
     public Long createComment(CommentDTO commentDTO) {
         Product product = productRepository.findById(commentDTO.getProductId())
                 .orElseThrow(() -> new NoSuchElementException("Product not found"));
         Account account = accountRepository.findById(commentDTO.getAccountId())
                 .orElseThrow(() -> new NoSuchElementException("Account not found"));
+
+        System.out.println("prod:"+product.getId());
+        System.out.println("acc:"+(account.getId()));
+        if (reviewExists(account.getId(), product.getId())) {
+            throw new IllegalArgumentException("Review already exists");
+        }
 
         Comment comment = new Comment(null, product, account, commentDTO.getBody(), commentDTO.getRating());
         Comment newComment = commentRepository.save(comment);
