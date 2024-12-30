@@ -1,40 +1,33 @@
 package com.market.backend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.market.backend.configurations.JWTFilter;
 import com.market.backend.models.Account;
 import com.market.backend.models.VendorRequest;
+import com.market.backend.services.JWTService;
 import com.market.backend.services.SignUpService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.security.Principal;
-
 import static org.mockito.Mockito.*;
-//import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SignUpController.class)
 @AutoConfigureMockMvc(addFilters = false)
-@ExtendWith(MockitoExtension.class)
+@Import({JWTService.class, JWTFilter.class})
 class SignUpControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @Mock
-//    @Autowired
     @MockitoBean
     private SignUpService signUpService;
 

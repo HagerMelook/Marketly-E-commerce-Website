@@ -6,6 +6,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Date;
@@ -13,17 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
 @Service
 public class JWTService {
-
     private String SECRET_KEY = "";
-    private static final int EXPIRATION_TIME = 30 * 60 * 1000; // 30 mins in milliseconds
+    private static final int EXPIRATION_TIME = 30 * 60 * 1000;
 
     public JWTService() {
-
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
             SecretKey sk = keyGen.generateKey();
@@ -34,7 +32,7 @@ public class JWTService {
     }
 
     public String generateToken(String username) {
-         Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .claims()
                 .add(claims)

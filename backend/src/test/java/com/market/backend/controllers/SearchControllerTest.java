@@ -6,11 +6,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import com.market.backend.configurations.JWTFilter;
+import com.market.backend.services.JWTService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,7 +24,8 @@ import com.market.backend.services.SearchService;
 
 @WebMvcTest(SearchController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class SearchControllerTest {
+@Import({JWTService.class, JWTFilter.class})
+class SearchControllerTest {
     @Autowired
     private MockMvc mockMvc;
 

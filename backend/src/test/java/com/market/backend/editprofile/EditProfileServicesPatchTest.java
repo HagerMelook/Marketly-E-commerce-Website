@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class EditProfileServicesPatchTest {
+class EditProfileServicesPatchTest {
     @Spy
     private ObjectMapper objectMapper;
     @Mock
