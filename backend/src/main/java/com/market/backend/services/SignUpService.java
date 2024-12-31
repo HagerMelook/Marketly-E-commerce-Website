@@ -1,14 +1,17 @@
 package com.market.backend.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.market.backend.models.Account;
 import com.market.backend.models.Password;
 import com.market.backend.models.VendorRequest;
+import com.market.backend.repositories.AccountRepository;
 import com.market.backend.repositories.PasswordRepository;
 import com.market.backend.repositories.VendorRequestRepository;
-import com.market.backend.models.Account;
-import com.market.backend.repositories.AccountRepository;
+
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class SignUpService {
@@ -19,6 +22,8 @@ public class SignUpService {
     VendorRequestRepository vendorRequestRepository;
     @Autowired
     PasswordRepository passwordRepository;
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public boolean checkUsernameAvailability(String username) {
         return !vendorRequestRepository.existsByUsername(username)
@@ -79,13 +84,15 @@ public class SignUpService {
         client.setType("client");
         client.setAuthType("basic");
 
+        String encodedPassword = passwordEncoder.encode(password);
+
         Password pass = Password.builder()
                 .account(client)
-                .accountPassword(password)
+                .accountPassword(encodedPassword)
                 .build();
-        passwordRepository.save(pass);
-
-        return "Successfully registered";
+        pass = passwordRepository.save(pass);
+        Account acc = pass.getAccount();
+        return "Successfully registered,"+acc.getId();
     }
 
     public String insertBasicVendor(VendorRequest vendor) {
@@ -116,7 +123,6 @@ public class SignUpService {
         }
         if (vendorRequestRepository.existsBytaxNumber(vendor.getTaxNumber()))
             return "The tax number is already exist";
-
         vendorRequestRepository.save(vendor);
         return "Successfully registered";
     }
