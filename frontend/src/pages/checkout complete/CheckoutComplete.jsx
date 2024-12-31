@@ -10,7 +10,7 @@ function CheckoutComplete() {
     const total =  sessionStorage.getItem('total');
 
     useEffect(() => {
-        const hasVisitedRadialChoice = localStorage.getItem(
+        const hasVisitedRadialChoice = sessionStorage.getItem(
             "hasVisitedRadialChoice"
         );
         if (!hasVisitedRadialChoice) {

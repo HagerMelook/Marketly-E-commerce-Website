@@ -14,7 +14,7 @@ function ClientReg() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const hasVisitedRadialChoice = localStorage.getItem(
+    const hasVisitedRadialChoice = sessionStorage.getItem(
       "hasVisitedRadialChoice"
     );
     if (!hasVisitedRadialChoice) {

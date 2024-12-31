@@ -9,11 +9,11 @@ import './Checkout.css';
 
 function CheckoutPage() {
     const navigate = useNavigate();
-    // let [products2] = useState([
-    //     { id: 1, name: 'Product 1', price: 400, quantity: 2 },
-    //     { id: 2, name: 'Product 2', price: 600, quantity: 3 },
-    // ]);
-    // sessionStorage.setItem('products', JSON.stringify(products2));
+    let [products2] = useState([
+        { id: 1, name: 'Product 1', price: 400, quantity: 2 },
+        { id: 2, name: 'Product 2', price: 600, quantity: 3 },
+    ]);
+    sessionStorage.setItem('products', JSON.stringify(products2));
     let products = JSON.parse(sessionStorage.getItem("products"));
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
@@ -24,7 +24,7 @@ function CheckoutPage() {
     const [isVisible_3, setIsVisible_3] = useState(false);
 
     useEffect(() => {
-        const hasVisitedRadialChoice = localStorage.getItem(
+        const hasVisitedRadialChoice = sessionStorage.getItem(
             "hasVisitedRadialChoice"
         );
         if (!hasVisitedRadialChoice) {
