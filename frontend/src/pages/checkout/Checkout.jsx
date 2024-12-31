@@ -10,8 +10,8 @@ import './Checkout.css';
 function CheckoutPage() {
     const navigate = useNavigate();
     const [products] = useState([
-        { id: 1, name: 'Product 1', price: 100 },
-        { id: 2, name: 'Product 2', price: 200 },
+        { id: 1, name: 'Product 1', price: 400, quantity: 2 },
+        { id: 2, name: 'Product 2', price: 600, quantity: 3 },
     ]);
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
@@ -97,7 +97,7 @@ function CheckoutPage() {
             return;
         }
 
-        if(!validatePhoneNumberLength(`+${phone}`,phoneCountry)){
+        if (!validatePhoneNumberLength(`+${phone}`, phoneCountry)) {
             messageContainer_3.textContent = "InComplete Phone Number";
             setIsVisible_3(true);
             return;
@@ -210,13 +210,18 @@ function CheckoutPage() {
                         className="checkout-form-input read-only"
                     />
                 </div>
-
+                <h3 className="checkout-products-title">Payment Method: Cash on Delivery</h3>
                 <h3 className="checkout-products-title">Products</h3>
                 <div className="checkout-products-list">
                     {products.map((product, index) => (
                         <div key={index} className="checkout-product-box">
                             <span>{product.name}</span>
-                            <span>${product.price}</span>
+                            <div className="checkout-product-price">
+                                <span><strong>Price:</strong> {product.price}</span>
+                            </div>
+                            <div>
+                                <span><strong>Quantity:</strong> {product.quantity}</span>
+                            </div>
                         </div>
                     ))}
                 </div>

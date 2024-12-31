@@ -64,6 +64,11 @@
     background-color: #f9f9f9;
 }
 
+.checkout-product-price {
+    margin-left: 180px;
+    text-align: right;
+}
+
 .checkout-submit-button {
     width: 100%;
     padding: 12px;
