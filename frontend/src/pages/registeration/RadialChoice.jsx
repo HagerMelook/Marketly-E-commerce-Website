@@ -21,9 +21,8 @@ function RadialChoice() {
     // localStorage.setItem("hasVisitedRadialChoice", true);
 
     closePopUp(false);
-    // navigate("/vendorSignUp");
     if (choice == "Client") navigate("/clientSignUp");
-    if (choice == "Vendor") navigate("/checkout");
+    if (choice == "Vendor")  navigate("/vendorSignUp");
   }
 
   return (
