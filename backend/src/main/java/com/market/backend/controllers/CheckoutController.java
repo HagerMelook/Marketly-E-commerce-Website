@@ -1,6 +1,5 @@
 package com.market.backend.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,11 +12,13 @@ import com.market.backend.dtos.OrderDTO;
 import com.market.backend.models.ShippingInfo;
 import com.market.backend.services.CheckoutService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @CrossOrigin
+@AllArgsConstructor
 @RequestMapping("/checkout")
 public class CheckoutController {
-    @Autowired
     private CheckoutService checkoutService;
 
     @PostMapping("/shippingInfo")
