@@ -10,7 +10,7 @@ function ClientBasicSignUp(username, password) {
   })
     .then((response) => response.text())
     .then((data) => {
-      console.log("Response from the backend:", data);
+      //console.log("Response from the backend:", data);
       return data;
     })
     .catch((error) => {

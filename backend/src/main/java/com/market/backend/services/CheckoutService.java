@@ -85,6 +85,7 @@ public class CheckoutService {
             orderProducts.setOrderProductsId(orderProductsId);
             orderProducts.setOrder(order);
             orderProducts.setProduct(product);
+            orderProducts.setQuantity(order_product.getQuantity());
 
             saveOrderProduct(orderProducts);
         }

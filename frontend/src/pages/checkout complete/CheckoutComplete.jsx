@@ -3,7 +3,7 @@ import Confetti from 'react-confetti';
 import { useNavigate } from "react-router-dom";
 import './CheckoutComplete.css';
 
-const CheckoutComplete = () => {
+function CheckoutComplete() {
     const navigate = useNavigate();
     const [isConfettiVisible, setIsConfettiVisible] = useState(true);
     const order_number =  sessionStorage.getItem('order_number');

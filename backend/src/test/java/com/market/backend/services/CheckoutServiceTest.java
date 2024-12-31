@@ -116,6 +116,7 @@ public class CheckoutServiceTest {
                 .id(1L)
                 .name("Earbuds")
                 .price(300.0)
+                .quantity(2)
                 .build();
 
         List<OrderProductDTO> order_products = new ArrayList<>();
@@ -143,6 +144,7 @@ public class CheckoutServiceTest {
                 .id(1L)
                 .name("Earbuds")
                 .price(300.0)
+                .quantity(2)
                 .build();
 
         List<OrderProductDTO> order_products = new ArrayList<>();
@@ -188,6 +190,7 @@ public class CheckoutServiceTest {
         OrderProducts capturedOrderProducts = captor.getValue();
         assertEquals(order.getId(), capturedOrderProducts.getOrder().getId());
         assertEquals(product.getId(), capturedOrderProducts.getProduct().getId());
+        assertEquals(order_product.getQuantity(), capturedOrderProducts.getQuantity());
     }
 
     @Test

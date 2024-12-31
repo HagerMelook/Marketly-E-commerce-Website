@@ -3,7 +3,7 @@ export function CheckoutShippingInfo(account_id, address, phone_number, postal_c
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            // "Authorization": `Bearer ${sessionStorage.getItem('token')}`,
+            "Authorization": `Bearer ${sessionStorage.getItem('token')}`,
         },
         body: JSON.stringify({
             id: account_id,
@@ -28,7 +28,7 @@ export function CheckoutOrderDetails(account_id, totalPrice, products) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            // "Authorization": `Bearer ${sessionStorage.getItem('token')}`,
+            "Authorization": `Bearer ${sessionStorage.getItem('token')}`,
         },
         body: JSON.stringify({
             account_id: account_id,
@@ -48,11 +48,12 @@ export function CheckoutOrderDetails(account_id, totalPrice, products) {
 }
 
 export function FetchShippingInfo(account_id) {
+    console.log(sessionStorage.getItem('token'));
     return fetch(`http://localhost:8080/checkout/${account_id}`, {
         method: 'GET',
-        // headers: {
-        //     "Authorization": `Bearer ${sessionStorage.getItem('token')}`,
-        // },
+        headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem('token')}`,
+        },
     })
         .then((response) => {
             if (!response.ok) {
