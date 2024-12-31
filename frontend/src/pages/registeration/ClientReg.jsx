@@ -64,7 +64,9 @@ function ClientReg() {
     if (!isVisible_1 && !isVisible_2) {
       const response = await ClientBasicSignUp(username, password);
       console.log(response);
-      if (response === "Successfully registered") {
+      if (response.startsWith("Successfully registered")) {
+        sessionStorage.setItem('id',response.split(",")[1]);
+        console.log(sessionStorage.getItem("id"));
         console.log(response);
         navigate("/home");// Trigger navigation after successful registration
       } else if (response.includes("username")) {
