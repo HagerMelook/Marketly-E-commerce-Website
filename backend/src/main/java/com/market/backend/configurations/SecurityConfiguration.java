@@ -37,15 +37,67 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(customizer -> customizer.disable())
-                .headers(headers -> headers.frameOptions().disable())  // Add this for H2 console
+                .headers(headers -> headers.frameOptions().disable()) // Add this for H2 console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers("/h2-console/**").permitAll()  // Add this for H2 console
-                        .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                        .requestMatchers("/categories/**").hasRole("SUPERADMIN")
+                        .requestMatchers("/h2-console/**").permitAll() // Add this for H2 console
+
+                        .requestMatchers(HttpMethod.POST, "/categories").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/categories/{categoryName}").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/categories/{categoryName}").hasRole("SUPERADMIN")
+
+                        // Admin Controller APIs
+                        .requestMatchers(HttpMethod.GET, "/admin/info/{username}").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/admin/activate/{id}").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/admin/deactivate/{id}").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/admin/delete/{id}").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/admin/promote/{id}").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/admin/demote/{id}").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.GET, "/admin/feedback").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/admin/feedback/{feedbackId}")
+                        .hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/admin/request").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/admin/request/accept/{requestId}")
+                        .hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/admin/request/delete/{requestId}")
+                        .hasAnyRole("SUPERADMIN", "ADMIN")
+
+                        // Search Controller API
+                        // already available for all users
+
+                        // SignUp Controller APIs
+                        .requestMatchers(HttpMethod.GET, "/SignUp/Google/Client").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/SignUp/Google/Vendor/{org}/{tax}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/SignUp/ClientBasicSignUp/{password}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/SignUp/VendorBasicSignUp").permitAll()
+
+                        // SignIn Controller API
+                        .requestMatchers(HttpMethod.GET, "/auth/signin/google").permitAll()
+
+                        // Comments Controller API
+                        // already available for all users
+
+                        // Edit Profile Controller API
+                        .requestMatchers(HttpMethod.GET, "/account/admininfo/{id}").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/account/clientinfo/{id}").hasRole("CLIENT")
+                        .requestMatchers(HttpMethod.GET, "/account/vendorinfo/{id}").hasRole("VENDOR")
+                        .requestMatchers(HttpMethod.PATCH, "/account/admininfo/{id}").hasAnyRole("SUPERADMIN", "ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/account/clientinfo/{id}").hasRole("CLIENT")
+                        .requestMatchers(HttpMethod.PATCH, "/account/vendorinfo/{id}").hasRole("VENDOR")
+
+                        // Product Page Controller API
+                        // already available for all users
+
+                        // Rates Controller API
+                        // already available for all users
+
+                        // Vendor Controller API
+                        .requestMatchers(HttpMethod.GET, "/vendor/categories").hasRole("VENDOR")
+
                         .anyRequest().authenticated()
+
                 )
                 .oauth2Login(Customizer.withDefaults())
                 .cors(cors -> cors.configurationSource(request -> {
