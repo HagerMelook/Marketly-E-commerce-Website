@@ -9,6 +9,6 @@ import lombok.Data;
 @Builder
 public class OrderDTO {
     private Long account_id;
-    private int checkoutPrice;
+    private Double checkoutPrice;
     private List<OrderProductDTO> order_products;
 }
