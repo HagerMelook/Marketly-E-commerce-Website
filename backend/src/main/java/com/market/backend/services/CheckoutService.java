@@ -2,7 +2,6 @@ package com.market.backend.services;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.market.backend.dtos.OrderDTO;
@@ -20,22 +19,15 @@ import com.market.backend.repositories.ProductRepository;
 import com.market.backend.repositories.ShippingInfoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class CheckoutService {
-    @Autowired
     private ShippingInfoRepository shippingInfoRepo;
-
-    @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
     private OrderProductsRepository orderProductsRepository;
-
-    @Autowired
     private ProductRepository productRepository;
 
     public String insertShippingInfo(ShippingInfo shippingInfo) {

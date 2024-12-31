@@ -1,6 +1,5 @@
 package com.market.backend.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +11,15 @@ import com.market.backend.repositories.PasswordRepository;
 import com.market.backend.repositories.VendorRequestRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
 @Service
-public class SignUpService {
-
-    @Autowired
+@AllArgsConstructor
+public class SignUpService{
     AccountRepository accountRepository;
-    @Autowired
     VendorRequestRepository vendorRequestRepository;
-    @Autowired
     PasswordRepository passwordRepository;
-
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    BCryptPasswordEncoder passwordEncoder;
 
     public boolean checkUsernameAvailability(String username) {
         return !vendorRequestRepository.existsByUsername(username)
