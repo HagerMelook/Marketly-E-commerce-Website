@@ -81,7 +81,6 @@ public class SignInController {
         Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("id", id);
-            response.put("driverId", id);
             response.put("role", roles);
 
             return ResponseEntity.ok(response);
