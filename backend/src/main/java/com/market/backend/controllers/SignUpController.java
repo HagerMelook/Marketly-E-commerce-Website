@@ -55,7 +55,7 @@ public class SignUpController {
         if (result.contains("Successfully registered")) {
             String roles = "[client]";
             String token = jwtService.generateToken(client.getUsername());
-            System.out.println(token); // You can assign roles accordingly
+            // System.out.println(token); // You can assign roles accordingly
             response.put("token",token);
             response.put("id",result.split(",")[1]);
             response.put("driverId",result.split(",")[1]);
