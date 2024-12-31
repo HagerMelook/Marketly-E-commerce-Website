@@ -124,7 +124,7 @@ public class CheckoutServiceTest {
 
         OrderDTO orderDTO = OrderDTO.builder()
                 .account_id(1L)
-                .checkoutPrice(300)
+                .checkoutPrice(300.0)
                 .order_products(order_products)
                 .build();
 
@@ -152,7 +152,7 @@ public class CheckoutServiceTest {
 
         OrderDTO orderDTO = OrderDTO.builder()
                 .account_id(1L)
-                .checkoutPrice(300)
+                .checkoutPrice(300.0)
                 .order_products(order_products)
                 .build();
 
