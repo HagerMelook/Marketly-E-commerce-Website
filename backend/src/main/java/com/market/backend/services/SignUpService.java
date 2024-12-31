@@ -39,11 +39,11 @@ public class SignUpService {
         String username = email.split("@")[0];
         if (checkUsernameAvailability(username)) {
             Account acc = Account.builder()
-                .isActive(true)
-                .authType("oauth")
-                .username(username)
-                .type("client")
-                .build();
+                    .isActive(true)
+                    .authType("oauth")
+                    .username(username)
+                    .type("client")
+                    .build();
 
             accountRepository.save(acc);
             return "Client Registered Successfully";
@@ -53,13 +53,13 @@ public class SignUpService {
 
     public String registerVendorRequest(String email, String org, long tax) {
         String username = email.split("@")[0];
-        if(checkUsernameAvailability(username) && checkVendorAvailability(org, tax)){
+        if (checkUsernameAvailability(username) && checkVendorAvailability(org, tax)) {
             VendorRequest ven = VendorRequest.builder()
-                .organizationName(org)
-                .username(username)
-                .taxNumber(tax)
-                .authType("oauth")
-                .build();
+                    .organizationName(org)
+                    .username(username)
+                    .taxNumber(tax)
+                    .authType("oauth")
+                    .build();
             vendorRequestRepository.save(ven);
             return "Request Registered Successfully";
         }
@@ -92,7 +92,7 @@ public class SignUpService {
                 .build();
         pass = passwordRepository.save(pass);
         Account acc = pass.getAccount();
-        return "Successfully registered,"+acc.getId();
+        return "Successfully registered," + acc.getId();
     }
 
     public String insertBasicVendor(VendorRequest vendor) {
@@ -123,10 +123,10 @@ public class SignUpService {
         }
         if (vendorRequestRepository.existsBytaxNumber(vendor.getTaxNumber()))
             return "The tax number is already exist";
+        String encodedPassword = passwordEncoder.encode(vendor.getPassword());
+        vendor.setPassword(encodedPassword);
         vendorRequestRepository.save(vendor);
         return "Successfully registered";
     }
-
-
 
 }
