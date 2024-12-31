@@ -120,7 +120,7 @@ function CheckoutPage() {
             const response1 = await CheckoutShippingInfo(sessionStorage.getItem("id"), address, phone, postalCode);
             console.log(response1);
 
-            const response2 = await CheckoutOrderDetails(1, total_price, products);
+            const response2 = await CheckoutOrderDetails(sessionStorage.getItem("id"), total_price, products);
             console.log(response2);
             if (response2.startsWith("Order is Registered Successfully") && (response1 === "Shipping Info Updated Successfully" || response1 === "Shipping Info Inserted Successfully")) {
                 sessionStorage.setItem('order_number', response2.split(",")[1]);

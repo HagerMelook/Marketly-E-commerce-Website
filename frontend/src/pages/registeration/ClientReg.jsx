@@ -67,7 +67,7 @@ function ClientReg() {
       const { msg,token, id, driverId, role } = response.data;
       if (response.success && msg.includes("Successfully registered")) {
         console.log("Sign-up successful!");
-        console.log("Token:",token);
+        // console.log("Token:",token);
         console.log("User ID:",id);
         console.log("Driver ID:",driverId);
         console.log("Role:",role);

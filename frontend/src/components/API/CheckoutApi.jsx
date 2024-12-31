@@ -48,7 +48,7 @@ export function CheckoutOrderDetails(account_id, totalPrice, products) {
 }
 
 export function FetchShippingInfo(account_id) {
-    console.log(sessionStorage.getItem('token'));
+    // console.log(sessionStorage.getItem('token'));
     return fetch(`http://localhost:8080/checkout/${account_id}`, {
         method: 'GET',
         headers: {
