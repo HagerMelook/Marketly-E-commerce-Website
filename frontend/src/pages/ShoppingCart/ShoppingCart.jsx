@@ -80,11 +80,11 @@ function ShoppingCart() {
           const data = await response.json();
           setCartItems(data.products);
           setCost(data.totalPrice);
-          sessionStorage.setItem("cart", JSON.stringify(data.products));
+          sessionStorage.setItem("products", JSON.stringify(data.products));
         } else {
           setCartItems(DUMMY_CART_ITEMS);
           setCost(DUMMY_CART_ITEMS.reduce((total, item) => total + item.price * item.quantity, 0));
-          sessionStorage.setItem("cart", JSON.stringify(DUMMY_CART_ITEMS));
+          sessionStorage.setItem("products", JSON.stringify(DUMMY_CART_ITEMS));
         }
       } catch (error) {
         console.error("Error fetching cart items:", error);
