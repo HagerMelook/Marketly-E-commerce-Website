@@ -6,13 +6,15 @@ import * as EditProfileApi from '../../components/API/EditProfileApi';
 const UserAccount = () => {
   const [userData, setUserData] = useState(null);
   const [originalData, setOriginalData] = useState(null);
+  const userRole = sessionStorage.getItem('role');
 
   useEffect(() => {
     const fetchFunction = () => {
         switch (getUserType()) {
-            case "[admin]": return EditProfileApi.fetchAdminInfo(getUserId());
-            case "[vendor]": return EditProfileApi.fetchVendorInfo(getUserId());
-            case "[client]": return EditProfileApi.fetchClientInfo(getUserId());
+            case "[ROLE_ADMIN]": return EditProfileApi.fetchAdminInfo(getUserId());
+            case "[ROLE_SUPERADMIN]": return EditProfileApi.fetchAdminInfo(getUserId());
+            case "[ROLE_VENDOR]": return EditProfileApi.fetchVendorInfo(getUserId());
+            case "[ROLE_CLIENT]": return EditProfileApi.fetchClientInfo(getUserId());
         }
     }
       fetchFunction().then(userData => {
@@ -56,9 +58,10 @@ const UserAccount = () => {
 
     const updateFunction = (patch) => {
         switch (getUserType()) {
-            case "[admin]": return EditProfileApi.updateAdminInfo(getUserId(), patch);
-            case "[vendor]": return EditProfileApi.updateVendorInfo(getUserId(), patch);
-            case "[client]": return EditProfileApi.updateClientInfo(getUserId(), patch);
+            case "[ROLE_ADMIN]": return EditProfileApi.updateAdminInfo(getUserId(), patch);
+            case "[ROLE_SUPERADMIN]": return EditProfileApi.fetchAdminInfo(getUserId());
+            case "[ROLE_VENDOR]": return EditProfileApi.updateVendorInfo(getUserId(), patch);
+            case "[ROLE_CLIENT]": return EditProfileApi.updateClientInfo(getUserId(), patch);
         }
     }
 
@@ -91,7 +94,7 @@ const UserAccount = () => {
 
   return (<> {userData && 
         <>  
-            <Header/>
+            <Header isVendor={userRole==='[ROLE_VENDOR]'}  isAdmin={userRole=="[ROLE_ADMIN]"}/>
             <div className="account-page">
             <h1>{userData.username} Profile</h1>
             <div className="info-list">
@@ -144,10 +147,10 @@ const UserAccount = () => {
                 )}
 
                 <div className="info-row" >
-                    <div className="info-label" style={{color: "black", fontSize: "14pt"}}>{userData.type=="vendor" ? "Business Information" : "Personal Information"}</div>
+                    <div className="info-label" style={{color: "black", fontSize: "14pt"}}>{userData.type=="ROLE_VENDOR" ? "Business Information" : "Personal Information"}</div>
                 </div>
 
-                {(userData.type=="vendor" ? ["organizationName"] : ["firstName", "lastName"]).map((field) => (
+                {(userData.type=="ROLE_VENDOR" ? ["organizationName"] : ["firstName", "lastName"]).map((field) => (
                 <div className="info-row" key={field}>
                     <div className="info-label">{field.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}</div>
                     {editingField === field ? (
@@ -165,7 +168,7 @@ const UserAccount = () => {
                 </div>
                 ))}
 
-                {userData.type=="vendor" && <div className="info-row" >
+                {userData.type=="ROLE_VENDOR" && <div className="info-row" >
                     <div className="info-label">Tax Number</div>
                     <div className="info-static">{userData.taxNumber}</div>
                 </div>}

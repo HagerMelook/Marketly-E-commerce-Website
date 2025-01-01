@@ -65,12 +65,12 @@ class EditProfileServicesPatchTest {
     @BeforeEach
     void setUp() {
         accounts = new Account[]{
-                new Account(1L, true, "admin", "user1", "basic"),
-                new Account(2L, false, "client", "user2", "basic"),
-                new Account(3L, true, "vendor", "user3", "basic"),
-                new Account(4L, true, "admin", "user4", "oauth"),
-                new Account(5L, true, "client", "user5", "oauth"),
-                new Account(6L, true, "vendor", "user6", "oauth")
+                new Account(1L, true, "ROLE_ADMIN", "user1", "basic"),
+                new Account(2L, false, "ROLE_CLIENT", "user2", "basic"),
+                new Account(3L, true, "ROLE_VENDOR", "user3", "basic"),
+                new Account(4L, true, "ROLE_ADMIN", "user4", "oauth"),
+                new Account(5L, true, "ROLE_CLIENT", "user5", "oauth"),
+                new Account(6L, true, "ROLE_VENDOR", "user6", "oauth")
 
         };
 
