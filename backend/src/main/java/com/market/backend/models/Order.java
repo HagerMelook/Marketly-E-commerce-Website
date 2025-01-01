@@ -27,7 +27,7 @@ public class Order {
     private String status;
 
     @Column(name = "order_date", nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDateTime date;
 
     @Column(name = "order_checkout_price", nullable = false)
     private double checkoutPrice;

@@ -55,7 +55,7 @@ public class ShippingCompanySimulationService {
     
 
     public Order updateOrderStatus(Order order) {
-        LocalDateTime pastDateTime = order.getDateTime();
+        LocalDateTime pastDateTime = order.getDate();
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         // Calculate the duration between the order's past time and the current time
