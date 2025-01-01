@@ -6,6 +6,10 @@ const VendorRequestsCard = (props) => {
     const handleReject = () => {
         fetch('http://localhost:8080/admin/request/delete/' + request.id, {
             method: "DELETE", 
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            },
         })
         .then((res) => {
             console.log(res)

@@ -22,13 +22,13 @@ function FeedbackForm() {
     setSubmitted(false);
 
     try {
-      const response = await fetch('https://localhost:8080/add-feedback', {
-        method: 'POST',
+      const response = await fetch('http://localhost:8080/add-feedback', {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ feedback }),
+        body: JSON.stringify(feedback),
       });
 
       if (!response.ok) {

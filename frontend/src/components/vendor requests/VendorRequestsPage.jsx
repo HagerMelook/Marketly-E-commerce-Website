@@ -6,7 +6,16 @@ const VendorRequestsPage = () => {
     const [requests, setRequests] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/admin/request')
+        fetch('http://localhost:8080/admin/request',
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            },
+        }
+        
+        )
             .then(res => res.json())
             .then(data => {
                 setRequests(data);
