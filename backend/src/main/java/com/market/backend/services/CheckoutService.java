@@ -61,7 +61,7 @@ public class CheckoutService {
         Order order = Order.builder()
                 .account(account)
                 .checkoutPrice(orderDTO.getCheckoutPrice())
-                .status("processing")
+                .status("confirmed")
                 .date(LocalDateTime.now())
                 .build();
 

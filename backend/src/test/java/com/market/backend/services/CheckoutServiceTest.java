@@ -166,7 +166,7 @@ public class CheckoutServiceTest {
                 .id(1L)
                 .account(account)
                 .checkoutPrice(orderDTO.getCheckoutPrice())
-                .status("processing")
+                .status("confirmed")
                 .date(LocalDateTime.now())
                 .build();
 
