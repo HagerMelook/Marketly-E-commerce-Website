@@ -23,7 +23,7 @@ public class OrderService {
     private OrderProductRepository orderProductRepository;
 
     public List<OrderDTO> listAllOrders(int id) {
-        List<Order> userOrders = orderRepository.findOrderByAccountId((long) id);
+        List<Order> userOrders = refineOrders(orderRepository.findAll(), id);
         List<OrderDTO> ordersIncludingProductsInfo = new ArrayList<>();
         for (Order order : userOrders) {
             OrderDTO orderDTO = OrderDTO.builder()
@@ -37,6 +37,16 @@ public class OrderService {
             ordersIncludingProductsInfo.add(orderDTO);
         }
         return ordersIncludingProductsInfo;
+    }
+
+    private List<Order> refineOrders(List<Order> all, int id) {
+        List<Order> refined = new ArrayList<>();
+        all.forEach(order -> {
+            if (order.getAccount().getId() == id) {
+                refined.add(order);
+            }
+        });
+        return refined;
     }
 
     @Transactional

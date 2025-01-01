@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import RadialChoice from "./pages/registeration/RadialChoice";
 import VendorReg from "./pages/registeration/VendorReg";
 import VendorInventory from "./pages/Inventory/VendorInventory";
+import OrdersList from "./pages/orders list/orders.jsx";
 import ProductManagementPage from "./pages/product management/ProductManagementPage";
 import { ProductProvider } from "./contexts/ProductProvider";
 
@@ -16,40 +17,40 @@ import CategoryPage from "./pages/category page/CategoryPage.jsx";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import EditProfile from "./pages/EditProfile/EditProfile.jsx";
 
-
-
 function App() {
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Login />} />
-          <Route path="radialChoice" element={<RadialChoice />} />
-          <Route path="clientSignUp" element={<ClientReg />} />
-          <Route path="vendorSignUp" element={<VendorReg />} />
-          <Route path="productPage/:productId" element={<ProductPage />} />
-          <Route path="editProfile" element={<EditProfile />} />
-          <Route path="home" element={<Home isAdmin={false} />} />
-          <Route path="admin-dashboard" element={<AdminDashboard />} />
-          <Route path="*" element={<Navigate to="/home" />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/category" element={<CategoryPage />} />
-          <Route
-            path="inventory/*"
-            element={
-              <ProductProvider>
-                <Routes>
-                  <Route index element={<VendorInventory />} />
-                  <Route
-                    path="product-form"
-                    element={<ProductManagementPage />}
-                  />
-                </Routes>
-              </ProductProvider>
-            }
-          />
-          <Route path="*" element={<Navigate to="/home" />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        {/* <Route index element={<OrdersList />} /> */}
+        <Route index element={<Login />} />
+        <Route path="radialChoice" element={<RadialChoice />} />
+        <Route path="clientSignUp" element={<ClientReg />} />
+        <Route path="vendorSignUp" element={<VendorReg />} />
+        <Route path="orders" element={<OrdersList />} />
+        <Route path="productPage/:productId" element={<ProductPage />} />
+        <Route path="editProfile" element={<EditProfile />} />
+        <Route path="home" element={<Home isAdmin={false} />} />
+        <Route path="admin-dashboard" element={<AdminDashboard />} />
+        <Route path="*" element={<Navigate to="/home" />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/category" element={<CategoryPage />} />
+        <Route
+          path="inventory/*"
+          element={
+            <ProductProvider>
+              <Routes>
+                <Route index element={<VendorInventory />} />
+                <Route
+                  path="product-form"
+                  element={<ProductManagementPage />}
+                />
+              </Routes>
+            </ProductProvider>
+          }
+        />
+        <Route path="*" element={<Navigate to="/home" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

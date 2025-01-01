@@ -1,0 +1,18 @@
+.orders-list {
+  color: black;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  height: 100vh;
+  display: flex;
+  overflow-y: scroll;
+  top: 0;
+}
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 65px;
+  width: 100%;
+  top: 0;
+}

@@ -89,7 +89,7 @@ public class OrderServiceTest {
     @Test
     public void retrieveAllOrders_ReturnsAllOrders() {
 
-        when(orderRepository.findOrderByAccountId(1l)).thenReturn(basicOrders);
+        when(orderRepository.findAll()).thenReturn(basicOrders);
         when(orderProductRepository.findProductByOrderId(1l)).thenReturn(products);
         when(orderProductRepository.findProductByOrderId(2l)).thenReturn(products);
 
@@ -103,7 +103,7 @@ public class OrderServiceTest {
     @Test
     public void retrieveAllOrders_NoOrders_RrturnsEmptyList(){
 
-        when(orderRepository.findOrderByAccountId(2l)).thenReturn(new ArrayList<>());
+        when(orderRepository.findAll()).thenReturn(new ArrayList<>());
 
         List<OrderDTO> resultingOrders = orderService.listAllOrders(2);
         assertTrue(resultingOrders.isEmpty());
