@@ -13,6 +13,7 @@ function ProductPage() {
   const [ images, setImages ] = useState();
   const [ product, setProduct ] = useState();
   const id = sessionStorage.getItem('id');
+  const userRole = sessionStorage.getItem('role');
 
   useEffect(() => {
     ProductPageApi.getImages(productId).then((data) => setImages(data));
@@ -21,7 +22,7 @@ function ProductPage() {
 
   return (
     <div className='product-page-container'>
-        <Header />
+        <Header isVendor={userRole==='[vendor]'}  isAdmin={userRole==="[admin]" }/>
 
         {product && (
           <>

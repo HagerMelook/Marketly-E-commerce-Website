@@ -10,6 +10,8 @@ import SearchPage from "./pages/search page/SearchPage.jsx";
 import CategoryPage from "./pages/category page/CategoryPage.jsx";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import EditProfile from "./pages/EditProfile/EditProfile.jsx";
+import VendorOrders from "./pages/vendor order list/VendorOrders.jsx";
+
 import FeedbackForm from "./pages/FeedbackForm/FeedbackForm.jsx";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart.jsx"
 import ClientReg from "./pages/registeration/ClientReg";
@@ -30,6 +32,7 @@ function App() {
         <Route path="orders" element={<OrdersList />} />
         <Route path="productPage/:productId" element={<ProductPage />} />
         <Route path="editProfile" element={<EditProfile />} />
+         <Route path="vendorOrders" element={<VendorOrders />} />
         <Route path="home" element={<Home isAdmin={false} />} />
         <Route path="admin-dashboard" element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to="/home" />} />

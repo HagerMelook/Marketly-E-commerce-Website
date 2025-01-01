@@ -6,6 +6,7 @@ import * as EditProfileApi from '../../components/API/EditProfileApi';
 const UserAccount = () => {
   const [userData, setUserData] = useState(null);
   const [originalData, setOriginalData] = useState(null);
+  const userRole = sessionStorage.getItem('role');
 
   useEffect(() => {
     const fetchFunction = () => {
@@ -91,7 +92,7 @@ const UserAccount = () => {
 
   return (<> {userData && 
         <>  
-            <Header/>
+            <Header isVendor={userRole==='[vendor]'}  isAdmin={userRole=="[admin]"}/>
             <div className="account-page">
             <h1>{userData.username} Profile</h1>
             <div className="info-list">
@@ -153,7 +154,7 @@ const UserAccount = () => {
                     {editingField === field ? (
                     <input
                         className="info-input"
-                        value={userData[field]}
+                        value={userData[field] ? userData[field] : ''}
                         onChange={(e) => handleChange(field, e.target.value)}
                     />
                     ) : (

@@ -1,0 +1,87 @@
+.vendor-orders-wrapper {
+    margin-top: 50px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .vendor-orders-filters {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .vendor-orders-sort, .vendor-orders-status {
+    margin-right: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .vendor-orders-label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .vendor-orders-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .vendor-orders-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .vendor-orders-product {
+    margin: 0 0 10px 0;
+    font-size: 1.4em;
+    color: #333;
+  }
+  
+  .vendor-orders-info {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .vendor-orders-status-text {
+    margin: 5px 0 15px 0;
+    font-weight: bold;
+    color: #666;
+  }
+  
+  .vendor-orders-btn {
+    padding: 10px 15px;
+    border: none;
+    background-color: #0074d9;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .vendor-orders-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .vendor-orders-client-info {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .vendor-orders-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .vendor-orders-btn:disabled {
+    background-color: #ccc;
+    cursor: auto;
+  }
+  

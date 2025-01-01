@@ -112,6 +112,13 @@ function Header({ isAdmin, isVendor }) {
         <Link to="/cart">
           <img src={cartIcon} alt="Cart" title="View Cart" />
         </Link>
+
+        {isVendor && (
+          <Link to="/VendorOrders" className="orders-text">
+            Orders History
+          </Link>
+        )}
+
         <Link to="/editProfile">
           <img src={profileIcon} alt="Profile" title="Your Profile" />
         </Link>
