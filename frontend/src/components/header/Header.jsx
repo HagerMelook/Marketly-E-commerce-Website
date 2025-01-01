@@ -109,8 +109,9 @@ function Header({ isAdmin, isVendor }) {
             Inventory
           </Link>
         )}
-
-        <img src={cartIcon} alt="Cart" title="View Cart" />
+        <Link to="/cart">
+          <img src={cartIcon} alt="Cart" title="View Cart" />
+        </Link>
         <Link to="/editProfile">
           <img src={profileIcon} alt="Profile" title="Your Profile" />
         </Link>

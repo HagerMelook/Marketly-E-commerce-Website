@@ -5,20 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShoppingCart {
     @Id
-    @Column(name = "account_id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "shopping_cart_id", nullable = false, unique = true)
     private Long id;
 
-    @MapsId
     @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
-    private Account account;
+    @JoinColumn(name = "user_id", referencedColumnName = "account_id", nullable = false)
+    private Account userAccount;
 
-    @Column(name = "total_cost", nullable = false)
-    private double totalCost;
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShoppingCartProduct> cartProducts;
 }
