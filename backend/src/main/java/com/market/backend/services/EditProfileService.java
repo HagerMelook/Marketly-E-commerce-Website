@@ -35,7 +35,7 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        if (!account.getType().contains("ADMIN")) {
+        if (!account.getType().contains("admin")) {
             throw new NoSuchElementException("User not found");
         }
 
@@ -53,7 +53,7 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        if (!account.getType().contains("CLIENT")) {
+        if (!account.getType().contains("client")) {
             throw new NoSuchElementException("User not found");
         }
 
@@ -71,7 +71,7 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        if (!account.getType().equals("ROLE_VENDOR")) {
+        if (!account.getType().equals("vendor")) {
             throw new NoSuchElementException("User not found");
         }
 
@@ -100,7 +100,7 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        if (!account.getType().contains("ADMIN")) {
+        if (!account.getType().contains("admin")) {
             throw new NoSuchElementException("User not found");
         }
 
@@ -139,7 +139,7 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        if (!account.getType().equals("ROLE_VENDOR")) {
+        if (!account.getType().equals("vendor")) {
             throw new NoSuchElementException("User not found");
         }
 
@@ -178,7 +178,7 @@ public class EditProfileService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        if (!account.getType().equals("ROLE_CLIENT")) {
+        if (!account.getType().equals("client")) {
             throw new NoSuchElementException("User not found");
         }
 

@@ -50,7 +50,7 @@ const VendorOrders = () => {
 
   return (
     <>
-        <Header isVendor={userRole==='[ROLE_VENDOR]'}  isAdmin={userRole==="[ROLE_ADMIN]" || userRole==="[ROLE_SUPERADMIN]" }/>
+        <Header isVendor={userRole==='[vendor]'}  isAdmin={userRole==="[admin]"}/>
 
         <div className="vendor-orders-wrapper">
             <h1 style={{marginBottom: "auto"}}>Orders History</h1>

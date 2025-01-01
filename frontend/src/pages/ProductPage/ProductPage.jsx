@@ -22,7 +22,7 @@ function ProductPage() {
 
   return (
     <div className='product-page-container'>
-        <Header isVendor={userRole==='[ROLE_VENDOR]'}  isAdmin={userRole==="[ROLE_ADMIN]" || userRole==="[ROLE_SUPERADMIN]" }/>
+        <Header isVendor={userRole==='[vendor]'}  isAdmin={userRole==="[admin]" }/>
 
         {product && (
           <>

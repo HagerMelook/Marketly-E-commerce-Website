@@ -36,12 +36,12 @@ class EditProfileControllerGetTest {
     private EditProfileService editProfileService;
 
     Account[] accounts = new Account[] {
-            new Account(1L,true, "ROLE_ADMIN", "user1", "basic"),
-            new Account(2L, false, "ROLE_CLIENT", "user2", "basic"),
-            new Account(3L, true,  "ROLE_VENDOR", "user3", "basic"),
-            new Account(4L,true, "ROLE_ADMIN", "user4", "oauth"),
-            new Account(5L,true, "ROLE_CLIENT", "user5", "oauth"),
-            new Account(6L,true, "ROLE_VENDOR", "user6", "oauth")
+            new Account(1L,true, "admin", "user1", "basic"),
+            new Account(2L, false, "client", "user2", "basic"),
+            new Account(3L, true,  "vendor", "user3", "basic"),
+            new Account(4L,true, "admin", "user4", "oauth"),
+            new Account(5L,true, "client", "user5", "oauth"),
+            new Account(6L,true, "vendor", "user6", "oauth")
 
     };
 
@@ -145,7 +145,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 1,
                     "password": "password1",
-                    "type": "ROLE_ADMIN",
+                    "type": "admin",
                     "username": "user1",
                     "firstName": "adminfirst",
                     "lastName": "adminlast",
@@ -174,7 +174,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 1,
                     "password": "password1",
-                    "type": "ROLE_ADMIN",
+                    "type": "admin",
                     "username": "user1",
                     "firstName": null,
                     "lastName": null,
@@ -203,7 +203,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 1,
                     "password": "password1",
-                    "type": "ROLE_ADMIN",
+                    "type": "admin",
                     "username": "user1",
                     "firstName": "adminfirst",
                     "lastName": "adminlast",
@@ -232,7 +232,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 4,
                     "password": null,
-                    "type": "ROLE_ADMIN",
+                    "type": "admin",
                     "username": "user4",
                     "firstName": "adminfirst",
                     "lastName": "adminlast",
@@ -337,7 +337,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 2,
                     "password": "password2",
-                    "type": "ROLE_CLIENT",
+                    "type": "client",
                     "username": "user2",
                     "firstName": "clientfirst",
                     "lastName": "clientlast",
@@ -366,7 +366,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 2,
                     "password": "password2",
-                    "type": "ROLE_CLIENT",
+                    "type": "client",
                     "username": "user2",
                     "firstName": null,
                     "lastName": null,
@@ -395,7 +395,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 2,
                     "password": "password2",
-                    "type": "ROLE_CLIENT",
+                    "type": "client",
                     "username": "user2",
                     "firstName": "clientfirst",
                     "lastName": "clientlast",
@@ -423,7 +423,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 5,
                     "password": null,
-                    "type": "ROLE_CLIENT",
+                    "type": "client",
                     "username": "user5",
                     "firstName": "clientfirst",
                     "lastName": "clientlast",
@@ -527,7 +527,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 3,
                     "password": "password3",
-                    "type": "ROLE_VENDOR",
+                    "type": "vendor",
                     "username": "user3",
                     "organizationName": "vendorfirst",
                     "taxNumber": 11,
@@ -556,7 +556,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 3,
                     "password": "password3",
-                    "type": "ROLE_VENDOR",
+                    "type": "vendor",
                     "username": "user3",
                     "organizationName": null,
                     "taxNumber": null,
@@ -585,7 +585,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 3,
                     "password": "password3",
-                    "type": "ROLE_VENDOR",
+                    "type": "vendor",
                     "username": "user3",
                     "organizationName": "vendorfirst",
                     "taxNumber": 11,
@@ -614,7 +614,7 @@ class EditProfileControllerGetTest {
                 {
                     "accountId": 6,
                     "password": null,
-                    "type": "ROLE_VENDOR",
+                    "type": "vendor",
                     "username": "user6",
                     "organizationName": "vendorfirst",
                     "taxNumber": 11,
