@@ -16,6 +16,8 @@ import CategoryPage from "./pages/category page/CategoryPage.jsx";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import EditProfile from "./pages/EditProfile/EditProfile.jsx";
 
+import FeedbackForm from "./pages/FeedbackForm/FeedbackForm.jsx";
+
 
 
 function App() {
@@ -33,6 +35,7 @@ function App() {
           <Route path="*" element={<Navigate to="/home" />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/category" element={<CategoryPage />} />
+          <Route path="/feedback" element={<FeedbackForm />} />
           <Route
             path="inventory/*"
             element={

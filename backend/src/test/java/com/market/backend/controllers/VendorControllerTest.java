@@ -220,10 +220,10 @@ class VendorControllerTest {
 //                .imagePaths(Arrays.asList("img1.jpg"))
 //                .build();
 //
-//        Mockito.when(vendorService.getAllVendorProducts(vendorId))
+//        when(vendorService.getAllVendorProducts(vendorId))
 //                .thenReturn(Collections.singletonList(productDTO));
 //
-//        mockMvc.perform(MockMvcRequestBuilders.get("/products/{vendorId}", vendorId)
+//        mockMvc.perform(get("/products/{vendorId}", vendorId)
 //                        .contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isOk())
 //                .andExpect(jsonPath("$[0].id").value(1L))
@@ -236,28 +236,28 @@ class VendorControllerTest {
 //    public void testDeleteVendorProduct() throws Exception {
 //        long productId = 1L;
 //
-//        Mockito.doNothing().when(vendorService).deleteProduct(productId);
+//        doNothing().when(vendorService).deleteProduct(productId);
 //
-//        mockMvc.perform(MockMvcRequestBuilders.delete("/delete/{id}", productId)
+//        mockMvc.perform(delete("/delete/{id}", productId)
 //                        .contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isOk())
 //                .andExpect(jsonPath("$.message").value("Product deleted successfully"));
 //
-//        Mockito.verify(vendorService).deleteProduct(productId);
+//        verify(vendorService).deleteProduct(productId);
 //    }
 //
 //    @Test
 //    public void testDeleteVendorProductWithException() throws Exception {
 //        long productId = 1L;
 //
-//        Mockito.doThrow(new IllegalArgumentException("Product not found")).when(vendorService).deleteProduct(productId);
+//        doThrow(new IllegalArgumentException("Product not found")).when(vendorService).deleteProduct(productId);
 //
-//        mockMvc.perform(MockMvcRequestBuilders.delete("/delete/{id}", productId)
+//        mockMvc.perform(delete("/delete/{id}", productId)
 //                        .contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isBadRequest())
 //                .andExpect(content().string("Product not found"));
 //
-//        Mockito.verify(vendorService).deleteProduct(productId);
+//        verify(vendorService).deleteProduct(productId);
 //    }
 //
 //    @Test
@@ -277,10 +277,10 @@ class VendorControllerTest {
 //                .imagePaths(Arrays.asList("img1.jpg"))
 //                .build();
 //
-//        Mockito.when(vendorService.getProductByName(vendorId, name))
+//        when(vendorService.getProductByName(vendorId, name))
 //                .thenReturn(Collections.singletonList(productDTO));
 //
-//        mockMvc.perform(MockMvcRequestBuilders.get("/search/{vendorId}/{name}", vendorId, name)
+//        mockMvc.perform(get("/search/{vendorId}/{name}", vendorId, name)
 //                        .contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isOk())
 //                .andExpect(jsonPath("$[0].id").value(1L))

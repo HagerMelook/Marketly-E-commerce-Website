@@ -1,5 +1,6 @@
 
 import Header from "../../components/header/Header.jsx";
+import Footer from "../../components/footer/Footer.jsx";
 import Category from "../../components/category/Category.jsx";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
@@ -34,7 +35,7 @@ function Home({ isAdmin, isVendor }) {
           <Category key={category.name} category={category} />
         ))}
       </div>
-
+      <Footer />
     </div>
   );
 }
