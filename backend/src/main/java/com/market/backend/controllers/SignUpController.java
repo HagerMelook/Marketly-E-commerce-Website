@@ -53,7 +53,7 @@ public class SignUpController {
         String result = service.insertBasicClient(client, password);
         Map<String, Object> response = new HashMap<>();
         if (result.contains("Successfully registered")) {
-            String roles = "[ROLE_CLIENT]";
+            String roles = "[client]";
             String token = jwtService.generateToken(client.getUsername());
             // System.out.println(token); // You can assign roles accordingly
             response.put("token",token);
