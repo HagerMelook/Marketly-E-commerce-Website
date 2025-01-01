@@ -12,7 +12,6 @@ import com.market.backend.repositories.ProductRepository;
 import com.market.backend.repositories.ShoppingCartProductRepository;
 import com.market.backend.repositories.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

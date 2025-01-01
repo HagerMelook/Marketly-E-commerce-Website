@@ -1,6 +1,5 @@
 package com.market.backend.dtos;
 
-import com.market.backend.models.ShoppingCartProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

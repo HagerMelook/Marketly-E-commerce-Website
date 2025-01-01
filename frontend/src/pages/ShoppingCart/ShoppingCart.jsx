@@ -7,6 +7,57 @@ import { useNavigate } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 5;
 
+const DUMMY_CART_ITEMS = [
+  {
+    id: 1,
+    name: "Wireless Headphones",
+    price: 129.99,
+    quantity: 1,
+    image: "/api/placeholder/100/100",
+    description: "Premium noise-canceling wireless headphones"
+  },
+  {
+    id: 2,
+    name: "Smart Watch",
+    price: 249.99,
+    quantity: 1,
+    image: "/api/placeholder/100/100",
+    description: "Fitness tracking smartwatch with heart rate monitor"
+  },
+  {
+    id: 3,
+    name: "Laptop Backpack",
+    price: 79.99,
+    quantity: 2,
+    image: "/api/placeholder/100/100",
+    description: "Water-resistant laptop backpack with USB charging port"
+  },
+  {
+    id: 4,
+    name: "Mechanical Keyboard",
+    price: 159.99,
+    quantity: 1,
+    image: "/api/placeholder/100/100",
+    description: "RGB mechanical gaming keyboard with Cherry MX switches"
+  },
+  {
+    id: 5,
+    name: "Wireless Mouse",
+    price: 49.99,
+    quantity: 1,
+    image: "/api/placeholder/100/100",
+    description: "Ergonomic wireless mouse with adjustable DPI"
+  },
+  {
+    id: 6,
+    name: "USB-C Hub",
+    price: 39.99,
+    quantity: 1,
+    image: "/api/placeholder/100/100",
+    description: "7-in-1 USB-C hub with HDMI and power delivery"
+  }
+];
+
 function ShoppingCart() {
   const [currentPage, setCurrentPage] = useState(1);
   const [cartItems, setCartItems] = useState([]);
@@ -14,47 +65,45 @@ function ShoppingCart() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const accountId = sessionStorage.getItem("id");
-    fetch(`https://localhost:8080/ShoppingCart/${accountId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setCartItems(data.products);
-        setCost(data.totalPrice);
-        sessionStorage.setItem("cart", JSON.stringify(data));
-      })
-      .catch((error) => console.error("Error fetching cart items:", error));
-  });
+    const fetchCart = async () => {
+      try {
+        const accountId = sessionStorage.getItem("id");
+        // const accountId = 3;
+        const response = await fetch(`http://localhost:8080/ShoppingCart/${accountId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        });
 
-  // const cartItems = [
-  //   {
-  //     id: 1,
-  //     name: "Wireless Headphones",
-  //     price: 199.99,
-  //     quantity: 1,
-  //     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Smart Watch",
-  //     price: 299.99,
-  //     quantity: 1,
-  //     image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&q=80"
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Laptop Backpack",
-  //     price: 79.99,
-  //     quantity: 1,
-  //     image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80"
-  //   }
-  // ];
+        if (response.ok) {
+          const data = await response.json();
+          setCartItems(data.products);
+          setCost(data.totalPrice);
+          sessionStorage.setItem("cart", JSON.stringify(data.products));
+        } else {
+          setCartItems(DUMMY_CART_ITEMS);
+        }
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+
+    fetchCart();
+  }, []);
+
+  const handleUpdateQuantity = (id, newQuantity) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
+  const handleRemove = (id) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+  };
 
   const totalPages = Math.ceil(cartItems.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -64,14 +113,6 @@ function ShoppingCart() {
   const shipping = 0.1 * cost;
   const tax = cost * 0.08;
   const total = cost + shipping + tax;
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
-  const handleCheckout = () => {
-    navigate("/checkout");
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -83,15 +124,26 @@ function ShoppingCart() {
           <div className="lg:col-span-8">
             <div className="bg-white rounded-lg shadow">
               <div className="p-6">
-                {currentItems.map((item) => (
-                  <CartItem key={item.id} {...item} />
-                ))}
+                {currentItems.length === 0 ? (
+                  <p className="text-center text-gray-500 py-8">Your cart is empty</p>
+                ) : (
+                  currentItems.map((item) => (
+                    <CartItem
+                      key={item.id}
+                      {...item}
+                      onUpdateQuantity={handleUpdateQuantity}
+                      onRemove={handleRemove}
+                    />
+                  ))
+                )}
 
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
+                {cartItems.length > ITEMS_PER_PAGE && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -119,7 +171,11 @@ function ShoppingCart() {
                   </div>
                 </div>
               </div>
-              <button className="mt-6 w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors" onClick={handleCheckout}>
+              <button
+                className="mt-6 w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors"
+                onClick={() => navigate("/checkout")}
+                disabled={cartItems.length === 0}
+              >
                 Proceed to Checkout
               </button>
             </div>
