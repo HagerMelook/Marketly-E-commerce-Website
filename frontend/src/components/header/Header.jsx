@@ -95,7 +95,9 @@ function Header({ isAdmin, isVendor }) {
       </div>
 
       <div className="icons">
-        <span className="orders-text">Orders</span>
+        <Link to="/orders" className="orders-text">
+          Orders
+        </Link>
         {isAdmin && (
           <Link to="/admin-dashboard" className="orders-text">
             Admin Dashboard
@@ -119,7 +121,7 @@ function Header({ isAdmin, isVendor }) {
 
 Header.propTypes = {
   isAdmin: PropTypes.bool,
-  isVendor: PropTypes.bool
+  isVendor: PropTypes.bool,
 };
 
 export default Header;

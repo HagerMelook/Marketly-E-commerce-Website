@@ -14,6 +14,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.calledmethods.qual.RequiresCalledMethods;
+
+import java.sql.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -39,4 +43,7 @@ public class Order {
 
     @Column(name = "order_checkout_price", nullable = false)
     private double checkoutPrice;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<OrderProducts> orderProducts;
 }

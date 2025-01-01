@@ -1,0 +1,7 @@
+.order-product {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #bdb6b6;
+}
