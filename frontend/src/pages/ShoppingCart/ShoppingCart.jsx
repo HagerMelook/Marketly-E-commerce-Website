@@ -68,7 +68,6 @@ function ShoppingCart() {
     const fetchCart = async () => {
       try {
         const accountId = sessionStorage.getItem("id");
-        // const accountId = 3;
         const response = await fetch(`http://localhost:8080/ShoppingCart/${accountId}`, {
           method: "GET",
           headers: {
@@ -84,6 +83,8 @@ function ShoppingCart() {
           sessionStorage.setItem("cart", JSON.stringify(data.products));
         } else {
           setCartItems(DUMMY_CART_ITEMS);
+          setCost(DUMMY_CART_ITEMS.reduce((total, item) => total + item.price * item.quantity, 0));
+          sessionStorage.setItem("cart", JSON.stringify(DUMMY_CART_ITEMS));
         }
       } catch (error) {
         console.error("Error fetching cart items:", error);
@@ -173,7 +174,7 @@ function ShoppingCart() {
               </div>
               <button
                 className="mt-6 w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors"
-                onClick={() => navigate("/checkout")}
+                onClick={() => navigate("checkout")}
                 disabled={cartItems.length === 0}
               >
                 Proceed to Checkout
