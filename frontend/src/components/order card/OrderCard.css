@@ -1,0 +1,42 @@
+.order-card {
+  border: 1px solid #bdb6b6;
+  padding: 0px;
+  margin: 10px;
+  width: 80%;
+}
+
+.order-info {
+  background-color: #e4e4e4;
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.cancel-order {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.order-date,
+.total-price,
+.status {
+  padding: 10px;
+  padding-right: 20px;
+}
+
+.order-products-list {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  /* padding: 10px; */
+}
