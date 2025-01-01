@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,14 +54,14 @@ public class OrderServiceTest {
                         OrderDTO.builder()
                             .checkoutPrice(1060)
                             .id(1l)
-                            .date(new Date(2026, 6, 24))
+                            .date(LocalDateTime.of(2026, 6, 24, 12, 12, 12))
                             .status("confirmed")
                             .products(products)
                             .build(),
                         OrderDTO.builder()
                             .checkoutPrice(2400)
                             .id(2l)
-                            .date(new Date(2026, 6, 25))
+                            .date(LocalDateTime.of(2026, 6, 24, 12, 12, 12))
                             .status("shipping")
                             .products(products)
                             .build()
@@ -71,14 +72,14 @@ public class OrderServiceTest {
                         Order.builder()
                             .checkoutPrice(1060)
                             .id(1l)
-                            .date(new Date(2026, 6, 24))
+                            .date(LocalDateTime.of(2026, 6, 24, 12, 12, 12))
                             .status("confirmed")
                             .account(Account.builder().id(1l).build())
                             .build(),
                         Order.builder()
                             .checkoutPrice(2400)
                             .id(2l)
-                            .date(new Date(2026, 6, 25))
+                            .date(LocalDateTime.of(2026, 6, 25, 12, 12, 12))
                             .status("shipping")
                             .account(Account.builder().id(1l).build())
                             .build()

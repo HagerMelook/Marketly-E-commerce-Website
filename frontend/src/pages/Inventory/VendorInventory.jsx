@@ -4,6 +4,7 @@ import { useProductContext} from "../../contexts/ProductProvider"
 import Header from "../../components/header/Header";
 import searchIcon from "../../assets/search-icon.svg";
 import InventoryProductListing from "../../components/Inventory/InventoryProductListing";
+import Footer from "../../components/footer/Footer";
 import './VendorInventory.css';
 
 function VendorInventory() {
@@ -115,6 +116,7 @@ function VendorInventory() {
     };
 
     return (
+        <>
         <div className="vendor-inventory">
             <Header isVendor={true} />
             <div className="inventory-bar">
@@ -164,6 +166,8 @@ function VendorInventory() {
                 </nav>
             )}
         </div>
+        <Footer />
+        </>
     );
 }
 

@@ -17,6 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class OrderControllerTest {
         orders = Arrays.asList(
                 OrderDTO.builder()
                         .id(1l)
-                        .date(new Date(12, 12, 2026))
+                        .date(LocalDateTime.of(2026, 12, 12, 12, 12, 12))
                         .checkoutPrice(1000)
                         .status("confirmd")
                         .build()

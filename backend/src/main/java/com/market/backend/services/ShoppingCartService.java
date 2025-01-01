@@ -91,10 +91,12 @@ public class ShoppingCartService {
     }
 
     public ShoppingCartDTO getCartProducts(Long userId) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserAccountId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found"));
+        Optional<ShoppingCart> shoppingCart = shoppingCartRepository.findByUserAccountId(userId);
+        if (shoppingCart.isEmpty()) {
+            return new ShoppingCartDTO(new ArrayList<>(), 0);
+        }
 
-        List<ShoppingCartProduct> products = shoppingCartProductRepository.findByShoppingCart(shoppingCart);
+        List<ShoppingCartProduct> products = shoppingCartProductRepository.findByShoppingCart(shoppingCart.get());
 
         double totalPrice = calculateTotalPrice(products);
         return new ShoppingCartDTO(shoppingCartProductToDTO(products), totalPrice);

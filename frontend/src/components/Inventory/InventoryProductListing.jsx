@@ -6,9 +6,9 @@ function InventoryProductListing({products, onRemove}) {
    
     
     return(
-        <div className="product-list">
+        <div className="inventory-product-list">
             <table>
-            `   <thead>
+                  <thead>
                     <tr>
                         <th>ID</th>
                         <th>Product Image</th>

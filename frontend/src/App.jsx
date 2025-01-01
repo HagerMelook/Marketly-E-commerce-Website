@@ -12,6 +12,7 @@ import ProductPage from "./pages/ProductPage/ProductPage";
 import EditProfile from "./pages/EditProfile/EditProfile.jsx";
 import VendorOrders from "./pages/vendor order list/VendorOrders.jsx";
 
+import FeedbackForm from "./pages/FeedbackForm/FeedbackForm.jsx";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart.jsx"
 import ClientReg from "./pages/registeration/ClientReg";
 import RadialChoice from "./pages/registeration/RadialChoice";
@@ -40,6 +41,7 @@ function App() {
         <Route path="cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<CheckoutPage/>}/>
         <Route path="/checkout/complete" element={<CheckoutComplete/>}/>
+        <Route path="/feedback" element={<FeedbackForm />} />
         <Route
           path="inventory/*"
           element={
