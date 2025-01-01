@@ -19,6 +19,7 @@
     "frontend": "file:",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^3.1.2",
+    "lucide-react": "^0.469.0",
     "libphonenumber-js": "^1.11.17",
     "postal-codes-js": "^2.5.2",
     "prop-types": "^15.8.1",
