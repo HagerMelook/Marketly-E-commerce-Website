@@ -1,24 +1,25 @@
 package com.market.backend.services;
 
-import com.market.backend.models.Password;
-import com.market.backend.models.VendorRequest;
-import com.market.backend.repositories.PasswordRepository;
-import com.market.backend.repositories.VendorRequestRepository;
-import com.market.backend.models.Account;
-import com.market.backend.repositories.AccountRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-public class SignUpService {
+import com.market.backend.models.Account;
+import com.market.backend.models.Password;
+import com.market.backend.models.VendorRequest;
+import com.market.backend.repositories.AccountRepository;
+import com.market.backend.repositories.PasswordRepository;
+import com.market.backend.repositories.VendorRequestRepository;
 
-    @Autowired
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class SignUpService{
     AccountRepository accountRepository;
-    @Autowired
     VendorRequestRepository vendorRequestRepository;
-    @Autowired
     PasswordRepository passwordRepository;
+    BCryptPasswordEncoder passwordEncoder;
 
     public boolean checkUsernameAvailability(String username) {
         return !vendorRequestRepository.existsByUsername(username)
@@ -34,11 +35,11 @@ public class SignUpService {
         String username = email.split("@")[0];
         if (checkUsernameAvailability(username)) {
             Account acc = Account.builder()
-                .isActive(true)
-                .authType("oauth")
-                .username(username)
-                .type("client")
-                .build();
+                    .isActive(true)
+                    .authType("oauth")
+                    .username(username)
+                    .type("client")
+                    .build();
 
             accountRepository.save(acc);
             return "Client Registered Successfully";
@@ -48,13 +49,13 @@ public class SignUpService {
 
     public String registerVendorRequest(String email, String org, long tax) {
         String username = email.split("@")[0];
-        if(checkUsernameAvailability(username) && checkVendorAvailability(org, tax)){
+        if (checkUsernameAvailability(username) && checkVendorAvailability(org, tax)) {
             VendorRequest ven = VendorRequest.builder()
-                .organizationName(org)
-                .username(username)
-                .taxNumber(tax)
-                .authType("oauth")
-                .build();
+                    .organizationName(org)
+                    .username(username)
+                    .taxNumber(tax)
+                    .authType("oauth")
+                    .build();
             vendorRequestRepository.save(ven);
             return "Request Registered Successfully";
         }
@@ -79,13 +80,15 @@ public class SignUpService {
         client.setType("client");
         client.setAuthType("basic");
 
+        String encodedPassword = passwordEncoder.encode(password);
+
         Password pass = Password.builder()
                 .account(client)
-                .accountPassword(password)
+                .accountPassword(encodedPassword)
                 .build();
-        passwordRepository.save(pass);
-
-        return "Successfully registered";
+        pass = passwordRepository.save(pass);
+        Account acc = pass.getAccount();
+        return "Successfully registered," + acc.getId();
     }
 
     public String insertBasicVendor(VendorRequest vendor) {
@@ -116,11 +119,10 @@ public class SignUpService {
         }
         if (vendorRequestRepository.existsBytaxNumber(vendor.getTaxNumber()))
             return "The tax number is already exist";
-
+        String encodedPassword = passwordEncoder.encode(vendor.getPassword());
+        vendor.setPassword(encodedPassword);
         vendorRequestRepository.save(vendor);
         return "Successfully registered";
     }
-
-
 
 }

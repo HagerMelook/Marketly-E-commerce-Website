@@ -37,16 +37,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(customizer -> customizer.disable())
-                .headers(headers -> headers.frameOptions().disable())  // Add this for H2 console
+                .headers(headers -> headers.frameOptions().disable()) // Add this for H2 console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore((Filter) jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
-                        .requestMatchers("/h2-console/**").permitAll()  // Add this for H2 console
+                        .requestMatchers("/h2-console/**").permitAll() // Add this for H2 console
                         .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                         .requestMatchers("/categories/**").hasRole("SUPERADMIN")
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/SignUp/**").permitAll()
+                        .anyRequest().authenticated())
                 .oauth2Login(Customizer.withDefaults())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
