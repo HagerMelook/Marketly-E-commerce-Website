@@ -25,6 +25,7 @@ function SearchPage() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`
       },
     })
       .then((response) => response.json())

@@ -20,7 +20,13 @@ function VendorInventory() {
     const id = 10;
 
     useEffect(() => {
-        fetch(`http://localhost:8080/vendor/products/${id}`)
+        fetch(`http://localhost:8080/vendor/products/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            }
+        })
             .then(res => {
                 if (!res.ok) {
                     throw Error('Could not fetch products');
@@ -35,7 +41,13 @@ function VendorInventory() {
             })
             .catch(error => setError(error.message));
 
-        fetch('http://localhost:8080/vendor/categories')
+        fetch('http://localhost:8080/vendor/categories',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            }
+        })
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(error => console.error(error)); 
@@ -67,7 +79,13 @@ function VendorInventory() {
         event.preventDefault();
         const searched = event.target.elements.search.value;
         if(searched){
-            fetch(`http://localhost:8080/vendor/search/${id}/${searched}`)
+            fetch(`http://localhost:8080/vendor/search/${id}/${searched}`,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+                }
+            })
             .then(res => {
                 if (!res.ok) {
                     throw Error('Could not fetch products');

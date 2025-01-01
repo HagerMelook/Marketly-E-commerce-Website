@@ -5,7 +5,13 @@ const FeedbackPage = () => {
     const [feedbacks, setFeedbacks] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/admin/feedback')
+        fetch('http://localhost:8080/admin/feedback',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 setFeedbacks(data);

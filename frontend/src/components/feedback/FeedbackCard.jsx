@@ -7,6 +7,10 @@ const FeedbackCard = (props) => {
     
         fetch('http://localhost:8080/admin/feedback/' + feedback.id, {
             method: "DELETE", 
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            }
         })
         .then((res) => {
             console.log(res)

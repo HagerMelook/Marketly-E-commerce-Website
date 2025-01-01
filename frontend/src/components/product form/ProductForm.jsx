@@ -89,6 +89,7 @@ function ProductForm() {
 
       const response = await fetch(url, {
         method,
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
         body: formData,
       });
 

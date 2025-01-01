@@ -17,7 +17,11 @@ function InventoryProduct({product, onRemove}){
     const handleRemoveProduct = () => {
         fetch(`http://localhost:8080/vendor/delete/${product.id}`, {
             method: "DELETE", 
-            })
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            }
+        })
             .then(res => {
                 if (!res.ok) {
                     throw Error('Could not delete product');
