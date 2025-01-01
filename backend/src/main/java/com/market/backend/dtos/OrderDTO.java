@@ -23,5 +23,7 @@ public class OrderDTO {
     private Date date;
     private double checkoutPrice;
     private List<Product> products;
+    private Long account_id;
+    private List<OrderProductDTO> order_products;
 
 }

@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
-//    @Query("SELECT Order.id,Order.checkoutPrice, Order.date, Order.status, Order.orderProducts FROM Order WHERE Order.account.id= :account_id")
+public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAll();
     void deleteById(long id);
 }

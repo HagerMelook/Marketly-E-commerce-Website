@@ -21,7 +21,7 @@ function VendorReg() {
   const [isVisible_4, setIsVisible_4] = useState(false);
 
   useEffect(() => {
-    const hasVisitedRadialChoice = localStorage.getItem(
+    const hasVisitedRadialChoice = sessionStorage.getItem(
       "hasVisitedRadialChoice"
     );
     if (!hasVisitedRadialChoice) {

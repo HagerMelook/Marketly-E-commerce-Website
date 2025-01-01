@@ -14,7 +14,7 @@ function ClientReg() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const hasVisitedRadialChoice = localStorage.getItem(
+    const hasVisitedRadialChoice = sessionStorage.getItem(
       "hasVisitedRadialChoice"
     );
     if (!hasVisitedRadialChoice) {
@@ -63,19 +63,27 @@ function ClientReg() {
     event.preventDefault(); // Prevent the default form submission
     if (!isVisible_1 && !isVisible_2) {
       const response = await ClientBasicSignUp(username, password);
-      console.log(response);
-      if (response === "Successfully registered") {
-        console.log(response);
+      // console.log(response);
+      const { msg,token, id, driverId, role } = response.data;
+      if (response.success && msg.includes("Successfully registered")) {
+        console.log("Sign-up successful!");
+        // console.log("Token:",token);
+        console.log("User ID:",id);
+        console.log("Driver ID:",driverId);
+        console.log("Role:",role);
+        sessionStorage.setItem('token',token);
+        sessionStorage.setItem('id',id);
+        sessionStorage.setItem('role',role);
         navigate("/home");// Trigger navigation after successful registration
-      } else if (response.includes("username")) {
+      } else if (msg.includes("username")) {
         const messageContainer_1 =
           document.getElementById("messageContainer-1");
-        messageContainer_1.textContent = response;
+        messageContainer_1.textContent = msg;
         setIsVisible_1(true);
-      } else if (response.includes("password")) {
+      } else if (msg.includes("password")) {
         const messageContainer_2 =
           document.getElementById("messageContainer-2");
-        messageContainer_2.textContent = response;
+        messageContainer_2.textContent = msg;
         setIsVisible_2(true);
       }
     }
