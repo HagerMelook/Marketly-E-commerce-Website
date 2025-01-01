@@ -1,14 +1,17 @@
 package com.market.backend.controllers;
 
+import com.market.backend.configurations.JWTFilter;
 import com.market.backend.models.Account;
 import com.market.backend.models.Feedback;
 import com.market.backend.models.VendorRequest;
 import com.market.backend.services.AdminService;
+import com.market.backend.services.JWTService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AdminController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@Import({JWTService.class, JWTFilter.class})
 class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;

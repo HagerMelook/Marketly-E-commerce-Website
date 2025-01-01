@@ -12,6 +12,7 @@ function ProductPage() {
 
   const [ images, setImages ] = useState();
   const [ product, setProduct ] = useState();
+  const id = sessionStorage.getItem('id');
 
   useEffect(() => {
     ProductPageApi.getImages(productId).then((data) => setImages(data));
@@ -28,7 +29,7 @@ function ProductPage() {
         
           <Description product={product}/>
 
-          <Comments productRating={product.rating} productId={product.id} accountId={2}/>
+          <Comments productRating={product.rating} productId={product.id} accountId={Number(id)}/>
           </>
         )}
     </div>

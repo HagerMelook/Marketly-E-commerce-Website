@@ -10,17 +10,17 @@ const UserAccount = () => {
   useEffect(() => {
     const fetchFunction = () => {
         switch (getUserType()) {
-            case "admin": return EditProfileApi.fetchAdminInfo(getUserId());
-            case "vendor": return EditProfileApi.fetchVendorInfo(getUserId());
-            case "client": return EditProfileApi.fetchClientInfo(getUserId());
+            case "[admin]": return EditProfileApi.fetchAdminInfo(getUserId());
+            case "[vendor]": return EditProfileApi.fetchVendorInfo(getUserId());
+            case "[client]": return EditProfileApi.fetchClientInfo(getUserId());
         }
     }
-      fetchFunction().then(adminInfo => {
-            if (adminInfo) {
-                setUserData(adminInfo);
-                setOriginalData(adminInfo);
+      fetchFunction().then(userData => {
+            if (userData) {
+                setUserData(userData);
+                setOriginalData(userData);
             } else {
-                console.log('Admin info not found or an error occurred.');
+                console.log('User info not found or an error occurred.');
             }
         });
     }, []);
@@ -29,11 +29,11 @@ const UserAccount = () => {
   const [isModified, setIsModified] = useState(false);
 
   const getUserType = () => {
-    return "admin";
+    return sessionStorage.getItem('role');
   }
 
   const getUserId = () => {
-    return 1; 
+    return sessionStorage.getItem('id');
   }
 
   const handleEditClick = (field) => {
@@ -56,9 +56,9 @@ const UserAccount = () => {
 
     const updateFunction = (patch) => {
         switch (getUserType()) {
-            case "admin": return EditProfileApi.updateAdminInfo(getUserId(), patch);
-            case "vendor": return EditProfileApi.updateVendorInfo(getUserId(), patch);
-            case "client": return EditProfileApi.updateClientInfo(getUserId(), patch);
+            case "[admin]": return EditProfileApi.updateAdminInfo(getUserId(), patch);
+            case "[vendor]": return EditProfileApi.updateVendorInfo(getUserId(), patch);
+            case "[client]": return EditProfileApi.updateClientInfo(getUserId(), patch);
         }
     }
 
@@ -69,6 +69,12 @@ const UserAccount = () => {
         path: `/${key}`,
         value: userData[key],
     }));
+
+    if (patch.length==0) {
+        setEditingField(null);
+        setIsModified(false);
+        return;
+    }
 
     updateFunction(patch)
     .then(() => {
@@ -118,6 +124,7 @@ const UserAccount = () => {
                     <div className="info-label">Password</div>
                     {editingField === "password" ? (
                     <input
+                        id="password-text"
                         className="info-input"
                         type="password"
                         value={userData.password}
@@ -127,8 +134,11 @@ const UserAccount = () => {
                     <div className="info-value">{"*".repeat(userData.password.length)}</div>
                     )}
                     {userData.password.length<8 && <span className="too-short">Password is too short.</span>}
-                    <button className="edit-button" onClick={() => handleEditClick("password")}>
-                    {editingField === "password" ? "Editing" : "Edit"}
+                    <button className="edit-button" onClick={() => {
+                        handleEditClick("password"); 
+                        if (editingField==="password") userData.password=originalData.password;
+                    }}>
+                    {editingField === "password" ? "Cancel" : "Edit"}
                     </button>
                 </div>
                 )}

@@ -6,11 +6,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import com.market.backend.configurations.JWTFilter;
+import com.market.backend.services.JWTService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,7 +25,8 @@ import com.market.backend.services.CategoryService;
 
 @WebMvcTest(CategoryController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class CategoryControllerTest {
+@Import({JWTService.class, JWTFilter.class})
+class CategoryControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -47,7 +51,7 @@ public class CategoryControllerTest {
 
         categoryTest.add(category);
         Mockito.when(categoryService.listAllCategories()).thenReturn(categoryTest);
-        mockMvc.perform(get("/Home"))
+        mockMvc.perform(get("/categories/Home"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].categoryName").value("Electronics"))
                 .andExpect(jsonPath("$[1].categoryName").value("Furniture"))
@@ -61,7 +65,7 @@ public class CategoryControllerTest {
     void testHomeCategorieswithEmptyList() throws Exception {
         List<Category> categoryTest = new ArrayList<>();
         Mockito.when(categoryService.listAllCategories()).thenReturn(categoryTest);
-        mockMvc.perform(get("/Home"))
+        mockMvc.perform(get("/categories/Home"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
     }
@@ -108,7 +112,7 @@ public class CategoryControllerTest {
 
         productTest.add(product);
         Mockito.when(categoryService.listCategoriesProducts("Electronics")).thenReturn(productTest);
-        mockMvc.perform(get("/Category/Electronics"))
+        mockMvc.perform(get("/categories/Category/Electronics"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Earbuds"))
                 .andExpect(jsonPath("$[1].name").value("Flash Drive"))
@@ -124,7 +128,7 @@ public class CategoryControllerTest {
     void testCategoryProductsNotExist() throws Exception {
         List<Product> productTest = new ArrayList<>();
         Mockito.when(categoryService.listCategoriesProducts("Furniture")).thenReturn(productTest);
-        mockMvc.perform(get("/Category/Furniture"))
+        mockMvc.perform(get("/categories/Category/Furniture"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
     }

@@ -14,7 +14,7 @@ function ProductInfo({ product }) {
         <h3 className="product-price">Price: EGP {product.price}</h3>
         <div className="rating-container">
           <Rating precision={0.25} value={product.rating} readOnly />
-          {product.rating.toFixed(1)}/5
+          {product.rating.toFixed(1)}/5.0
         </div>
       </div>
       <div>

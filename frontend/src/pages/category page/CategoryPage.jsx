@@ -26,7 +26,7 @@ function CategoryPage() {
         console.error(error);
         throw error;
       });
-  }, [category, results]);
+  }, [category]);
 
   return (
     <div className="category-page">

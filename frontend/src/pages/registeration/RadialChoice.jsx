@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../../assets/background.png";
 import "./RadialChoice.css";
@@ -7,13 +7,22 @@ function RadialChoice() {
   const [showPopUp, closePopUp] = useState(true);
   const navigate = useNavigate();
 
+    useEffect(() => {
+      const hasVisitedRadialChoice = sessionStorage.getItem(
+        "hasVisitedRadialChoice"
+      );
+      if (!hasVisitedRadialChoice) {
+        navigate("/");
+      }
+    }, [navigate]);
+
   function DisappearPopUp(choice) {
     // to prevent the user from go direst to the signup page
-    localStorage.setItem("hasVisitedRadialChoice", true);
+    // localStorage.setItem("hasVisitedRadialChoice", true);
 
     closePopUp(false);
     if (choice == "Client") navigate("/clientSignUp");
-    if (choice == "Vendor") navigate("/vendorSignUp");
+    if (choice == "Vendor")  navigate("/vendorSignUp");
   }
 
   return (

@@ -23,7 +23,7 @@ const TopComponent = ({ productRating, productId, accountId, handler, userCommen
         <div className="leftContent">
           <span className="ratingText">Product Rating: </span>
           <Rating precision={0.25} value={productRating} readOnly />
-          {productRating.toFixed(1)}/5
+          {productRating.toFixed(1)}/5.0
         </div>
   
         {(userComment && userComment.id) || (userRate && userRate.id) ? (

@@ -2,13 +2,16 @@ package com.market.backend.editprofile;
 
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.market.backend.configurations.JWTFilter;
 import com.market.backend.controllers.EditProfileController;
 import com.market.backend.services.EditProfileService;
+import com.market.backend.services.JWTService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -19,7 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(EditProfileController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class EditProfileControllerPatchTest {
+@Import({JWTService.class, JWTFilter.class})
+class EditProfileControllerPatchTest {
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean

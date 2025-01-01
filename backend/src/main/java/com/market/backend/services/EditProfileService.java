@@ -12,6 +12,7 @@ import com.market.backend.models.*;
 import com.market.backend.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -25,6 +26,7 @@ public class EditProfileService {
     private final AccountRepository accountRepository;
     private final PasswordRepository passwordRepository;
     private final ShippingInfoRepository shippingInfoRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private final ObjectMapper objectMapper;
 
@@ -116,9 +118,9 @@ public class EditProfileService {
         checkRestrictedAttrs(account, adminInfoDTO.getAccountId(), adminInfoDTO.getUsername()
                 , adminInfoDTO.getType(), adminInfoDTO.isActive(), adminInfoDTO.getAuthType());
 
-        if (password != null) {
-            password.setAccountPassword(adminInfoDTO.getPassword());
-        } else if (adminInfoDTO.getPassword() != null) {
+        if (password != null && !password.getAccountPassword().equals(adminInfoDTO.getPassword())) {
+            password.setAccountPassword(passwordEncoder.encode(adminInfoDTO.getPassword()));
+        } else if (adminInfoDTO.getPassword() != null && password==null) {
             throw new JsonPatchException("Restricted attribute");
         }
 
@@ -155,9 +157,9 @@ public class EditProfileService {
         checkRestrictedAttrs(account, vendorInfoDTO.getAccountId(), vendorInfoDTO.getUsername()
                 , vendorInfoDTO.getType(), vendorInfoDTO.isActive(), vendorInfoDTO.getAuthType());
 
-        if (password != null) {
-            password.setAccountPassword(vendorInfoDTO.getPassword());
-        } else if (vendorInfoDTO.getPassword() != null) {
+        if (password != null && !password.getAccountPassword().equals(vendorInfoDTO.getPassword())) {
+            password.setAccountPassword(passwordEncoder.encode(vendorInfoDTO.getPassword()));
+        } else if (vendorInfoDTO.getPassword() != null && password==null) {
             throw new JsonPatchException("Restricted attribute");
         }
 
@@ -194,9 +196,9 @@ public class EditProfileService {
         checkRestrictedAttrs(account, clientInfoDTO.getAccountId(), clientInfoDTO.getUsername()
                 , clientInfoDTO.getType(), clientInfoDTO.isActive(), clientInfoDTO.getAuthType());
 
-        if (password != null) {
-            password.setAccountPassword(clientInfoDTO.getPassword());
-        } else if (clientInfoDTO.getPassword() != null) {
+        if (password != null && !password.getAccountPassword().equals(clientInfoDTO.getPassword())) {
+            password.setAccountPassword(passwordEncoder.encode(clientInfoDTO.getPassword()));
+        } else if (clientInfoDTO.getPassword() != null && password==null) {
             throw new JsonPatchException("Restricted attribute");
         }
 

@@ -3,6 +3,7 @@ package com.market.backend.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.market.backend.services.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.market.backend.repositories.AccountRepository;
-import com.market.backend.services.JWTService;
 
 @RestController
 @RequestMapping("/auth")
 public class SignInController {
-
     @Autowired
     private JWTService jwtService;
     @Autowired

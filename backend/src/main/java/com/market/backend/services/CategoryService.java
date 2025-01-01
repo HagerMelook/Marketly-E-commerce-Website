@@ -5,32 +5,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.market.backend.models.Product;
 import com.market.backend.repositories.CategoryRepository;
 import com.market.backend.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.market.backend.models.Category;
 
-
 import jakarta.transaction.Transactional;
 
 @Service
 public class CategoryService {
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
-
-    @Autowired
-    ProductRepository productRepository;
 
     public List<Category> listAllCategories() {
         return categoryRepository.findAll();
@@ -39,14 +34,12 @@ public class CategoryService {
     public List<Product> listCategoriesProducts(String categoryName) {
         return productRepository.findByCategory(categoryName);
     }
-  
-  
+
     @Transactional
     public ResponseEntity<String> updateCategory(String categoryName, String newName) {
-        Optional<Category> existingCategoryOpt = categoryRepository.findByCategoryName(categoryName);
+        Category existingCategory = categoryRepository.findByCategoryName(categoryName);
         
-        if (existingCategoryOpt.isPresent()) {
-            Category existingCategory = existingCategoryOpt.get();
+        if (existingCategory != null) {
             // Check if new name already exists and it's not the same category
             if (!categoryName.equals(newName)) {
                 Category newCategory = new Category();
@@ -72,7 +65,8 @@ public class CategoryService {
 
         return Optional.empty();
     }
- @Transactional
+
+    @Transactional
     public ResponseEntity<Object> addCategory(String CategoryName, MultipartFile CategoryImage) {
         if (categoryRepository.existsById(CategoryName)) {
             return ResponseEntity.badRequest().build();

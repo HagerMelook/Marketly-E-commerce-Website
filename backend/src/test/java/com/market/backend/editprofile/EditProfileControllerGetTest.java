@@ -1,16 +1,20 @@
 package com.market.backend.editprofile;
 
 
+import com.market.backend.configurations.JWTFilter;
 import com.market.backend.controllers.EditProfileController;
 import com.market.backend.dtos.AdminInfoDTO;
 import com.market.backend.dtos.ClientInfoDTO;
 import com.market.backend.dtos.VendorInfoDTO;
 import com.market.backend.models.*;
 import com.market.backend.services.EditProfileService;
+import com.market.backend.services.JWTService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -23,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(EditProfileController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@Import({JWTService.class, JWTFilter.class})
 class EditProfileControllerGetTest {
     @Autowired
     private MockMvc mockMvc;
