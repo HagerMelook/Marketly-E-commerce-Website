@@ -5,7 +5,6 @@ import Home from "./pages/home/Home";
 import VendorInventory from "./pages/Inventory/VendorInventory";
 import OrdersList from "./pages/orders list/orders.jsx";
 import ProductManagementPage from "./pages/product management/ProductManagementPage";
-import { ProductProvider } from "./contexts/ProductProvider";
 import Login from "./pages/logIn/LogIn";
 import SearchPage from "./pages/search page/SearchPage.jsx";
 import CategoryPage from "./pages/category page/CategoryPage.jsx";
