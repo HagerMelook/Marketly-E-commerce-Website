@@ -3,6 +3,23 @@ import "./OrderCard.css";
 import OrderProduct from "../order product/OrderProduct";
 
 const OrderCard = ({ order }) => {
+  const cancelOrder = () => {
+    fetch(`http://localhost:8080/orders/cancel/${order.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        throw error;
+      });
+  };
+
   return (
     <div className="order-card">
       <div className="order-info">
@@ -16,7 +33,9 @@ const OrderCard = ({ order }) => {
           Status<p className="text-info">{order.status}</p>
         </div>
         {order.status !== "Shipped" && order.status !== "Delivered" && (
-          <button className="cancel-order">Cancel</button>
+          <button className="cancel-order" onClick={cancelOrder}>
+            Cancel
+          </button>
         )}
       </div>
       <div className="order-products-list">

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import { useState } from "react";
 import Header from "../../components/header/Header";
 import OrderCard from "../../components/order card/OrderCard";
 import "./orders.css";
@@ -7,7 +6,7 @@ import "./orders.css";
 function OrdersList() {
   const [orders, setOrders] = useState([]);
 
-  // var id = sessionStorage.getItem("id");
+  // const id = sessionStorage.getItem("id");
 
   useEffect(() => {
     // fetch(`http://localhost:8080/orders/${id}`, {
