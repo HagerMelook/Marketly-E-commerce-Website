@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(configurer -> configurer
                         .requestMatchers("/h2-console/**").permitAll() // Add this for H2 console
 
+
                         .requestMatchers(HttpMethod.POST, "/categories").hasRole("SUPERADMIN")
                         .requestMatchers(HttpMethod.PUT, "/categories/{categoryName}").hasRole("SUPERADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/categories/{categoryName}").hasRole("SUPERADMIN")
@@ -99,6 +100,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
 
                 )
+
                 .oauth2Login(Customizer.withDefaults())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();

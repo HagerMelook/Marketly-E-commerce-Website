@@ -1,10 +1,11 @@
-import { useNavigate } from 'react-router-dom'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import backgroundImg from "../../assets/background.png";
-import './LogIn.css';
 import BasicSignIn from '../../components/API/signInApi';
+import './LogIn.css';
 
 const Login = () => {
+  sessionStorage.setItem("hasVisitedRadialChoice", true);
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
