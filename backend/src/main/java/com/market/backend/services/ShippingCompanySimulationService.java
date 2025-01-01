@@ -38,7 +38,7 @@ public class ShippingCompanySimulationService {
         return ResponseEntity.ok(updatedOrder.getStatus());
     }
 
-    public ResponseEntity<Slice<Order>> getListOrderStatus(Slice<Order> listOrders) {
+    public Slice<Order> getListOrderStatus(Slice<Order> listOrders) {
 
         List<Order> updatedOrders = new ArrayList<>();
         for (Order order : listOrders.getContent()) {
@@ -50,7 +50,16 @@ public class ShippingCompanySimulationService {
         boolean hasNext = updatedOrders.size() == pageable.getPageSize();
         Slice<Order> updatedOrderSlice = new SliceImpl<>(updatedOrders, pageable, hasNext);
     
-        return ResponseEntity.ok(updatedOrderSlice);
+        return updatedOrderSlice;
+    }
+
+    public List<Order> getListOrderStatus(List<Order> listOrders) {
+        List<Order> updatedOrders = new ArrayList<>();
+        for (Order order : listOrders) {
+            Order updatedOrder = updateOrderStatus(order);
+            updatedOrders.add(updatedOrder);
+        }
+        return updatedOrders;
     }
     
 
