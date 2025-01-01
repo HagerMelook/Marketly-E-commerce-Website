@@ -39,26 +39,32 @@ class ShoppingCartProductRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        shoppingCartProductRepository.deleteAll();
+        productRepository.deleteAll();
+        shoppingCartRepository.deleteAll();
+        vendorRepository.deleteAll();
+        accountRepository.deleteAll();
+
         account = new Account();
-        account.setUsername("username");
+        account.setUsername("testUser");
         account.setAuthType("oauth");
-        account.setType("client");
+        account.setType("vendor");
         account = accountRepository.save(account);
 
-        shoppingCart = new ShoppingCart();
-        shoppingCart.setUserAccount(account);
-        shoppingCart = shoppingCartRepository.save(shoppingCart);
-
         vendor = new Vendor();
-        vendor.setId(account.getId());
         vendor.setAccount(account);
         vendor.setTaxNumber(1235456545L);
         vendor.setOrganizationName("Test Organization");
         vendor = vendorRepository.save(vendor);
 
+        shoppingCart = new ShoppingCart();
+        shoppingCart.setUserAccount(account);
+        shoppingCart = shoppingCartRepository.save(shoppingCart);
+
         product = new Product();
         product.setName("Test Product");
         product.setPrice(100.0);
+        product.setQuantity(10);
         product.setCategory("Electronics");
         product.setDescription("Test Product Description");
         product.setVendor(vendor);
@@ -70,13 +76,18 @@ class ShoppingCartProductRepositoryTest {
         ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
         shoppingCartProduct.setShoppingCart(shoppingCart);
         shoppingCartProduct.setProduct(product);
+        shoppingCartProduct.setQuantity(1);
+        shoppingCartProduct.setPrice(product.getPrice());
         shoppingCartProductRepository.save(shoppingCartProduct);
 
-        Optional<ShoppingCartProduct> retrievedProduct = shoppingCartProductRepository.findByShoppingCartAndProduct(shoppingCart, product);
+        Optional<ShoppingCartProduct> retrievedProduct =
+                shoppingCartProductRepository.findByShoppingCartAndProduct(shoppingCart, product);
 
         assertTrue(retrievedProduct.isPresent());
         assertEquals(product.getId(), retrievedProduct.get().getProduct().getId());
         assertEquals(shoppingCart.getId(), retrievedProduct.get().getShoppingCart().getId());
+        assertEquals(1, retrievedProduct.get().getQuantity());
+        assertEquals(product.getPrice(), retrievedProduct.get().getPrice());
     }
 
     @Test
@@ -84,11 +95,14 @@ class ShoppingCartProductRepositoryTest {
         ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
         shoppingCartProduct.setShoppingCart(shoppingCart);
         shoppingCartProduct.setProduct(product);
+        shoppingCartProduct.setQuantity(1);
+        shoppingCartProduct.setPrice(product.getPrice());
         shoppingCartProductRepository.save(shoppingCartProduct);
 
         shoppingCartProductRepository.deleteByShoppingCartAndProductId(shoppingCart, product.getId());
 
-        Optional<ShoppingCartProduct> deletedProduct = shoppingCartProductRepository.findByShoppingCartAndProduct(shoppingCart, product);
+        Optional<ShoppingCartProduct> deletedProduct =
+                shoppingCartProductRepository.findByShoppingCartAndProduct(shoppingCart, product);
         assertFalse(deletedProduct.isPresent());
     }
 
@@ -97,12 +111,16 @@ class ShoppingCartProductRepositoryTest {
         ShoppingCartProduct shoppingCartProduct = new ShoppingCartProduct();
         shoppingCartProduct.setShoppingCart(shoppingCart);
         shoppingCartProduct.setProduct(product);
+        shoppingCartProduct.setQuantity(1);
+        shoppingCartProduct.setPrice(product.getPrice());
         shoppingCartProductRepository.save(shoppingCartProduct);
 
         List<ShoppingCartProduct> products = shoppingCartProductRepository.findByShoppingCart(shoppingCart);
 
+        assertFalse(products.isEmpty());
         assertEquals(1, products.size());
         assertEquals(product.getId(), products.get(0).getProduct().getId());
+        assertEquals(1, products.get(0).getQuantity());
+        assertEquals(product.getPrice(), products.get(0).getPrice());
     }
 }
-

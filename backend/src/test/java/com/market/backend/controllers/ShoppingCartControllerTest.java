@@ -48,6 +48,45 @@ class ShoppingCartControllerTest {
                 .andExpect(content().string("Product added to cart successfully."));
 
         verify(shoppingCartService, times(1)).addProductToCart(productId, accountId, quantity);
+        verifyNoMoreInteractions(shoppingCartService);
+    }
+
+    @Test
+    void testAddProductToCartWithInvalidQuantity() throws Exception {
+        long accountId = 1L;
+        long productId = 101L;
+        int invalidQuantity = -1;
+
+        doThrow(new IllegalArgumentException("Quantity must be positive"))
+                .when(shoppingCartService).addProductToCart(productId, accountId, invalidQuantity);
+
+        mockMvc.perform(post("/ShoppingCart/Add/{accountId}", accountId)
+                        .param("productId", String.valueOf(productId))
+                        .param("quantity", String.valueOf(invalidQuantity)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Error: Quantity must be positive"));
+
+        verify(shoppingCartService, times(1)).addProductToCart(productId, accountId, invalidQuantity);
+        verifyNoMoreInteractions(shoppingCartService);
+    }
+
+    @Test
+    void testAddProductToCartWithInvalidProduct() throws Exception {
+        long accountId = 1L;
+        long invalidProductId = -1L;
+        int quantity = 1;
+
+        doThrow(new IllegalArgumentException("Product not found"))
+                .when(shoppingCartService).addProductToCart(invalidProductId, accountId, quantity);
+
+        mockMvc.perform(post("/ShoppingCart/Add/{accountId}", accountId)
+                        .param("productId", String.valueOf(invalidProductId))
+                        .param("quantity", String.valueOf(quantity)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Error: Product not found"));
+
+        verify(shoppingCartService, times(1)).addProductToCart(invalidProductId, accountId, quantity);
+        verifyNoMoreInteractions(shoppingCartService);
     }
 
     @Test
@@ -72,7 +111,7 @@ class ShoppingCartControllerTest {
         ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO(
                 List.of(shoppingCartProductDTO), 40.0);
 
-        doReturn(shoppingCartDTO).when(shoppingCartService).getCartProducts(accountId);
+        when(shoppingCartService.getCartProducts(accountId)).thenReturn(shoppingCartDTO);
 
         mockMvc.perform(get("/ShoppingCart/{accountId}", accountId))
                 .andExpect(status().isOk())
@@ -84,19 +123,54 @@ class ShoppingCartControllerTest {
                 .andExpect(jsonPath("$.totalPrice").value(40.0));
 
         verify(shoppingCartService, times(1)).getCartProducts(accountId);
+        verifyNoMoreInteractions(shoppingCartService);
     }
 
+    @Test
+    void testGetEmptyCart() throws Exception {
+        long accountId = 1L;
+        ShoppingCartDTO emptyCart = new ShoppingCartDTO(List.of(), 0.0);
+
+        when(shoppingCartService.getCartProducts(accountId)).thenReturn(emptyCart);
+
+        mockMvc.perform(get("/ShoppingCart/{accountId}", accountId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.products").isEmpty())
+                .andExpect(jsonPath("$.totalPrice").value(0.0));
+
+        verify(shoppingCartService, times(1)).getCartProducts(accountId);
+        verifyNoMoreInteractions(shoppingCartService);
+    }
 
     @Test
     void testDeleteProductFromCart() throws Exception {
         long productId = 101L;
         long accountId = 1L;
 
+        doNothing().when(shoppingCartService).removeProductFromCart(productId, accountId);
+
         mockMvc.perform(delete("/ShoppingCart/Delete/{productId}/{accountId}", productId, accountId))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Product removed from cart."));
 
         verify(shoppingCartService, times(1)).removeProductFromCart(productId, accountId);
+        verifyNoMoreInteractions(shoppingCartService);
+    }
+
+    @Test
+    void testDeleteNonExistentProductFromCart() throws Exception {
+        long nonExistentProductId = 999L;
+        long accountId = 1L;
+
+        doThrow(new IllegalArgumentException("Product not found in cart"))
+                .when(shoppingCartService).removeProductFromCart(nonExistentProductId, accountId);
+
+        mockMvc.perform(delete("/ShoppingCart/Delete/{productId}/{accountId}", nonExistentProductId, accountId))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Error: Product not found in cart"));
+
+        verify(shoppingCartService, times(1)).removeProductFromCart(nonExistentProductId, accountId);
+        verifyNoMoreInteractions(shoppingCartService);
     }
 
     @Test
@@ -105,6 +179,8 @@ class ShoppingCartControllerTest {
         long accountId = 1L;
         int newQuantity = 3;
 
+        doNothing().when(shoppingCartService).updateProductQuantityInCart(productId, accountId, newQuantity);
+
         mockMvc.perform(post("/ShoppingCart/Update/{productId}/{accountId}", productId, accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(String.valueOf(newQuantity)))
@@ -112,5 +188,44 @@ class ShoppingCartControllerTest {
                 .andExpect(content().string("Product quantity updated."));
 
         verify(shoppingCartService, times(1)).updateProductQuantityInCart(productId, accountId, newQuantity);
+        verifyNoMoreInteractions(shoppingCartService);
+    }
+
+    @Test
+    void testUpdateProductQuantityWithInvalidQuantity() throws Exception {
+        long productId = 101L;
+        long accountId = 1L;
+        int invalidQuantity = 0;
+
+        doThrow(new IllegalArgumentException("Quantity must be positive"))
+                .when(shoppingCartService).updateProductQuantityInCart(productId, accountId, invalidQuantity);
+
+        mockMvc.perform(post("/ShoppingCart/Update/{productId}/{accountId}", productId, accountId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(invalidQuantity)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Error: Quantity must be positive"));
+
+        verify(shoppingCartService, times(1)).updateProductQuantityInCart(productId, accountId, invalidQuantity);
+        verifyNoMoreInteractions(shoppingCartService);
+    }
+
+    @Test
+    void testUpdateNonExistentProductQuantity() throws Exception {
+        long nonExistentProductId = 999L;
+        long accountId = 1L;
+        int newQuantity = 1;
+
+        doThrow(new IllegalArgumentException("Product not found in cart"))
+                .when(shoppingCartService).updateProductQuantityInCart(nonExistentProductId, accountId, newQuantity);
+
+        mockMvc.perform(post("/ShoppingCart/Update/{productId}/{accountId}", nonExistentProductId, accountId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(newQuantity)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Error: Product not found in cart"));
+
+        verify(shoppingCartService, times(1)).updateProductQuantityInCart(nonExistentProductId, accountId, newQuantity);
+        verifyNoMoreInteractions(shoppingCartService);
     }
 }

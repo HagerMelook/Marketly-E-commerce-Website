@@ -149,7 +149,7 @@ class ShoppingCartServiceTest {
     void testAddProductToCart_ExceedsStock() {
         Long userId = 1L;
         Long productId = 101L;
-        int quantity = 20; // Product only has 10 in stock
+        int quantity = 20;
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
