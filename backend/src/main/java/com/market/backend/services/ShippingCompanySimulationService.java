@@ -74,13 +74,13 @@ public class ShippingCompanySimulationService {
         long minutes = duration.toMinutes();
 
         // Update order status based on the elapsed time in minutes
-        if (minutes < 30)
+        if (minutes < 1)
             order.setStatus("confirmed");
-        else if (minutes < 60)
+        else if (minutes < 2)
             order.setStatus("processing");
-        else if (minutes < 120)
+        else if (minutes < 3)
             order.setStatus("packaged");
-        else if (minutes < 1440)
+        else if (minutes < 4)
             order.setStatus("shipped");
         else
             order.setStatus("delivered");
