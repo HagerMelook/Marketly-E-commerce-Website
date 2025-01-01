@@ -32,55 +32,76 @@ public class ShippingCompanySimulationServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
+        }
+    
 
-    @Test
-    public void testGetOrderStatus_OrderNotFound() {
-        Long orderId = 1L;
-        when(orderRepositories.findById(orderId)).thenReturn(Optional.empty());
+@Test
+public void testGetOrderStatus_OrderDelivered() {
+    Long orderId = 1L;
+    Order order = new Order();
+    order.setDate(LocalDateTime.now().minusMinutes(5));
+    when(orderRepositories.findById(orderId)).thenReturn(Optional.of(order));
+    when(orderRepositories.save(any(Order.class))).thenReturn(order);
 
-        ResponseEntity<?> response = shippingCompanySimulationService.getOrderStatus(orderId);
+    ResponseEntity<?> response = shippingCompanySimulationService.getOrderStatus(orderId);
 
-        assertEquals(ResponseEntity.notFound().build(), response);
-    }
-
-    @Test
-    public void testGetOrderStatus_OrderFound() {
-        Long orderId = 1L;
-        Order order = new Order();
-        order.setDateTime(LocalDateTime.now().minusMinutes(10));
-        when(orderRepositories.findById(orderId)).thenReturn(Optional.of(order));
-        when(orderRepositories.save(any(Order.class))).thenReturn(order);
-
-        ResponseEntity<?> response = shippingCompanySimulationService.getOrderStatus(orderId);
-
-        assertEquals(ResponseEntity.ok("confirmed"), response);
-    }
-
-    @Test
-    public void testGetListOrderStatus() {
-        Order order1 = new Order();
-        order1.setDateTime(LocalDateTime.now().minusMinutes(10));
-        Order order2 = new Order();
-        order2.setDateTime(LocalDateTime.now().minusMinutes(50));
-        Slice<Order> orderSlice = new SliceImpl<>(Arrays.asList(order1, order2), PageRequest.of(0, 2), false);
-        when(orderRepositories.save(any(Order.class))).thenReturn(order1).thenReturn(order2);
-
-        ResponseEntity<Slice<Order>> response = shippingCompanySimulationService.getListOrderStatus(orderSlice);
-
-        assertEquals(2, response.getBody().getContent().size());
-        assertEquals("confirmed", response.getBody().getContent().get(0).getStatus());
-        assertEquals("processing", response.getBody().getContent().get(1).getStatus());
-    }
-
-    @Test
-    public void testUpdateOrderStatus() {
-        Order order = new Order();
-        order.setDateTime(LocalDateTime.now().minusMinutes(10));
-        when(orderRepositories.save(any(Order.class))).thenReturn(order);
-
-        Order updatedOrder = shippingCompanySimulationService.updateOrderStatus(order);
-
-        assertEquals("confirmed", updatedOrder.getStatus());
-    }
+    assertEquals(ResponseEntity.ok("delivered"), response);
 }
+
+@Test
+public void testGetOrderStatus_OrderShipped() {
+    Long orderId = 1L;
+    Order order = new Order();
+    order.setDate(LocalDateTime.now().minusMinutes(3));
+    when(orderRepositories.findById(orderId)).thenReturn(Optional.of(order));
+    when(orderRepositories.save(any(Order.class))).thenReturn(order);
+
+    ResponseEntity<?> response = shippingCompanySimulationService.getOrderStatus(orderId);
+
+    assertEquals(ResponseEntity.ok("shipped"), response);
+}
+
+@Test
+public void testGetOrderStatus_OrderPackaged() {
+    Long orderId = 1L;
+    Order order = new Order();
+    order.setDate(LocalDateTime.now().minusMinutes(2));
+    when(orderRepositories.findById(orderId)).thenReturn(Optional.of(order));
+    when(orderRepositories.save(any(Order.class))).thenReturn(order);
+
+    ResponseEntity<?> response = shippingCompanySimulationService.getOrderStatus(orderId);
+
+    assertEquals(ResponseEntity.ok("packaged"), response);
+}
+
+@Test
+public void testGetOrderStatus_OrderProcessing() {
+    Long orderId = 1L;
+    Order order = new Order();
+    order.setDate(LocalDateTime.now().minusMinutes(1));
+    when(orderRepositories.findById(orderId)).thenReturn(Optional.of(order));
+    when(orderRepositories.save(any(Order.class))).thenReturn(order);
+
+    ResponseEntity<?> response = shippingCompanySimulationService.getOrderStatus(orderId);
+
+    assertEquals(ResponseEntity.ok("processing"), response);
+}
+
+@Test
+public void testGetListOrderStatus_ListWithMultipleOrders() {
+    Order order1 = new Order();
+    order1.setDate(LocalDateTime.now().minusMinutes(1));
+    Order order2 = new Order();
+    order2.setDate(LocalDateTime.now().minusMinutes(3));
+    Order order3 = new Order();
+    order3.setDate(LocalDateTime.now().minusMinutes(5));
+    Slice<Order> orderSlice = new SliceImpl<>(Arrays.asList(order1, order2, order3), PageRequest.of(0, 3), false);
+    when(orderRepositories.save(any(Order.class))).thenReturn(order1).thenReturn(order2).thenReturn(order3);
+
+    Slice<Order> response = shippingCompanySimulationService.getListOrderStatus(orderSlice);
+
+    assertEquals(3, response.getContent().size());
+    assertEquals("processing", response.getContent().get(0).getStatus());
+    assertEquals("shipped", response.getContent().get(1).getStatus());
+    assertEquals("delivered", response.getContent().get(2).getStatus());
+}}
