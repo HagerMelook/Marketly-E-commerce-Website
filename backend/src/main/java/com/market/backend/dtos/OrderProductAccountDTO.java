@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +14,7 @@ public class OrderProductAccountDTO {
     private String productName;
     private Long accountId;
     private String username;
-    private Date date;
+    private LocalDateTime date;
     private String status;
 
     OrderProductAccountDTO (OrderProducts orderProducts, Long accountId, String username) {

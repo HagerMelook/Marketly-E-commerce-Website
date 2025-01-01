@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -107,9 +108,20 @@ public class EditProfileService {
         Password password = account.getAuthType().equalsIgnoreCase("basic") ?
                 passwordRepository.findByAccountId(id) : null;
         Admin admin = adminRepository.findById(id)
-                .orElse(new Admin());
-        ShippingInfo shippingInfo = shippingInfoRepository.findByAccountId(id)
-                .orElse(new ShippingInfo());
+                .orElseGet(() -> {
+                    Admin newAdmin = new Admin();
+                    newAdmin.setAccount(account);
+                    return newAdmin;
+                });
+        Optional<ShippingInfo> shippingInfoOptional = shippingInfoRepository.findByAccountId(id);
+        ShippingInfo shippingInfo;
+        if (shippingInfoOptional.isPresent()) {
+            shippingInfo = shippingInfoOptional.get();
+        }
+        else {
+            shippingInfoRepository.insertShippingInfo(id);
+            shippingInfo = shippingInfoRepository.findByAccountId(id).get();
+        }
 
         AdminInfoDTO adminInfoDTO = new AdminInfoDTO(account, password, admin, shippingInfo);
         JsonNode patched = patch.apply(objectMapper.convertValue(adminInfoDTO, JsonNode.class));
@@ -146,9 +158,20 @@ public class EditProfileService {
         Password password = account.getAuthType().equalsIgnoreCase("basic") ?
                 passwordRepository.findByAccountId(id) : null;
         Vendor vendor = vendorRepository.findById(id)
-                .orElse(new Vendor());
-        ShippingInfo shippingInfo = shippingInfoRepository.findByAccountId(id)
-                .orElse(new ShippingInfo());
+                .orElseGet(() -> {
+                    Vendor newVendor = new Vendor();
+                    newVendor.setAccount(account);
+                    return newVendor;
+                });
+        Optional<ShippingInfo> shippingInfoOptional = shippingInfoRepository.findByAccountId(id);
+        ShippingInfo shippingInfo;
+        if (shippingInfoOptional.isPresent()) {
+            shippingInfo = shippingInfoOptional.get();
+        }
+        else {
+            shippingInfoRepository.insertShippingInfo(id);
+            shippingInfo = shippingInfoRepository.findByAccountId(id).get();
+        }
 
         VendorInfoDTO vendorInfoDTO = new VendorInfoDTO(account, password, vendor, shippingInfo);
         JsonNode patched = patch.apply(objectMapper.convertValue(vendorInfoDTO, JsonNode.class));
@@ -185,9 +208,20 @@ public class EditProfileService {
         Password password = account.getAuthType().equalsIgnoreCase("basic") ?
                 passwordRepository.findByAccountId(id) : null;
         Client client = clientRepository.findByAccount_Id(id)
-                .orElse(new Client());
-        ShippingInfo shippingInfo = shippingInfoRepository.findByAccountId(id)
-                .orElse(new ShippingInfo());
+                .orElseGet(() -> {
+                    Client newClient = new Client();
+                    newClient.setAccount(account);
+                    return newClient;
+                });
+        Optional<ShippingInfo> shippingInfoOptional = shippingInfoRepository.findByAccountId(id);
+        ShippingInfo shippingInfo;
+        if (shippingInfoOptional.isPresent()) {
+            shippingInfo = shippingInfoOptional.get();
+        }
+        else {
+            shippingInfoRepository.insertShippingInfo(id);
+            shippingInfo = shippingInfoRepository.findByAccountId(id).get();
+        }
 
         ClientInfoDTO clientInfoDTO = new ClientInfoDTO(account, password, client, shippingInfo);
         JsonNode patched = patch.apply(objectMapper.convertValue(clientInfoDTO, JsonNode.class));

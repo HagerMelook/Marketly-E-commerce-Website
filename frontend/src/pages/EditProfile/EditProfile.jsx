@@ -154,7 +154,7 @@ const UserAccount = () => {
                     {editingField === field ? (
                     <input
                         className="info-input"
-                        value={userData[field]}
+                        value={userData[field] ? userData[field] : ''}
                         onChange={(e) => handleChange(field, e.target.value)}
                     />
                     ) : (

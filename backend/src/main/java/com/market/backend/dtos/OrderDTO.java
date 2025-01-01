@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -20,7 +21,7 @@ public class OrderDTO {
     private Long id;
     private Account account;
     private String status;
-    private Date date;
+    private LocalDateTime date;
     private double checkoutPrice;
     private List<Product> products;
     private Long account_id;
