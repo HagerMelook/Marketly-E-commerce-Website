@@ -41,8 +41,8 @@ Marketly is a feature-rich e-commerce platform where users can sign up, browse, 
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/marketly.git
-   cd marketly
+   git clone https://github.com/HagerMelook/Marketly-E-commerce-Website.git
+   cd Marketly-E-commerce-Website
    ```
 
 2. **Backend Setup**:
